@@ -1,22 +1,21 @@
 // Ref: https://github.com/nuxt-community/vuetify-module#customvariables
 // fonts
 // @import "~vuetify/src/styles/styles.sass";
-$font-family: 'OpenSansHebrew', 'Roboto', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+$font-family: 'Roboto', sans-serif;
 $body-font-family: 'OpenSansHebrew', 'Roboto', sans-serif;
-$heading-font-family: 'OpenSansHebrew', 'Roboto', sans-serif;
+$heading-font-family: 'Fredoka One', cursive;
 
 $baseFontSize: 16;
 :root {
-  --prim-gray: #e5e5e5;
-  --light-gray: #ebebeb;
-  --dark-gray: #d3d3d3;
-  --ok-color: #25408f;
+  --prim-color: #25408f;
+  --sec-color: #c4c4c4;
+  --op-color: #f33a3a;
 }
 
-$prim-gray: var(--prim-gray);
-$light-gray: var(--light-gray);
-$dark-gray: var(--dark-gray);
-$ok-color: var(--ok-color);
+$prim-color: var(--prim-color);
+$sec-color: var(--sec-color);
+$op-color: var(--op-color);
 
 $black: #1d1d1d;
 $white: #f2f2f2;

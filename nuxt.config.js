@@ -54,6 +54,7 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
     '@nuxt/content',
+    'nuxt-i18n',
   ],
   /*
    ** Axios module configuration
@@ -89,6 +90,33 @@ export default {
           customProperties: true,
         },
       },
+    },
+  },
+  i18n: {
+    locales: [
+      {
+        name: 'English',
+        code: 'en',
+        iso: 'en-US',
+        file: 'en-US.json',
+      },
+      {
+        name: 'עברית',
+        code: 'he',
+        iso: 'he-IL',
+        file: 'he-IL.json',
+      },
+    ],
+    langDir: 'lang/',
+    defaultLocale: 'en',
+    fallbackLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+    },
+    lazy: true,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
     },
   },
   /*

@@ -11,15 +11,16 @@
 </template>
 
 <script>
-import { AppHeader } from '../components/header/AppHeader'
-import { AppFooter } from '../components/footer/AppFooter'
+import AppHeader from '~/components/header/AppHeader.vue';
+import AppFooter from '~/components/footer/AppFooter.vue';
 export default {
+  name: `default`,
   components: {
     AppFooter,
     AppHeader,
   },
   data() {
-    return {}
+    return {};
   },
-}
+};
 </script>

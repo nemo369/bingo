@@ -1,0 +1,36 @@
+h1 {
+  font-family: $heading-font-family;
+  font-size: rem(40);
+  font-weight: 700;
+}
+h2 {
+  font-family: $heading-font-family;
+  font-size: rem(32);
+  font-weight: 700;
+}
+h3 {
+  font-family: $body-font-family;
+  font-size: rem(20);
+  font-weight: 700;
+}
+
+h4 {
+  font-family: $body-font-family;
+  font-size: rem(4);
+}
+h5 {
+  font-family: $body-font-family;
+  font-size: rem(4);
+}
+
+p,
+div,
+span {
+  font-family: $body-font-family;
+  font-size: rem(16);
+  line-height: 1.25;
+}
+strong {
+  font-family: $body-font-family;
+  text-transform: capitalize;
+}

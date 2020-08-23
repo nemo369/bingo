@@ -1,8 +1,7 @@
 export function getSvg(name: string): string {
-  const svg = '';
   switch (name) {
     case 'logo':
-      break;
+      return '<span>logo svg</span>';
   }
-  return svg;
+  return name;
 }
