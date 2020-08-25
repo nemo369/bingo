@@ -1,0 +1,21 @@
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(350px, 1fr));
+  grid-gap: 5px;
+  &__li {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background-color: $sec-color;
+      z-index: 1;
+    }
+  }
+}
+@media #{$mobile} {
+  .album-grid {
+    display: block;
+  }
+}

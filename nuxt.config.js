@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -60,7 +62,16 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+
+  proxy: {
+    '/api/': {
+      target: process.env.BASE_URL,
+      changeOrigin: true,
+    },
+  },
+  axios: {
+    proxy: true,
+  },
   /*
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration

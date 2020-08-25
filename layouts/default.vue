@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <AppHeader />
-    <v-main>
-      <v-container>
+    <v-main class="main">
+      <v-container class="container">
         <nuxt />
       </v-container>
     </v-main>
@@ -24,3 +24,17 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 15px 10px;
+  max-width: 1320px;
+  height: 100%;
+  margin: 4px auto;
+}
+.main {
+  background-color: #e5e5e5;
+}
+</style>

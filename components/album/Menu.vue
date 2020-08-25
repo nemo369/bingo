@@ -1,14 +1,19 @@
 <template>
   <v-tabs v-model="currentRoute">
-    <v-tab v-for="route in routes" :key="route.link" ripple>
-      <nuxt-link :to="localePath(`/album/${route.path}`)" class="li">
+    <nuxt-link
+      v-for="route in routes"
+      :key="route.link"
+      :to="localePath(`/album/${route.path}`)"
+      class="li"
+    >
+      <v-tab ripple class="row-1-1">
         {{ $t(route.text) }}
-      </nuxt-link>
-    </v-tab>
+      </v-tab>
+    </nuxt-link>
   </v-tabs>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'AlbumMenu',
   computed: {
@@ -23,7 +28,7 @@ export default {
         .filter((route) => !!route.path)
         .map((route) => ({
           ...route,
-          text: route.path,
+          text: this.$t(route.path),
         }));
     },
     currentRoute: {
@@ -42,8 +47,8 @@ export default {
     },
   },
   methods: {
-    isActive(href: string): boolean {
-      const currentRoute: string = this.$nuxt.$route.path;
+    isActive(href) {
+      const currentRoute = this.$nuxt.$route.path;
       return currentRoute.includes(href);
     },
   },

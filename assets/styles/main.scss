@@ -13,6 +13,8 @@
 
 // Components: have a single scss file for each individual component
 @import './components/board.scss';
+@import './components/grid.scss';
+@import './components/albumPreview.scss';
 
 @import './mobile.scss';
 //

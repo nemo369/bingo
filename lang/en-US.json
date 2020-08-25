@@ -4,5 +4,11 @@
     "select or build an album": "select or build an album",
     "public": "public",
     "my_albums": "My Albums",
-    "create": "create"
+    "create": "create",
+    "public bingos": "Public bingos",
+    "my uploads": "my uploads",
+    "public board i played": "public board i played",
+    "my_bingos": "My bingos",
+    "public_bingos": "public bingos",
+    "create_a_bingo": "Create a Bingo"
 }

@@ -29,25 +29,23 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script>
 import { Lang } from '~/app/types/app';
 export default {
   name: `LangMenu`,
-  data(): any {
+  data() {
     return {};
   },
   computed: {
-    availableLocales(): Lang[] {
-      return this.$i18n.locales.filter(
-        (i: any) => i.code !== this.$i18n.locale
-      );
+    availableLocales() {
+      return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale);
     },
-    currentLocale(): Lang[] {
-      return this.$i18n.locales.find((i: any) => i.code === this.$i18n.locale);
+    currentLocale() {
+      return this.$i18n.locales.find((i) => i.code === this.$i18n.locale);
     },
   },
   methods: {
-    changeLang(code: string) {
+    changeLang(code) {
       this.$i18n.setLocale(code);
     },
   },

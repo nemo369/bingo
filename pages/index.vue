@@ -4,7 +4,9 @@
     <h3>{{ $t('To Join a game...') }}</h3>
 
     <v-btn>
-      <nuxt-link to="album"> {{ $t('select or build an album') }} </nuxt-link>
+      <nuxt-link to="album">
+        {{ $t('select or build an album') }}
+      </nuxt-link>
     </v-btn>
   </div>
 </template>

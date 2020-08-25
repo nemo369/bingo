@@ -31,7 +31,7 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 
 export default {
@@ -50,7 +50,7 @@ export default {
     }),
   },
   methods: {
-    isActive(href: string) {
+    isActive(href) {
       const currentRoute = this.$nuxt.$route.path;
       if (currentRoute.includes(href)) {
         return true;
