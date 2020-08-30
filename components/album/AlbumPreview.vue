@@ -64,6 +64,8 @@ export default {
   methods: {
     setGame: () => {
       this.loading = true;
+      this.$store.dispatch('album/setAlbum', this.album);
+
       console.log('TODO...redirect and set store');
     },
     editAlbum: () => {

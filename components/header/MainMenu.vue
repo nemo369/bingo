@@ -16,15 +16,15 @@
       <li
         class="px-4 tac black--text row-1-1 d-flex justify-center flex-column fs18 text-capitalize"
       >
-        <nuxt-link to="signIn">
-          sign in
+        <nuxt-link to="login">
+          {{ $t('login') }}
         </nuxt-link>
       </li>
       <li
         class="px-4 tac black--text row-1-1 d-flex justify-center flex-column fs18 text-capitalize"
       >
         <nuxt-link to="register">
-          register
+          {{ $t('register') }}
         </nuxt-link>
       </li>
     </ul>

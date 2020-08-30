@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { User, CredentialRequest, NewUser } from '~/app/types/user';
 
-class UsersService {
+class UserService {
   private baseUrl = 'api';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
@@ -18,12 +18,8 @@ class UsersService {
 
   public async addUser(newUser: NewUser): Promise<User> {
     const serilizeObj = {
+      // Maybe need to fit BE parmas
       ...newUser,
-      email: newUser.email,
-      first_name: newUser.privateName,
-      last_name: newUser.lastName,
-      password: newUser.password,
-      confirm_password: newUser.confirmPassword,
     };
     const { data } = await axios.post<Promise<User>>(
       `${this.baseUrl}/register`,
@@ -33,6 +29,13 @@ class UsersService {
       ...data,
     };
   }
+
+  public async resetPassword(email: string): Promise<boolean> {
+    const { data } = await axios.post(`${this.baseUrl}/resetPassword`, {
+      email,
+    });
+    return !!data;
+  }
 }
 
-export default new UsersService();
+export default new UserService();

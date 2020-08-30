@@ -1,9 +1,33 @@
 export interface Album {
-    name: string;
-    id: number;
-    pictures: Picture[];
+  name: string;
+  id: number;
+  pictures: Picture[];
 }
 
 export interface Picture {
-    url: string;
+  url: string;
+}
+
+export interface NewAlbum {
+  name: string;
+  pictures: NewPictures[];
+  card: {
+    row: number;
+    column: number;
+    isEmptyCenter: boolean;
+  };
+}
+
+interface NewPictures {
+  name: string;
+  blob: string;
+  type: {
+    type: string;
+    blob: string;
+    format: string;
+  };
+  size: number;
+  isValid: boolean;
+  localUrl: string;
+  title: string;
 }

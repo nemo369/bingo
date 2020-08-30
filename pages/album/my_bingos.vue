@@ -28,13 +28,13 @@ import {albumService} from '~/services/album.service.ts';
 
 export default {
   name: 'MyAlbums',
+  middleware: 'auth',
   components: {
     AlbumPreview,
   },
   async fetch () {
     try {
       const albums = await albumService.getBingos();
-      console.log(albums);
         this.myAlbums = albums.filter(album => !album.isPublic)
         this.publicAlbums = albums.filter(album => album.isPublic)
 } catch (e) {

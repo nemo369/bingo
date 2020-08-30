@@ -1,0 +1,174 @@
+<template>
+  <v-dialog v-model="dialog" persistent max-width="350px">
+    <v-card>
+      <v-form id="register" ref="form" @submit.prevent="register()">
+        <v-card class="elevation-12">
+          <v-toolbar color="#FFFFFF" flat>
+            <v-toolbar-title>{{
+              $t('Register to Bingo Matrix')
+            }}</v-toolbar-title>
+            <v-spacer />
+            <v-btn color="#fff" elevation="0" @click="hideModal()">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <hr class="ma-auto" style="max-width: 90%;" />
+          <v-card-text>
+            <v-text-field
+              v-model="name"
+              name="login"
+              :label="label.name"
+              type="text"
+              class="mb-4"
+              :rules="[rules.required]"
+            />
+            <v-text-field
+              v-model="email"
+              name="login"
+              :label="label.email"
+              type="email"
+              class="mb-4"
+              :rules="[rules.required, rules.email]"
+            />
+            <v-text-field
+              v-model="password"
+              name="login"
+              :label="label.password"
+              type="password"
+              class="mb-4"
+              :rules="[
+                rules.required,
+                rules.passwordLength,
+                rules.passwordNumric,
+              ]"
+            />
+          </v-card-text>
+          <v-alert v-if="!!errorMsg" color="error">
+            <small>{{ errorMsg }}</small>
+          </v-alert>
+          <div class="d-flex justify-center">
+            <v-switch
+              v-model="europeCitizenship"
+              :label="label.europeCitizenship"
+            />
+          </div>
+          <v-card-actions class="pa-4">
+            <v-btn
+              type="submit"
+              form="register"
+              class="white--text ok-btn col-1-1"
+              large
+              color="primary"
+              :loading="isLoading"
+            >
+              {{ $t('Sign Up') }}
+            </v-btn>
+          </v-card-actions>
+          <div class="tac">
+            <v-btn
+              class="mt-6 mb-1"
+              type="button"
+              text
+              @click.prevent="navigateToLoginPage()"
+            >
+              {{ $t('Already a user?') }}
+              <strong>&nbsp;{{ $t('Login') }}</strong>
+            </v-btn>
+          </div>
+        </v-card>
+      </v-form>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      europeCitizenship: false,
+      isLoading: false,
+      dialog: true,
+      name: '',
+      email: '',
+      password: '',
+      label: {
+        name: this.$t('name'),
+        email: this.$t('email'),
+        password: this.$t('password'),
+        europeCitizenship: this.$t('europeCitizenship'),
+      },
+      errorMsg: '',
+      rules: {
+        required: (value) => !!value || 'required',
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || `Not a Valid E-mail`;
+        },
+        passwordLength: (value) => {
+          const isValid = !!value && value.length >= 6;
+          return isValid || 'at least 6 chars';
+        },
+        passwordNumric: (value) => {
+          const isValid = !!value && !/^\d+$/.test(value);
+          return isValid || 'Password must have digits and charcthers';
+        },
+      },
+    };
+  },
+  beforeRouteLeave(to, _, next) {
+    if (to.name.includes('register')) {
+      this.displayModal(to);
+    } else {
+      next();
+    }
+  },
+  methods: {
+    register() {
+      if (!this.isValid()) {
+        return;
+      }
+      this.isLoading = true;
+      this.errorMeesge = '';
+      this.$store
+        .dispatch('user/signUp', {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          europeCitizenship: this.europeCitizenship,
+        })
+        .then(() => {
+          this.$router.push('/');
+        })
+        .catch(() => {
+          this.errMsg = 'Server Error';
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    navigateToLoginPage() {
+      this.dialog = false;
+      this.$router.push('/login');
+    },
+    displayModal(route) {
+      this.dialog = true;
+      window.history.pushState({}, null, route.path);
+    },
+    hideModal() {
+      this.dialog = false;
+      window.history.pushState({}, null, this.$route.path);
+      if (window.history.length > 2) {
+        this.$router.push('/');
+      } else {
+        this.$router.go(-1);
+      }
+    },
+    isValid() {
+      const isFormValid = this.$refs.form.validate();
+      return isFormValid;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>
