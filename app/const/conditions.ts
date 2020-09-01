@@ -1,3 +1,5 @@
+import { Condition } from '../types/game';
+
 export const conditions: Condition[] = [
   // 3X3
   {
@@ -112,11 +114,3 @@ export const conditions: Condition[] = [
     ],
   },
 ];
-
-export interface Condition {
-  title: string;
-  id: number;
-  row: number;
-  column: number;
-  patterns: number[][];
-}

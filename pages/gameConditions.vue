@@ -28,6 +28,7 @@
             v-if="conditions"
             :conditions="conditions"
             :grid="album.board"
+            @start-game="startGame"
           />
         </v-stepper-content>
       </v-stepper-items>
@@ -35,32 +36,42 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex';
 import Prizes from '~/components/condititons/prizes.vue';
 import Conditions from '~/components/condititons/conditions.vue';
+import { Condition, Prize } from '~/app/types/game';
 
 export default {
   name: 'GameCondititons',
+  middleware: 'hasAlbum',
   components: {
     Prizes,
     Conditions,
   },
-  data() {
+  data(): { e1: number; conditions: Condition[] } {
     return {
       e1: 1,
-      conditions: null,
+      conditions: [],
     };
   },
+
   computed: {
     ...mapGetters({
       album: 'album/getAlbum',
     }),
   },
   methods: {
-    chosedAlbum([...conditions]) {
+    chosedAlbum([...conditions]: Condition[]) {
       this.conditions = conditions;
       this.e1 = 2;
+    },
+    startGame([...conditions]: Condition[], [...prizes]: Prize[]) {
+      this.$store
+        .dispatch('game/trySetGame', { conditions, prizes })
+        .then(() => {
+          this.$router.push(this.localePath({ name: '/' }));
+        });
     },
   },
 };

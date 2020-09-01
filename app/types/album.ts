@@ -2,6 +2,10 @@ export interface Album {
   name: string;
   id: number;
   pictures: Picture[];
+  board?: {
+    column: number;
+    row: number;
+  };
 }
 
 export interface Picture {

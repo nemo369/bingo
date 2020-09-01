@@ -9,6 +9,7 @@ export const state = (): AlbumState => ({
 
 export const getters = {
   getAlbum: (state: AlbumState) => state.album,
+  hesAlbum: (state: AlbumState) => !!state.album.board,
 };
 
 export const mutations = {

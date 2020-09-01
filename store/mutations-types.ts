@@ -7,3 +7,7 @@ export const LOGIN = {
 export const ALBUM = {
   SET_ALBUM: 'SET_ALBUM',
 };
+
+export const GAME = {
+  SET_GAME: 'SET_GAME',
+};

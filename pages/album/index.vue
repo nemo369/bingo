@@ -8,7 +8,7 @@
 export default {
   mounted() {
     if (this.$route.path === '/album') {
-      this.$router.push(this.localePath({ name: 'album/public_bingos' }));
+      this.$router.push(this.localePath({ name: 'album-public_bingos' }));
     }
   },
 };

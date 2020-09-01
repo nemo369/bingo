@@ -1,5 +1,5 @@
-export default function ({ store, redirect }: any) {
-  if (!store.getters['album/getAlbum']) {
-    redirect('/');
+export default function ({ store, redirect, app }: any) {
+  if (!store.getters['album/hesAlbum']) {
+    redirect(app.localePath('/album/public_bingos'));
   }
 }

@@ -11,7 +11,10 @@
         :key="condition.id"
         class="bg-white my-5 pa-4 d-flex align-end"
       >
-        <dumi-board :condition="condition" />
+        <dumi-board
+          :condition="condition"
+          :add-text="$t('Choose the prize for ')"
+        />
         <v-img
           :src="getRandomSrc()"
           height="200"
@@ -41,8 +44,8 @@
       class="mx-auto d-flex"
       x-large
       color="success"
-      :disabled="disabled"
       :loading="loading"
+      :disabled="disabled"
       @click="startGame"
     >
       {{ $t('Start Game') }}
@@ -70,8 +73,7 @@ export default {
   },
   data: () => ({
     files: [],
-    disabled: true,
-    loading: true,
+    loading: false,
     rules: [
       (value) =>
         !value ||
@@ -79,15 +81,19 @@ export default {
         'Image size should be less than 2 MB!',
     ],
   }),
+  computed: {
+    disabled() {
+      // The every() method tests whether all elements in the array pass the test implemented by the
+      return !this.conditions.every((condition) => condition.picture);
+    },
+  },
   methods: {
     getRandomSrc() {
       return 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=300&fit=max';
     },
     startGame() {
       this.loading = true;
-      console.log(
-        'SAVE GAME AND PRIZES TO SERVER AND NAVIGATE TO BAORDACT PAGE'
-      );
+      this.emit('start-game', this.conditions);
     },
   },
 };

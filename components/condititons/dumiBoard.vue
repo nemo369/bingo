@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b class="my-2 pa-2 d-block">{{ condition.title }}</b>
+    <span class="my-2 pa-2 d-block"
+      >{{ addText }}<b>{{ condition.title }}</b></span
+    >
     <div
       class="board d-grid board-animation"
       :class="
@@ -29,7 +31,7 @@ import { getSvg } from '~/app/utils/svgs';
 
 export default {
   name: 'DumiBoard',
-  props: ['condition'],
+  props: ['condition', 'addText'],
   data: () => ({
     noImg: getSvg('noImg'),
   }),
