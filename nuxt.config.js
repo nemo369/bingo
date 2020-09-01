@@ -58,6 +58,7 @@ export default {
     // Doc: https://github.com/nuxt/content
     '@nuxt/content',
     'nuxt-i18n',
+    // Doc: https://cloudinary.nuxtjs.org/setup
   ],
   /*
    ** Axios module configuration

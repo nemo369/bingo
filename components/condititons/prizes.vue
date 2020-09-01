@@ -33,6 +33,9 @@
             outlined
             dense
           ></v-file-input>
+          <v-btn color="primary" :disabled="!!file" @click="imageUpload"
+            >Upload</v-btn
+          >
           <v-text-field
             v-model="condition.name"
             :placeholder="$t('Enter Prize Name')"
@@ -72,7 +75,7 @@ export default {
     },
   },
   data: () => ({
-    files: [],
+    file: null,
     loading: false,
     rules: [
       (value) =>
@@ -95,6 +98,29 @@ export default {
       this.loading = true;
       this.emit('start-game', this.conditions);
     },
+ async imageUpload(file, tags) {
+      if (!file) {
+        throw new Error('Image was not provided')
+      }
+      if (!file.type.includes('image/')) {
+        throw new Error('Invalid file format')
+      }
+      const presetName = process.env.cloudinaryPreset
+      const formData = new FormData()
+      formData.append('upload_preset', presetName)
+      formData.append('file', file)
+      if (tags) {
+        formData.append('tags', tags)
+        if (tags.includes('avatar')) {
+          formData.append('folder', 'user_avatars')
+        } else if (tags.includes('preview')) {
+          formData.append('folder', 'article_preview')
+        }
+      }
+      const response = await this.$uploadApi.$post('upload', formData);
+      console.log(response);
+      return response;
+ }
   },
 };
 </script>
