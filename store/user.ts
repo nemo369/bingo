@@ -1,8 +1,8 @@
-import { ActionContext, ActionTree } from 'vuex';
+import { ActionTree } from 'vuex';
 import axios from 'axios';
 import { LOGIN } from './mutations-types';
 import { User, CredentialRequest, NewUser } from '~/app/types/user';
-import UserService from '~/services/users.services';
+import UserService from '~/services/users.service';
 import { Ls, userLocalStorage } from '~/app/utils/localStorage.ts';
 
 export const state = (): UserState => ({
@@ -15,12 +15,10 @@ export const getters = {
 };
 
 export const mutations = {
-  [LOGIN.CHECK_IN]: (state: UserState, user: User, remmberMe: boolean) => {
+  [LOGIN.CHECK_IN]: (state: UserState, user: User) => {
     state.user = user;
     axios.defaults.headers.common.Authorization = `Bearer ${user.token}`;
-    if (remmberMe) {
-      Ls.set(userLocalStorage, user);
-    }
+    Ls.set(userLocalStorage, user);
   },
   [LOGIN.CHECK_OUT]: (state: UserState) => {
     Ls.remove(userLocalStorage);
@@ -29,12 +27,9 @@ export const mutations = {
   },
 };
 export const actions: ActionTree<UserState, UserState> = {
-  logIn: (
-    { commit }: ActionContext<UserState, UserState>,
-    credentias: CredentialRequest
-  ) => {
+  logIn: ({ commit }: any, credentias: CredentialRequest) => {
     return UserService.getUser(credentias).then((user: User) => {
-      commit(LOGIN.CHECK_IN, user);
+      commit(LOGIN.CHECK_IN, user, true);
     });
   },
   logOut: ({ commit }: any) => {

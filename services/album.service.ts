@@ -10,12 +10,18 @@ export class AlbumService {
       `${this.baseUrl}/public`,
       this.headers
     );
-
     return data;
   }
 
   public async getBingos(): Promise<Album[]> {
     const { data } = await axios.get<Promise<Album[]>>(`${this.baseUrl}`);
+    return data;
+  }
+
+  public async getAlbum(albumId: number): Promise<Album> {
+    const { data } = await axios.get<Promise<Album>>(
+      `${this.baseUrl}/${albumId}"`
+    );
     return data;
   }
 

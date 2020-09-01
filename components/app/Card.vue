@@ -2,7 +2,7 @@
   <div class="card pa-2 rounded">
     <header class="card__header d-flex justify-space-around align-center">
       <div class="user-avatar">N.F</div>
-      <div class="card-number">N.45</div>
+      <div class="card-number">N.00</div>
     </header>
     <div
       class="card-grid"
@@ -17,7 +17,9 @@
         :key="index"
         class="pic rounded relative"
       >
-        <v-badge :content="index" overlap color="green"></v-badge>
+        <v-avatar overlap color="green" size="12">
+          <span class="white--text">{{ index }}</span>
+        </v-avatar>
         <v-img
           v-if="card.pictures[index]"
           class="pic"
@@ -71,10 +73,12 @@ export default {
   justify-content: center;
   border: 1px solid $black;
 }
-.v-badge {
+.v-avatar {
   position: absolute;
-  top: 4px;
-  left: 6px;
-  font-size: 10px;
+  top: 0px;
+  left: 0px;
+  * {
+    font-size: 12px;
+  }
 }
 </style>

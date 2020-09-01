@@ -1,16 +1,17 @@
 <template>
-  <div>
+  <div v-if="album">
     <h1 class="col-1-1">{{ $t('create bingo') }}</h1>
     <v-text-field
-      v-model="name"
+      :value="album.name"
       class="half mx-auto mb-8 v-text-field"
       :label="label"
       :rules="rules"
       hide-details="auto"
+      @input="updateName"
     ></v-text-field>
     <upload-images @filesSelected="setFiles"></upload-images>
     <images-grid
-      :images="images"
+      :images="album.pictures"
       class="mt-10"
       @delete="removeImage"
       @title="addTitle"
@@ -66,6 +67,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import Card from '~/components/app/Card.vue';
 import ImagesGrid from '~/components/create/ImagesGrid.vue';
 import UploadImages from '~/components/app/UploadImages.vue';
@@ -82,9 +84,7 @@ export default {
   },
   data() {
     return {
-      name: '',
       loading: false,
-      images: [],
       choosedCard: '3x3',
       label: this.$t('enter bingo name'),
       rules: [
@@ -101,33 +101,43 @@ export default {
     canSendForm() {
       if (
         !this.choosedCard ||
-        this.images.length < 25 ||
-        this.images.length > 99
+        this.album?.pictures.length < 25 ||
+        this.album?.pictures.length > 99
       ) {
         return true;
       }
       return false;
     },
+    ...mapGetters({
+      album: 'album/getAlbum',
+    }),
   },
   methods: {
-    setFiles(images) {
-      this.images = [...this.images, ...images];
+    setFiles(addedPictures) {
+      const pictures = [...this.album.pictures, ...addedPictures];
+      this.$store.dispatch('album/setAlbum', { pictures });
       // console.log(files);
     },
     addTitle(title, url) {
-      console.log(title, url);
-      this.images = this.images.map((img) => {
+      const pictures = this.album.pictures.map((img) => {
         if (img.localUrl === url) {
           return {
             ...img,
             title,
           };
         }
+        this.$store.dispatch('album/setAlbum', { pictures });
         return img;
       });
     },
     removeImage(url) {
-      this.images = this.images.filter((img) => img.localUrl !== url);
+      const pictures = this.album.pictures.filter(
+        (img) => img.localUrl !== url
+      );
+      this.$store.dispatch('album/setAlbum', { pictures });
+    },
+    updateName(name) {
+      this.$store.dispatch('album/setAlbum', { name });
     },
     createAlbum() {
       this.loading = true;
@@ -142,9 +152,8 @@ export default {
 
       albumService
         .createAlbum(album)
-        .then((album) => {
-          console.log(album, 'TODO: redirect o my bingos page');
-          this.$router.push(this.localePath({ name: 'album/my_bingos' }));
+        .then(() => {
+          this.$router.push(this.localePath({ name: 'album-my_bingos' }));
         })
         .catch((e) => console.log(e));
     },

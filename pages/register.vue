@@ -19,6 +19,7 @@
               name="login"
               :label="label.name"
               type="text"
+              required
               class="mb-4"
               :rules="[rules.required]"
             />
@@ -28,6 +29,7 @@
               :label="label.email"
               type="email"
               class="mb-4"
+              required
               :rules="[rules.required, rules.email]"
             />
             <v-text-field
@@ -36,6 +38,7 @@
               :label="label.password"
               type="password"
               class="mb-4"
+              required
               :rules="[
                 rules.required,
                 rules.passwordLength,
@@ -83,6 +86,8 @@
 
 <script>
 export default {
+  name: 'Register',
+  middleware: 'disconnect',
   data() {
     return {
       europeCitizenship: false,

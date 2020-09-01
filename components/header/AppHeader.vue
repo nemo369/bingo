@@ -7,6 +7,7 @@
     <v-spacer />
     <main-menu class="row-1-1 d-none d-sm-flex" />
     <lang-menu />
+    <user-profile />
 
     <!-- <AppHeaderUser /> -->
 
@@ -18,12 +19,14 @@
 <script lang="ts">
 import MainMenu from './MainMenu.vue';
 import LangMenu from './LangMenu.vue';
+import UserProfile from './UserProfile.vue';
 import { getSvg } from '~/app/utils/svgs';
 export default {
   name: 'AppHeader',
   components: {
     MainMenu,
     LangMenu,
+    UserProfile,
   },
   data: () => ({
     isDrawer: false,

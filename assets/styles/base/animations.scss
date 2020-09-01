@@ -1,0 +1,134 @@
+.board-animation {
+  position: relative;
+  .board__cell {
+    position: relative;
+    &::after {
+      //   content: '';
+      display: block;
+      width: 75%;
+      height: 75%;
+      background: #AA237D;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      opacity: 0;
+      animation-name: stamp;
+      // animation-delay:2.5s;
+      animation-iteration-count: infinite;
+      animation-duration: 10.5s;
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes stamp {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+    transform-origin: 50% 50%;
+    transform: rotate(-2deg) scale(1.1);
+    transition: all 0.3s cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  }
+  20% {
+    opacity: 0.8;
+    transform: rotate(-15deg) scale(1);
+  }
+}
+
+.full-house {
+  .board__cell {
+    &::after {
+      content: '';
+    }
+  }
+}
+@for $i from 1 to 25 {
+  .full-house .board__cell:nth-child(#{$i})::after {
+    animation-delay: $i * 0.5s;
+  }
+}
+
+.any-1-line {
+  .board__cell {
+    &:nth-child(1)::after,
+    &:nth-child(2)::after,
+    &:nth-child(3)::after {
+      content: '';
+    }
+  }
+  .row-4.board__cell {
+    &:nth-child(4)::after {
+      content: '';
+    }
+  }
+  .row-5.board__cell {
+    &:nth-child(4)::after,
+    &:nth-child(5)::after {
+      content: '';
+    }
+  }
+}
+
+.any-2-line {
+  .board__cell {
+    &:nth-child(1)::after,
+    &:nth-child(2)::after,
+    &:nth-child(3)::after,
+    &:nth-child(4)::after,
+    &:nth-child(5)::after,
+    &:nth-child(6)::after {
+      content: '';
+    }
+  }
+  .row-4.board__cell {
+    &:nth-child(7)::after,
+    &:nth-child(8)::after {
+      content: '';
+    }
+  }
+  .row-5.board__cell {
+    &:nth-child(7)::after,
+    &:nth-child(8)::after,
+    &:nth-child(9)::after,
+    &:nth-child(10)::after {
+      content: '';
+    }
+  }
+}
+
+.x-pattern {
+  .board__cell {
+    &:nth-child(1)::after,
+    &:nth-child(4)::after,
+    &:nth-child(6)::after,
+    &:nth-child(7)::after,
+    &:nth-child(10)::after,
+    &:nth-child(11)::after,
+    &:nth-child(13)::after,
+    &:nth-child(16)::after {
+      content: '';
+      animation-delay: 1s;
+    }
+  }
+}
+.smiley-pattern {
+  .board__cell {
+    &:nth-child(7)::after,
+    &:nth-child(9)::after,
+    &:nth-child(16)::after,
+    &:nth-child(20)::after,
+    &:nth-child(22)::after,
+    &:nth-child(23)::after,
+    &:nth-child(24)::after {
+      content: '';
+      animation-delay: 1.5s;
+
+    }
+  }
+}

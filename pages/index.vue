@@ -4,7 +4,7 @@
     <h3>{{ $t('To Join a game...') }}</h3>
 
     <v-btn>
-      <nuxt-link to="album">
+      <nuxt-link to="album/public_bingos">
         {{ $t('select or build an album') }}
       </nuxt-link>
     </v-btn>

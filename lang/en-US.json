@@ -3,8 +3,9 @@
     "drop your pictures here, or browse": "Drop your pictures here, or Browse",
     "select or build an album": "select or build an album",
     "public board i played": "public board i played",
-    "enter bingo name": "enter bingo name",
+    "winning conditions": "winning conditions",
     "choose card type": "choose card type",
+    "enter bingo name": "enter bingo name",
     "welcome": "Welcome To Matrix Bingo",
     "create_a_bingo": "Create a Bingo",
     "public bingos": "Public bingos",
@@ -17,5 +18,10 @@
     "create": "create",
     "public": "public",
     "total": "total",
+    "Choose the amount of": "Choose the amount of",
+    "prizes": "prizes",
+    "Start Game": "Start Game",
+    "play now": "play now",
+    "in a game and winning conditions": "in a game and winning conditions",
     "save": "save"
 }

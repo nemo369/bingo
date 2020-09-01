@@ -1,0 +1,96 @@
+<template>
+  <div>
+    <h3 class="my-2 h3 tac">
+      {{ conditions.length }}
+      <b>Winnig Conditon{{ conditions.length > 1 ? 's' : '' }}</b>
+    </h3>
+
+    <section class="wrapper mx-auto">
+      <v-card
+        v-for="(condition, index) in conditions"
+        :key="condition.id"
+        class="bg-white my-5 pa-4 d-flex align-end"
+      >
+        <dumi-board :condition="condition" />
+        <v-img
+          :src="getRandomSrc()"
+          height="200"
+          max-width="200"
+          aspect-ratio="1"
+          class="mx-4"
+        ></v-img>
+        <div class="d-flex flex-column mx-4">
+          <v-file-input
+            v-model="files[index]"
+            :rules="rules"
+            accept=".jpg, .jpeg, .png"
+            label="Prize image"
+            placeholder="Upload Your Image"
+            prepend-icon="mdi-camera"
+            outlined
+            dense
+          ></v-file-input>
+          <v-text-field
+            v-model="condition.name"
+            :placeholder="$t('Enter Prize Name')"
+          ></v-text-field>
+        </div>
+      </v-card>
+    </section>
+    <v-btn
+      class="mx-auto d-flex"
+      x-large
+      color="success"
+      :disabled="disabled"
+      :loading="loading"
+      @click="startGame"
+    >
+      {{ $t('Start Game') }}
+    </v-btn>
+  </div>
+</template>
+
+<script>
+import DumiBoard from './dumiBoard';
+
+export default {
+  name: 'Conditions',
+  components: {
+    DumiBoard,
+  },
+  props: {
+    conditions: {
+      type: Array,
+      required: true,
+    },
+    grid: {
+      type: Object,
+      required: true,
+    },
+  },
+  data: () => ({
+    files: [],
+    disabled: true,
+    loading: true,
+    rules: [
+      (value) =>
+        !value ||
+        value.size < 2000000 ||
+        'Image size should be less than 2 MB!',
+    ],
+  }),
+  methods: {
+    getRandomSrc() {
+      return 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=300&fit=max';
+    },
+    startGame() {
+      this.loading = true;
+      console.log(
+        'SAVE GAME AND PRIZES TO SERVER AND NAVIGATE TO BAORDACT PAGE'
+      );
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss"></style>

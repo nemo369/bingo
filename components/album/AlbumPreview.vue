@@ -62,15 +62,20 @@ export default {
     noImg: getSvg('noImg'),
   }),
   methods: {
-    setGame: () => {
+    setGame() {
       this.loading = true;
-      this.$store.dispatch('album/setAlbum', this.album);
-
-      console.log('TODO...redirect and set store');
+      this.$store.dispatch('album/setAlbum', this.album).then(() => {
+        this.$router.push(this.localePath({ name: 'GameConditions' }));
+      });
     },
-    editAlbum: () => {
+    editAlbum() {
       this.loading = true;
-      console.log('TODO...redirect and set store');
+      this.$store
+        .dispatch('album/getBingo', this.album.id)
+        .then(() => {
+          this.$router.push(this.localePath({ name: 'album-create_a_bingo' }));
+        })
+        .catch(() => (this.loading = false));
     },
   },
 };

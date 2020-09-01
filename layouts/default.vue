@@ -13,6 +13,8 @@
 <script>
 import AppHeader from '~/components/header/AppHeader.vue';
 import AppFooter from '~/components/footer/AppFooter.vue';
+import { Ls, userLocalStorage } from '~/app/utils/localStorage';
+import { LOGIN } from '~/store/mutations-types.ts';
 export default {
   name: `default`,
   components: {
@@ -21,6 +23,13 @@ export default {
   },
   data() {
     return {};
+  },
+  mounted() {
+    // client side only
+    const user = Ls.get(userLocalStorage);
+    if (user) {
+      this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
+    }
   },
 };
 </script>
