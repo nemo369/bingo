@@ -7,7 +7,7 @@
  */
 
 export default function ({ $axios }, inject) {
-  const cloudName = 'artem-demo';
+  const cloudName = 'bingomatrix';
 
   const uploadApi = $axios.create({
     headers: {

@@ -2,6 +2,7 @@
   <section>
     <h1 class="tac">{{ $t('winning conditions') }}</h1>
     <h2 class="tac">{{ $t('bingo') }} NO.{{ album.id }} - {{ album.name }}</h2>
+
     <v-stepper v-model="e1" class="bg-color pa-0 mb-16">
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" step="1" editable>{{
@@ -41,7 +42,6 @@ import { mapGetters } from 'vuex';
 import Prizes from '~/components/condititons/prizes.vue';
 import Conditions from '~/components/condititons/conditions.vue';
 import { Condition, Prize } from '~/app/types/game';
-
 export default {
   name: 'GameCondititons',
   middleware: 'hasAlbum',

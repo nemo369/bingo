@@ -7,7 +7,7 @@
 
     <section class="wrapper mx-auto">
       <v-card
-        v-for="(condition, index) in conditions"
+        v-for="condition in conditions"
         :key="condition.id"
         class="bg-white my-5 pa-4 d-flex align-end"
       >
@@ -23,19 +23,7 @@
           class="mx-4"
         ></v-img>
         <div class="d-flex flex-column mx-4">
-          <v-file-input
-            v-model="files[index]"
-            :rules="rules"
-            accept=".jpg, .jpeg, .png"
-            label="Prize image"
-            placeholder="Upload Your Image"
-            prepend-icon="mdi-camera"
-            outlined
-            dense
-          ></v-file-input>
-          <v-btn color="primary" :disabled="!!file" @click="imageUpload"
-            >Upload</v-btn
-          >
+          <lv-image-upload :upload="imgUploaded" />
           <v-text-field
             v-model="condition.name"
             :placeholder="$t('Enter Prize Name')"
@@ -58,11 +46,13 @@
 
 <script>
 import DumiBoard from './dumiBoard';
+import LvImageUpload from '~/components/ImageUpload.vue';
 
 export default {
   name: 'Conditions',
   components: {
     DumiBoard,
+    LvImageUpload,
   },
   props: {
     conditions: {
@@ -98,29 +88,9 @@ export default {
       this.loading = true;
       this.emit('start-game', this.conditions);
     },
- async imageUpload(file, tags) {
-      if (!file) {
-        throw new Error('Image was not provided')
-      }
-      if (!file.type.includes('image/')) {
-        throw new Error('Invalid file format')
-      }
-      const presetName = process.env.cloudinaryPreset
-      const formData = new FormData()
-      formData.append('upload_preset', presetName)
-      formData.append('file', file)
-      if (tags) {
-        formData.append('tags', tags)
-        if (tags.includes('avatar')) {
-          formData.append('folder', 'user_avatars')
-        } else if (tags.includes('preview')) {
-          formData.append('folder', 'article_preview')
-        }
-      }
-      const response = await this.$uploadApi.$post('upload', formData);
-      console.log(response);
-      return response;
- }
+    imgUploaded(img) {
+      console.log(img);
+    },
   },
 };
 </script>

@@ -37,8 +37,16 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['~plugins/filters.ts'],
-
+  plugins: [
+    '~plugins/filters.ts',
+    '~plugins/upload-api.ts',
+    '~plugins/cloudinary.ts',
+  ],
+  env: {
+    title: 'LivueJournal',
+    cloudinaryName: 'process.env.CLOUDINARY_NAME',
+    cloudinaryPreset: 'process.env.CLOUDINARY_PRESET',
+  },
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

@@ -1,11 +1,10 @@
 import { ActionTree } from 'vuex';
 import { GAME } from './mutations-types';
-import { Game, Prize } from '~/app/types/game';
-import { Condition } from '~/app/const/conditions';
+import { Game, Prize, Condition } from '~/app/types/game';
 import { gameService } from '~/services/game.service';
 
 export const state = (): GameState => ({
-  game: null,
+  game: undefined,
 });
 
 export const getters = {
@@ -27,5 +26,5 @@ export const actions: ActionTree<GameState, GameState> = {
 };
 
 export interface GameState {
-  game: Game;
+  game?: Game;
 }

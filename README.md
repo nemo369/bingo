@@ -17,4 +17,13 @@ $ npm run start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+### Config
+
+Create .env file in the root directory. 
+Required properties are:
+- BASE_URL (example, `BASE_URL=http://localhost:8000/api`)
+
+### API
+
+
