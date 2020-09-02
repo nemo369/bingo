@@ -4,8 +4,8 @@
     <div class="images-grid mx-auto my-10">
       <image-box
         v-for="(img, i) in images"
-        :key="i"
-        :index="(i+1)"
+        :key="img.asset_id"
+        :index="i + 1"
         :img="img"
         @update:title="edit"
         @delete="onDelete"
@@ -24,11 +24,11 @@ export default {
     },
   },
   methods: {
-    edit({ name, img }) {
-      this.$emit('title', name, img.localUrl);
+    edit({ title, assetId }) {
+      this.$emit('title', { title, assetId });
     },
-    onDelete(url) {
-      this.$emit('delete', url);
+    onDelete(assetId) {
+      this.$emit('delete', assetId);
     },
   },
 };

@@ -8,7 +8,7 @@
         <span>Supports {{ supports.join(',') }} </span>
         <span class="mb-auto">{{ maxFileSize / 1000 }}MB </span>
       </div>
-      <input type="file" :accept="supports" class="d-none" />
+      <input type="file" accept="image/*" class="d-none" multiple />
       <v-alert
         v-for="(file, i) in errorFiles"
         :key="i"
@@ -18,7 +18,7 @@
         class="error pa-2 mb-4 mx-auto"
       >
         <span>{{ file.name }}</span> -
-        <span v-for="(err, i) in file.errors" :key="i">
+        <span v-for="(err, i) in file.errors" :key="i" class="white--text">
           <i v-if="i">,</i>
           {{ err.msg }}
         </span>
@@ -39,6 +39,7 @@ export default {
     maxPictures: 99,
     dragover: false,
     errorFiles: [],
+    presetName: process.env.cloudinaryPreset,
   }),
   mounted() {
     const dropzone = this.$el;
@@ -107,11 +108,19 @@ export default {
         this.errorFiles = [];
       }, 6000);
       if (validFiles) {
-        this.$emit(
-          'filesSelected',
-          validFiles.filter((file) => file.isValid)
-        );
+        this.uploadToCl(files);
       }
+    },
+    async uploadToCl(files) {
+      const uploaders = await Array.from(files).map((file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', this.presetName);
+        formData.append('tags', ['album', 'user_album']); // Optional - add tag for image admin in Cloudinary
+        return this.$uploadApi.$post('upload', formData);
+      });
+      const images = await Promise.all(uploaders);
+      this.$emit('filesSelected', images);
     },
     doValidation(files) {
       if (!files) {

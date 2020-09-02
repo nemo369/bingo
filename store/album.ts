@@ -4,7 +4,7 @@ import { Album } from '~/app/types/album';
 import { albumService } from '~/services/album.service';
 
 export const state = (): AlbumState => ({
-  album: { name: 'from store', id: -1, pictures: [] },
+  album: newAlbum(),
 });
 
 export const getters = {
@@ -26,6 +26,8 @@ export const actions: ActionTree<AlbumState, AlbumState> = {
     });
   },
 };
+
+export const newAlbum = () => ({ name: null, id: -1, pictures: [] });
 
 export interface AlbumState {
   album: Album;

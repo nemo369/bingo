@@ -19,45 +19,49 @@
     <div class="choose mt-10">
       <h2 class="tac">{{ $t('choose card type') }}</h2>
       <form class="d-flex cards justify-space-around mt-10">
-        <input
-          id="3x3"
-          v-model="choosedCard"
-          type="radio"
-          name="card"
-          :disable="isDisabled"
-        />
-        <label for="3x3" class="label">
+        <label class="label">
+          <input
+            v-model="choosedCard"
+            type="radio"
+            name="card"
+            :disable="isDisabled"
+            value="3x3"
+          />
           <small class="tac small">Recommended: 22 - 36 pictures</small>
           <Card :card="{ pictures: [], card: { row: 3, column: 3 } }" />
         </label>
-        <input
-          id="4x4"
-          v-model="choosedCard"
-          type="radio"
-          name="card"
-          :disable="isDisabled"
-        />
-        <label for="4x4" class="label">
+        <label class="label">
+          <input
+            v-model="choosedCard"
+            type="radio"
+            name="card"
+            :disable="isDisabled"
+            value="4x4"
+          />
           <small class="tac small">Recommended: 22 - 36 pictures</small>
           <Card :card="{ pictures: [], card: { row: 4, column: 4 } }" />
         </label>
-        <input
-          id="5x5"
-          v-model="choosedCard"
-          type="radio"
-          name="card"
-          :disable="isDisabled"
-        />
-        <label for="5x5" class="label">
+        <label class="label">
+          <input
+            v-model="choosedCard"
+            type="radio"
+            name="card"
+            :disable="isDisabled"
+            value="5x5"
+          />
           <small class="tac small">Recommended: 22 - 36 pictures</small>
           <Card :card="{ pictures: [], card: { row: 5, column: 5 } }" />
         </label>
       </form>
     </div>
-    <div class="d-flex justify-end">
+    <div class="d-flex justify-end mt-4">
       <v-btn
         color="primary"
-        :disabled="canSendForm"
+        :disabled="
+          album.pictures.length < 25 ||
+          album.pictures.length > 99 ||
+          !choosedCard
+        "
         :loading="loading"
         @click="createAlbum"
         >{{ $t('save') }}</v-btn
@@ -72,6 +76,7 @@ import Card from '~/components/app/Card.vue';
 import ImagesGrid from '~/components/create/ImagesGrid.vue';
 import UploadImages from '~/components/app/UploadImages.vue';
 import { albumService } from '~/services/album.service.ts';
+import { newAlbum } from '~/store/album';
 
 export default {
   name: 'CreateAlbum',
@@ -98,16 +103,7 @@ export default {
       return false;
       // return !this.images.length < 36;
     },
-    canSendForm() {
-      if (
-        !this.choosedCard ||
-        this.album?.pictures.length < 25 ||
-        this.album?.pictures.length > 99
-      ) {
-        return true;
-      }
-      return false;
-    },
+
     ...mapGetters({
       album: 'album/getAlbum',
     }),
@@ -118,21 +114,32 @@ export default {
       this.$store.dispatch('album/setAlbum', { pictures });
       // console.log(files);
     },
-    addTitle(title, url) {
+    canSendForm() {
+      if (
+        !this.choosedCard ||
+        this.album?.pictures?.length < 25 ||
+        this.album?.pictures?.length > 99
+      ) {
+        return true;
+      }
+      return false;
+    },
+    addTitle({ title, assetId }) {
+      console.log(title, assetId);
       const pictures = this.album.pictures.map((img) => {
-        if (img.localUrl === url) {
+        if (img.asset_id === assetId) {
           return {
             ...img,
             title,
           };
         }
-        this.$store.dispatch('album/setAlbum', { pictures });
         return img;
       });
+      this.$store.dispatch('album/setAlbum', { pictures });
     },
-    removeImage(url) {
+    removeImage(assetId) {
       const pictures = this.album.pictures.filter(
-        (img) => img.localUrl !== url
+        (img) => img.asset_id !== assetId
       );
       this.$store.dispatch('album/setAlbum', { pictures });
     },
@@ -142,11 +149,10 @@ export default {
     createAlbum() {
       this.loading = true;
       const album = {
-        images: this.images,
-        name: this.name,
+        ...this.album,
         card: {
-          row: +this.choosedCard[0],
-          column: +this.choosedCard[2],
+          row: parseInt(this.choosedCard[0], 10),
+          column: parseInt(this.choosedCard[2], 10),
         },
       };
 
@@ -171,15 +177,30 @@ export default {
     flex: 0 0 300px;
     padding: 10px;
     box-sizing: content-box;
+    position: relative;
     cursor: pointer;
   }
 }
 input[type='radio'] {
-  display: none;
 }
 
-input[type='radio']:checked + .label {
-  background-color: rgba(30, 143, 255, 0.253);
+.label :checked {
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: rgba(30, 143, 255, 0.253);
+    right: 0;
+    margin: auto;
+    z-index: 0;
+    border-radius: 4px;
+  }
+}
+.card {
+  z-index: 1;
+  position: relative;
 }
 .small {
   display: block;

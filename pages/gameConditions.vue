@@ -95,13 +95,10 @@ export default {
       this.prizes = prizes;
     },
     getRandomPrizePic(): Picture {
-      const imageId = 'sample.jpg';
-      return this.$cloudinary.url(imageId, {
-        width: 280,
-        height: 280,
-        crop: 'fill',
-        fetchFormat: 'auto',
-      });
+      const images = this.$cloudinary.url('prize', { type: 'list' });
+      console.log(images);
+
+      return images[0];
     },
   },
 };

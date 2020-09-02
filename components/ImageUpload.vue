@@ -32,9 +32,8 @@ export default {
       if (!file.type.includes('image/')) {
         throw new Error('Invalid file format');
       }
-      const presetName = process.env.cloudinaryPreset;
       const formData = new FormData();
-      formData.append('upload_preset', presetName);
+      formData.append('upload_preset', this.presetName);
       formData.append('file', file);
       formData.append('tags', ['prize', 'user_prizes']); // Optional - add tag for image admin in Cloudinary
 
@@ -47,7 +46,7 @@ export default {
         return;
       }
       try {
-        const img = await this.imageUpload(file, this.imageTag);
+        const img = await this.imageUpload(file);
         this.$emit('upload', { img, conditionId: this.conditionId });
       } catch (e) {
         console.log(e);

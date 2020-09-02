@@ -1,19 +1,12 @@
 <template>
   <div class="box pa-2 relative" elevation="2">
     <v-badge color="green" :content="index" />
-    <v-img
-      :src="img.localUrl"
-      :aspect-ratio="1"
-      width="150"
-      on-load
-      class="ma-auto"
-      @load="onLoad"
-    ></v-img>
+    <v-img :src="img.url" :aspect-ratio="1" width="150" class="ma-auto"></v-img>
     <v-text-field
-      v-model="name"
+      v-model="title"
       label="Name"
       maxlength="12"
-      @change="$emit('update:title', { name, img })"
+      @input="$emit('update:title', { title, assetId: img.asset_id })"
     ></v-text-field>
     <v-btn
       class="close"
@@ -21,7 +14,7 @@
       dark
       small
       color="pink"
-      @click="$emit('delete', img.localUrl)"
+      @click="$emit('delete', img.asset_id)"
     >
       <v-icon dark>mdi-close</v-icon>
     </v-btn>
@@ -42,13 +35,8 @@ export default {
     },
   },
   data: () => ({
-    name,
+    title: '',
   }),
-  methods: {
-    onLoad() {
-      URL.revokeObjectURL(this.imglocalUrl);
-    },
-  },
 };
 </script>
 
