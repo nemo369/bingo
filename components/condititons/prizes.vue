@@ -7,7 +7,7 @@
 
     <section class="wrapper mx-auto">
       <v-card
-        v-for="condition in conditions"
+        v-for="(condition, i) in conditions"
         :key="condition.id"
         class="bg-white my-5 pa-4 d-flex align-end"
       >
@@ -16,14 +16,14 @@
           :add-text="$t('Choose the prize for ')"
         />
         <v-img
-          :src="getRandomSrc()"
+          :src="prizes[i].picture.url"
           height="200"
           max-width="200"
           aspect-ratio="1"
           class="mx-4"
         ></v-img>
         <div class="d-flex flex-column mx-4">
-          <lv-image-upload :upload="imgUploaded" />
+          <lv-image-upload :condition-id="condition.id" @upload="imgUploaded" />
           <v-text-field
             v-model="condition.name"
             :placeholder="$t('Enter Prize Name')"
@@ -49,13 +49,17 @@ import DumiBoard from './dumiBoard';
 import LvImageUpload from '~/components/ImageUpload.vue';
 
 export default {
-  name: 'Conditions',
+  name: 'Prizes',
   components: {
     DumiBoard,
     LvImageUpload,
   },
   props: {
     conditions: {
+      type: Array,
+      required: true,
+    },
+    prizes: {
       type: Array,
       required: true,
     },
@@ -77,19 +81,27 @@ export default {
   computed: {
     disabled() {
       // The every() method tests whether all elements in the array pass the test implemented by the
-      return !this.conditions.every((condition) => condition.picture);
+      return this.prizes.every((prize) => prize.picture);
     },
   },
   methods: {
-    getRandomSrc() {
-      return 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=300&fit=max';
-    },
     startGame() {
       this.loading = true;
       this.emit('start-game', this.conditions);
     },
-    imgUploaded(img) {
-      console.log(img);
+    imgUploaded({ img, conditionId }) {
+      const prizes = this.prizes.map((prize) => {
+        if (prize.conditionId === conditionId) {
+          return {
+            ...prize,
+            picture: {
+              ...img,
+            },
+          };
+        }
+        return prize;
+      });
+      this.$emit('update-prizes', prizes);
     },
   },
 };

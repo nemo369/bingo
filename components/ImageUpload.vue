@@ -6,6 +6,7 @@
       accept="image/*"
       class="upload"
       :disabled="isLoading"
+      :loading="isLoading"
       @change="onImageChange"
     >
     </v-file-input>
@@ -15,15 +16,16 @@
 <script>
 export default {
   name: 'LvImageUpload',
-  props: {},
+  props: ['conditionId'],
   data() {
     return {
       imageFile: null,
       isLoading: false,
+      presetName: process.env.cloudinaryPreset,
     };
   },
   methods: {
-    async imageUpload(file, tags) {
+    async imageUpload(file) {
       if (!file) {
         throw new Error('Image was not provided');
       }
@@ -34,23 +36,19 @@ export default {
       const formData = new FormData();
       formData.append('upload_preset', presetName);
       formData.append('file', file);
-      if (tags) {
-        formData.append('tags', tags);
-        if (tags.includes('avatar')) {
-          formData.append('folder', 'user_avatars');
-        } else if (tags.includes('preview')) {
-          formData.append('folder', 'article_preview');
-        }
-      }
+      formData.append('tags', ['prize', 'user_prizes']); // Optional - add tag for image admin in Cloudinary
+
       const response = await this.$uploadApi.$post('upload', formData);
       return response;
     },
     async onImageChange(file) {
-      console.log(file);
       this.isLoading = true;
+      if (!file) {
+        return;
+      }
       try {
-        const response = await this.imageUpload(file, this.imageTag);
-        this.$emit('change', response);
+        const img = await this.imageUpload(file, this.imageTag);
+        this.$emit('upload', { img, conditionId: this.conditionId });
       } catch (e) {
         console.log(e);
       } finally {

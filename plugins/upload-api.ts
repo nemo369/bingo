@@ -6,8 +6,9 @@
  * check ~components/ImageUpload.vue file
  */
 
-export default function ({ $axios }, inject) {
-  const cloudName = 'bingomatrix';
+export default function ({ $axios }: any, inject: any) {
+  const cloudName = process.env.cloudinaryName;
+  // const cloudName = 'bingomatrix';
 
   const uploadApi = $axios.create({
     headers: {

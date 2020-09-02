@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface Album {
   name: string;
   id: number;
@@ -10,6 +11,25 @@ export interface Album {
 
 export interface Picture {
   url: string;
+  asset_id: string;
+  public_id: string;
+  version: number;
+  version_id: string;
+  signature: string;
+  width: number;
+  height: number;
+  format: string;
+  resource_type: string;
+  created_at: Date;
+  tags: any[];
+  bytes: number;
+  type: string;
+  etag: string;
+  placeholder: boolean;
+  secure_url: string;
+  access_mode: string;
+  existing: boolean;
+  original_filename: string;
 }
 
 export interface NewAlbum {

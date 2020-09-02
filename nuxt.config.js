@@ -44,8 +44,8 @@ export default {
   ],
   env: {
     title: 'LivueJournal',
-    cloudinaryName: 'process.env.CLOUDINARY_NAME',
-    cloudinaryPreset: 'process.env.CLOUDINARY_PRESET',
+    cloudinaryName: process.env.CLOUDINARY_CLOUD_NAME,
+    cloudinaryPreset: process.env.CLOUDINARY_PRESET,
   },
   /*
    ** Auto import components

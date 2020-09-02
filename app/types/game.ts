@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Picture } from './album';
 
 export interface Game {
   name: string;
@@ -15,9 +16,7 @@ export interface GameToSend {
 
 export interface Prize {
   name?: string;
-  picture: {
-    url: string;
-  };
+  picture: Picture;
   conditionId: number;
 }
 
