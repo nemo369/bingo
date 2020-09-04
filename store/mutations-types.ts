@@ -11,4 +11,5 @@ export const ALBUM = {
 export const GAME = {
   SET_GAME: 'SET_GAME',
   RESET_GAME: 'RESET_GAME',
+  DRAW_A_BALL: 'DRAW_A_BALL',
 };

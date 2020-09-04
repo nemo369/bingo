@@ -1,5 +1,5 @@
 <template>
-  <div class="prizes">
+  <div class="prizes game-prizes">
     <div v-if="currentPrize && currentPrize.picture" class="prize">
       <transition name="fade">
         <div>
