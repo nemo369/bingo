@@ -48,7 +48,7 @@
     }
   }
 }
-@for $i from 1 to 25 {
+@for $i from 1 to 26 {
   .full-house .board__cell:nth-child(#{$i})::after {
     animation-delay: $i * 0.5s;
   }

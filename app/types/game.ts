@@ -1,11 +1,12 @@
 import { User } from './user';
-import { Picture } from './album';
+import { Picture, Album } from './album';
 
 export interface Game {
   name: string;
   pin: number;
   conditions: Condition[];
   host: User;
+  album: Album;
   bingo: any;
 }
 

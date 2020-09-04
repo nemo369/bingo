@@ -1,5 +1,5 @@
 <template>
-  <div class="full relative">
+  <div class="full relative backgorund">
     <img
       src="~/assets/pngs/background.png"
       class="full absolute board__bg-img"
@@ -49,3 +49,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+img {
+  max-width: unset;
+}
+</style>

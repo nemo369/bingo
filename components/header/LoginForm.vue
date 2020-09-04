@@ -9,7 +9,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <hr class="ma-auto" style="max-width: 90%;" />
+        <hr class="ma-auto" style="max-width: 90%" />
         <v-card-text>
           <v-text-field
             v-model="email"

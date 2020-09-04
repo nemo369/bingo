@@ -11,12 +11,14 @@ $baseFontSize: 16;
   --prim-color: #25408f;
   --sec-color: #c4c4c4;
   --op-color: #f33a3a;
+  --brown: #0e0200;
 }
 
 $prim-color: var(--prim-color);
 $sec-color: var(--sec-color);
 $op-color: var(--op-color);
 
+$brown: var(--brown);
 $black: #1d1d1d;
 $white: #f2f2f2;
 
@@ -29,4 +31,11 @@ body {
 }
 @function rem($pixels) {
   @return $pixels / $baseFontSize + rem;
+}
+
+@function randomNum($min, $max) {
+  $rand: random();
+  $randomNum: $min + floor($rand * (($max - $min) + 1));
+
+  @return $randomNum;
 }

@@ -27,7 +27,7 @@ export const actions: ActionTree<AlbumState, AlbumState> = {
   },
 };
 
-export const newAlbum = () => ({ name: null, id: -1, pictures: [] });
+export const newAlbum = (): Album => ({ name: '', id: -1, pictures: [] });
 
 export interface AlbumState {
   album: Album;

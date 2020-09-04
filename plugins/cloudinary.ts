@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import cloudinary from 'cloudinary-core';
 
 const $cloudinary = new cloudinary.Cloudinary({
@@ -7,6 +6,6 @@ const $cloudinary = new cloudinary.Cloudinary({
 });
 // Vue.prototype.$cloudinary = $cloudinary
 
-export default ({ app }: any, inject: any) => {
+export default (_: any, inject: any) => {
   inject('cloudinary', $cloudinary);
 };
