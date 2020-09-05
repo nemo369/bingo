@@ -12,4 +12,5 @@ export const GAME = {
   SET_GAME: 'SET_GAME',
   RESET_GAME: 'RESET_GAME',
   DRAW_A_BALL: 'DRAW_A_BALL',
+  SET_PIC_NUM: 'SET_PIC_NUM',
 };

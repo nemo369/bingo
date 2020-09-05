@@ -23,7 +23,7 @@
 .women,
 .currentPpl {
   z-index: 1;
-  .acitve {
+  &.acitve {
     transition: opacity 0.4s;
   }
 }

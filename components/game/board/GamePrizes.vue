@@ -1,5 +1,5 @@
 <template>
-  <div class="prizes game-prizes">
+  <div class="prizes game-prizes d-flex flex-column">
     <div v-if="currentPrize && currentPrize.picture" class="prize">
       <transition name="fade">
         <div>
@@ -15,6 +15,12 @@
         </div>
       </transition>
     </div>
+    <v-btn
+      class="mt-auto mx-auto mb-1 whtie--text"
+      color="red"
+      @click="checkCard"
+      >BINGO/LINE</v-btn
+    >
   </div>
 </template>
 
@@ -63,8 +69,15 @@ export default {
         );
       }, 7000);
     },
+    checkCard() {
+      this.$emit('check-bingo', { num: 2, bol: true });
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.fade-move {
+  transition: transform 1s;
+}
+</style>

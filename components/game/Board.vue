@@ -8,11 +8,14 @@
 
     <game-main />
     <game-matrix />
-    <game-prizes />
+    <game-prizes @check-bingo="toglleCheckBingo" />
     <game-counter
       :curent-num="game.album.pictures.length - ballsInMachine.length"
       :total="game.album.pictures.length"
     />
+    <v-dialog v-model="checkBingoDiglaog" persistent width="450px">
+      <check-card @check-bingo="toglleCheckBingo" />
+    </v-dialog>
   </div>
 </template>
 
@@ -22,12 +25,17 @@ import GameMain from './board/Main.vue';
 import GameMatrix from './board/Matrix.vue';
 import GameCounter from './board/Counter.vue';
 import GamePrizes from './board/GamePrizes.vue';
+import CheckCard from './board/CheckCard.vue';
 export default {
   components: {
     GameMatrix,
     GameCounter,
     GameMain,
     GamePrizes,
+    CheckCard,
+  },
+  data() {
+    return { checkBingoDiglaog: false };
   },
   computed: {
     ...mapGetters({
@@ -38,6 +46,13 @@ export default {
   methods: {
     getImgUrl(file: string) {
       return require(`~/assets/pngs/${file}.png`);
+    },
+    toglleCheckBingo({ num, bol }: { num: number; bol: boolean }) {
+      // if (this.ballsInMachine.length < 3) {
+      //   return;
+      // }
+      this.checkBingoDiglaog = bol;
+      this.$store.dispatch('game/setPicNum', { women: num, ppl: num });
     },
   },
 };

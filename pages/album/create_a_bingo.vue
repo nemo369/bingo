@@ -71,12 +71,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import Card from '~/components/app/Card.vue';
 import ImagesGrid from '~/components/create/ImagesGrid.vue';
 import UploadImages from '~/components/app/UploadImages.vue';
 import { albumService } from '~/services/album.service.ts';
-import { newAlbum } from '~/store/album';
 
 export default {
   name: 'CreateAlbum',

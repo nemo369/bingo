@@ -1,6 +1,6 @@
 <template>
   <aside v-if="pictures" class="game-matrix ovh relative">
-    <div id="flip-list-demo" class="full">
+    <div class="full">
       <transition-group
         name="flip-list"
         tag="ul"
@@ -26,12 +26,9 @@
       </transition-group>
     </div>
 
-    <v-btn
-      color="primary"
-      class="next-btn"
-      @click="$store.dispatch('game/drawBall')"
-      >{{ $t('Next Picture') }}</v-btn
-    >
+    <v-btn color="primary" class="next-btn" @click="nextBall">{{
+      $t('Next Picture')
+    }}</v-btn>
   </aside>
 </template>
 
@@ -68,7 +65,13 @@ export default {
   mounted() {},
 
   methods: {
-    setGallery() {},
+    nextBall() {
+      this.$store.dispatch('game/setPicNum', { women: 2, ppl: 2 });
+      setTimeout(() => {
+        this.$store.dispatch('game/setPicNum', { women: 1, ppl: 1 });
+      }, 3000);
+      this.$store.dispatch('game/drawBall');
+    },
   },
 };
 </script>

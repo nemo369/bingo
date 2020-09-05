@@ -2,7 +2,7 @@
   <section class="board relative">
     <board />
     <panel />
-    <backgorund :women="women" :current-ppl="currentPpl" />
+    <backgorund />
     <form v-if="error" class="error-msg" @submit.prevent="fetchGame">
       <h2>{{ error }}</h2>
       <v-text-field
@@ -36,8 +36,6 @@ export default {
     return {
       pin: this.$route.query.pin,
       error: '',
-      women: 1,
-      currentPpl: 2,
     };
   },
   computed: {
@@ -54,6 +52,9 @@ export default {
       }
     } else {
       this.$store.dispatch('game/resetGame');
+      setTimeout(() => {
+        this.updatePics(1);
+      }, 8000);
     }
   },
   beforeRouteLeave(to, _, next) {
@@ -71,8 +72,14 @@ export default {
         .then(() => {
           this.error = '';
           this.$store.dispatch('game/resetGame');
+          setTimeout(() => {
+            this.updatePics(1);
+          }, 3000);
         })
         .catch(() => (this.error = 'Please Enter a Valid Game Pin'));
+    },
+    updatePics(num: number) {
+      this.$store.dispatch('game/setPicNum', { women: num, ppl: num });
     },
   },
 };

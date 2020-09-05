@@ -12,6 +12,10 @@ export const state = (): GameState => ({
     ballsPicked: [],
     drawnBall: null,
   },
+  picNum: {
+    women: 4,
+    ppl: 1,
+  },
 });
 
 export const getters = {
@@ -20,9 +24,12 @@ export const getters = {
   getBallsPicked: (state: GameState) => state.gameStatus.ballsPicked,
   getDrawnBall: (state: GameState) => state.gameStatus.drawnBall,
   getGameStatus: (state: GameState) => state.gameStatus,
+  getPicNum: (state: GameState) => state.picNum,
 };
 
 export const mutations = {
+  [GAME.SET_PIC_NUM]: (state: GameState, num: PicNum) =>
+    (state.picNum = { ...state.picNum, ...num }),
   [GAME.SET_GAME]: (state: GameState, game: Game) => (state.game = { ...game }),
   [GAME.RESET_GAME]: (state: GameState) => {
     state.gameStatus.drawnBall = null;
@@ -67,6 +74,9 @@ export const actions: ActionTree<GameState, GameState> = {
       commit(GAME.SET_GAME, game);
     });
   },
+  setPicNum: ({ commit }: any, num: PicNum) => {
+    commit(GAME.SET_PIC_NUM, num);
+  },
   resetGame: ({ commit }: any) => {
     commit(GAME.RESET_GAME);
   },
@@ -83,9 +93,15 @@ export const actions: ActionTree<GameState, GameState> = {
 export interface GameState {
   game?: Game;
   gameStatus: GameStatus;
+  picNum: PicNum;
 }
 interface GameStatus {
   ballsPicked: Picture[];
   ballsInMachine: Picture[];
   drawnBall: Picture | null;
+}
+
+interface PicNum {
+  women: number;
+  ppl: number;
 }
