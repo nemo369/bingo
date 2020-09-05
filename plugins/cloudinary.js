@@ -6,6 +6,6 @@ const $cloudinary = new cloudinary.Cloudinary({
 });
 // Vue.prototype.$cloudinary = $cloudinary
 
-export default (_: any, inject: any) => {
+export default (_, inject) => {
   inject('cloudinary', $cloudinary);
 };

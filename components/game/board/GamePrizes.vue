@@ -25,17 +25,12 @@ import { Game, Prize, Condition } from '~/app/types/game';
 export default {
   name: 'GamePrizes',
   components: {},
-  data(): {
-    intervalId: any;
-    currentPrize?: Prize;
-    currentIndex: number;
-    condition: Condition | null;
-  } {
+  data() {
     return {
-      intervalId: null,
-      currentPrize: undefined,
+      intervalId: null as NodeJS.Timeout | null,
+      currentPrize: null as Prize | null,
       currentIndex: 0,
-      condition: null,
+      condition: null as Condition | null,
     };
   },
   computed: {
@@ -51,7 +46,7 @@ export default {
     },
   },
   beforeDestroy() {
-    clearInterval(this.intervalId);
+    clearInterval(this.intervalId!);
   },
   methods: {
     setGallery() {

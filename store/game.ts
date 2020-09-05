@@ -32,12 +32,16 @@ export const mutations = {
       : [];
   },
   [GAME.DRAW_A_BALL]: (state: GameState) => {
-    const { ballsPicked, ballsInMachine } = state.gameStatus;
+    const { ballsPicked, ballsInMachine, drawnBall } = state.gameStatus;
     const newBallsInMachine = ballsInMachine.filter((ball, i) =>
       i ? ball : null
     );
+    const ballsPickedNew = [...ballsPicked];
+    if (drawnBall) {
+      ballsPickedNew.push(drawnBall);
+    }
     const newStatus: GameStatus = {
-      ballsPicked: [...ballsPicked, ballsInMachine[0]],
+      ballsPicked: ballsPickedNew,
       drawnBall: ballsInMachine[0],
       ballsInMachine: newBallsInMachine,
     };

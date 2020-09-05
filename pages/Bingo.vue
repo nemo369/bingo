@@ -2,7 +2,7 @@
   <section class="board relative">
     <board />
     <panel />
-    <backgorund />
+    <backgorund :women="women" :current-ppl="currentPpl" />
     <form v-if="error" class="error-msg" @submit.prevent="fetchGame">
       <h2>{{ error }}</h2>
       <v-text-field
@@ -24,7 +24,7 @@ import Panel from '~/components/game/Panel.vue';
 
 export default {
   name: 'Bingo',
-  layout() {
+  layout(): any {
     return 'game';
   },
   components: {
@@ -36,6 +36,8 @@ export default {
     return {
       pin: this.$route.query.pin,
       error: '',
+      women: 1,
+      currentPpl: 2,
     };
   },
   computed: {
@@ -69,7 +71,6 @@ export default {
         .then(() => {
           this.error = '';
           this.$store.dispatch('game/resetGame');
-          console.log(this.game);
         })
         .catch(() => (this.error = 'Please Enter a Valid Game Pin'));
     },
@@ -94,13 +95,15 @@ export default {
 .screen {
   grid-row: 2/18;
   grid-column: 7/23;
+  z-index: 3;
 }
 .panel {
   grid-row: 2/10;
   grid-column: 2/6;
+  z-index: 3;
 }
 .error-msg {
-  z-index: 3;
+  z-index: 4;
   background-color: $brown;
 
   h2 {

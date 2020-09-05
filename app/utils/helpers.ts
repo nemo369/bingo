@@ -11,7 +11,7 @@ export function throttle(fn: Function, wait: number) {
   };
 }
 
-export function shuffleArray([...array]: any[]) {
+export function shuffleArray<T>([...array]: T[]): T[] {
   let counter = array.length;
 
   while (counter > 0) {

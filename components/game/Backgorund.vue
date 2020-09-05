@@ -1,5 +1,5 @@
 <template>
-  <div class="full relative backgorund">
+  <div class="relative backgorund">
     <img
       src="~/assets/pngs/background.png"
       class="full absolute board__bg-img"
@@ -32,16 +32,17 @@
 
 <script lang="ts">
 export default {
-  data: () => ({
-    currentPpl: 1,
-    women: 1,
-  }),
-  mounted() {
-    // setInterval(() => {
-    //   this.currentPpl = this.currentPpl < 4 ? this.currentPpl + 1 : 1;
-    //   this.women = this.women < 4 ? this.women + 1 : 1;
-    // }, 1000);
+  props: {
+    currentPpl: {
+      type: Number,
+      required: true,
+    },
+    women: {
+      type: Number,
+      required: true,
+    },
   },
+
   methods: {
     getImgUrl(file: string) {
       return require(`~/assets/pngs/${file}.png`);

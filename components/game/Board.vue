@@ -45,29 +45,33 @@ export default {
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(9 1fr);
+  grid-template-rows: repeat(9, 1fr);
   grid-gap: 4px;
   padding: 6px 0 16px;
+  z-index: 3;
 }
 .game-main {
   background-color: $sec-color;
-  grid-row: 1/3;
+  grid-row: 1/7;
   grid-column: 1/8;
+  z-index: 3;
 }
 .game-matrix {
   background-color: $sec-color;
-
-  grid-row: 3;
+  z-index: 3;
+  grid-row: 7/10;
   grid-column: 1/8;
 }
 .game-prizes {
   background-color: $sec-color;
-  grid-row: 1/4;
+  grid-row: 1/10;
   grid-column: 8/10;
+  z-index: 3;
 }
 .game-counter {
   position: absolute;
   left: 74%;
+  z-index: 4;
   top: 58%;
 }
 </style>

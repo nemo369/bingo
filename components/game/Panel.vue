@@ -34,7 +34,6 @@ export default {
 <style lang="scss" scoped>
 .panel {
   background-color: $white;
-  z-index: 1;
 }
 .fade-enter-active {
   transition: opacity 3s ease-in-out;

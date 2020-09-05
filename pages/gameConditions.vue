@@ -39,12 +39,11 @@
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import Prizes from '~/components/condititons/prizes.vue';
 import Conditions from '~/components/condititons/conditions.vue';
-import { Condition, Prize } from '~/app/types/game';
-import { Picture } from '~/app/types/album';
+
 export default {
   name: 'GameCondititons',
   middleware: 'hasAlbum',
@@ -52,7 +51,7 @@ export default {
     Prizes,
     Conditions,
   },
-  data(): { e1: number; conditions: Condition[]; prizes: Prize[] } {
+  data() {
     return {
       e1: 1,
       conditions: [],
@@ -66,21 +65,21 @@ export default {
     }),
   },
   methods: {
-    chosedAlbum([...conditions]: Condition[]) {
+    chosedAlbum([...conditions]) {
       this.conditions = conditions;
       this.setPrizes(conditions);
       // add pictue to conditions
       this.e1 = 2;
     },
-    startGame([...conditions]: Condition[], [...prizes]: Prize[]) {
+    startGame([...conditions], [...prizes]) {
       this.$store
         .dispatch('game/trySetGame', { conditions, prizes })
         .then(() => {
           this.$router.push(this.localePath({ name: '/bingo' }));
         });
     },
-    setPrizes(conditions: Condition[]) {
-      const prizes: Prize[] = [];
+    setPrizes(conditions) {
+      const prizes = [];
       conditions.forEach((condition) => {
         prizes.push({
           conditionId: condition.id,
@@ -91,10 +90,10 @@ export default {
 
       this.prizes = prizes;
     },
-    updatePrizes(prizes: Prize[]) {
+    updatePrizes(prizes) {
       this.prizes = prizes;
     },
-    getRandomPrizePic(): Picture {
+    getRandomPrizePic() {
       const images = this.$cloudinary.url('prize', { type: 'list' });
       console.log(images);
 

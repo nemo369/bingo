@@ -40,7 +40,7 @@ export default {
   plugins: [
     '~plugins/filters.ts',
     '~plugins/upload-api.ts',
-    '~plugins/cloudinary.ts',
+    '~plugins/cloudinary.js',
   ],
   env: {
     title: 'LivueJournal',
