@@ -38,9 +38,10 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    '~plugins/filters.ts',
-    '~plugins/upload-api.ts',
-    '~plugins/cloudinary.js',
+    '~/plugins/filters.ts',
+    '~/plugins/upload-api.ts',
+    '~/plugins/cloudinary.js',
+    { src: '~/plugins/masonry.js', ssr: false },
   ],
   env: {
     title: 'LivueJournal',

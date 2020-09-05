@@ -9,7 +9,10 @@
     <game-main />
     <game-matrix />
     <game-prizes />
-    <game-counter :curent-num="0" :total="game.album.pictures.length" />
+    <game-counter
+      :curent-num="game.album.pictures.length - ballsInMachine.length"
+      :total="game.album.pictures.length"
+    />
   </div>
 </template>
 
@@ -29,6 +32,7 @@ export default {
   computed: {
     ...mapGetters({
       game: 'game/getGame',
+      ballsInMachine: 'game/getBallsInMachine',
     }),
   },
   methods: {

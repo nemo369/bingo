@@ -27,7 +27,7 @@ html {
   font-size: #{$baseFontSize}px;
 }
 body {
-  font-size: px($baseFontSize);
+  font-size: #{$baseFontSize}px;
 }
 @function rem($pixels) {
   @return $pixels / $baseFontSize + rem;

@@ -1,8 +1,17 @@
 <template>
-  <aside v-if="pictures" class="game-matrix d-grid ovh relative">
-    <div v-for="picture in pictures" :key="picture.asset_id">
-      <v-img :src="picture.url" aspect-ratio="1" max-width="150"></v-img>
-    </div>
+  <aside v-if="pictures" class="game-matrix ovh relative">
+    <ul class="grid">
+      <masonry :selector="selector" :options="options" :data="pictures">
+        <template slot-scope="data">
+          <li class="grid-item" :class="`${!data.index ? 'grid-sizer' : ''}`">
+            <img :src="data.current.url" class="full" />
+
+            <!-- Current item: {{ data.current }} -->
+          </li>
+        </template>
+      </masonry>
+    </ul>
+
     <v-btn
       color="primary"
       class="next-btn"
@@ -14,14 +23,30 @@
 
 <script lang="ts">
 import { mapGetters } from 'vuex';
-
 export default {
   name: 'GameMatrix',
+  data() {
+    return {
+      selector: '.grid',
+      options: {
+        columnWidth: 200,
+        gutter: 5,
+        percentPosition: true,
+        itemSelector: '.grid-item',
+        fitWidth: true,
+        stagger: 300,
+        transitionDuration: '1.8s',
+        // ,        originLeft: false
+        // ,        originTop: false
+      },
+    };
+  },
   computed: {
     ...mapGetters({
       pictures: 'game/getBallsPicked',
     }),
   },
+  mounted() {},
 };
 </script>
 
@@ -30,5 +55,16 @@ export default {
   position: absolute;
   right: 5px;
   bottom: 5px;
+}
+.grid {
+  height: 100%;
+}
+.grid-sizer,
+.grid-item {
+  width: 20%;
+}
+/* 2 columns wide */
+.grid-item--width2 {
+  width: 40%;
 }
 </style>

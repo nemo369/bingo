@@ -38,7 +38,7 @@ export const mutations = {
     );
     const ballsPickedNew = [...ballsPicked];
     if (drawnBall) {
-      ballsPickedNew.push(drawnBall);
+      ballsPickedNew.unshift(drawnBall);
     }
     const newStatus: GameStatus = {
       ballsPicked: ballsPickedNew,
