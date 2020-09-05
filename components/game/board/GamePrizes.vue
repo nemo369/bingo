@@ -39,8 +39,8 @@ export default {
     }),
   },
   watch: {
-    game(newCount: Game) {
-      if (newCount) {
+    game(newCount: Game, oldValue) {
+      if (newCount && !oldValue) {
         this.setGallery();
       }
     },

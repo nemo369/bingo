@@ -1,16 +1,30 @@
 <template>
   <aside v-if="pictures" class="game-matrix ovh relative">
-    <ul class="grid">
-      <masonry :selector="selector" :options="options" :data="pictures">
-        <template slot-scope="data">
-          <li class="grid-item" :class="`${!data.index ? 'grid-sizer' : ''}`">
-            <img :src="data.current.url" class="full" />
-
-            <!-- Current item: {{ data.current }} -->
-          </li>
-        </template>
-      </masonry>
-    </ul>
+    <div id="flip-list-demo" class="full">
+      <transition-group
+        name="flip-list"
+        tag="ul"
+        class="full px-2 py-0 d-grid grid"
+      >
+        <li
+          v-for="(pic, index) in [...pictures].slice(0, 7)"
+          :key="pic.ballNumber"
+          class="grid-item relative pa-2"
+          :class="`grid-item--${index + 1}`"
+        >
+          <v-badge
+            color="green"
+            :content="pic.ballNumber"
+            overlap
+            left
+            top
+            class=""
+          >
+            <img :src="pic.url" class="" />
+          </v-badge>
+        </li>
+      </transition-group>
+    </div>
 
     <v-btn
       color="primary"
@@ -23,21 +37,20 @@
 
 <script lang="ts">
 import { mapGetters } from 'vuex';
+
 export default {
   name: 'GameMatrix',
   data() {
     return {
       selector: '.grid',
+      items: ['a', 'b', 'c'],
       options: {
-        columnWidth: 200,
-        gutter: 5,
-        percentPosition: true,
         itemSelector: '.grid-item',
+        columnWidth: 180,
+        percentPosition: false,
         fitWidth: true,
-        stagger: 300,
         transitionDuration: '1.8s',
-        // ,        originLeft: false
-        // ,        originTop: false
+        stagger: 30,
       },
     };
   },
@@ -46,7 +59,17 @@ export default {
       pictures: 'game/getBallsPicked',
     }),
   },
+  watch: {
+    pictures() {
+      // msnry.layout();
+      this.items.unshift('aaa');
+    },
+  },
   mounted() {},
+
+  methods: {
+    setGallery() {},
+  },
 };
 </script>
 
@@ -57,14 +80,20 @@ export default {
   bottom: 5px;
 }
 .grid {
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   height: 100%;
 }
-.grid-sizer,
-.grid-item {
-  width: 20%;
+.flip-list-move {
+  transition: transform 1s;
 }
-/* 2 columns wide */
-.grid-item--width2 {
-  width: 40%;
+.grid-item--1 {
+  grid-row: span 3;
+  grid-column: span 3;
+}
+.grid-item--2,
+.grid-item--3 {
+  grid-row: span 2;
+  grid-column: span 2;
 }
 </style>

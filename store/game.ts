@@ -28,7 +28,12 @@ export const mutations = {
     state.gameStatus.drawnBall = null;
     state.gameStatus.ballsPicked = [];
     state.gameStatus.ballsInMachine = state.game
-      ? shuffleArray(state.game.album.pictures)
+      ? shuffleArray(
+          state.game.album.pictures.map((pic, i) => ({
+            ...pic,
+            ballNumber: i + 1,
+          }))
+        )
       : [];
   },
   [GAME.DRAW_A_BALL]: (state: GameState) => {

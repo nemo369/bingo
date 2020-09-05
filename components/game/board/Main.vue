@@ -1,7 +1,9 @@
 <template>
   <main class="game-main ovh">
-    <div v-if="ball">
-      <v-img :src="ball.url" :cover="true"> </v-img>
+    <div v-if="ball" class="pa-4">
+      <v-badge color="green" class="full" ball-ball-number- overlap left top>
+        <v-img :src="ball.url" :cover="true" max-height="385"> </v-img>
+      </v-badge>
     </div>
   </main>
 </template>
