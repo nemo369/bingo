@@ -12,7 +12,7 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-          <hr class="ma-auto" style="max-width: 90%;" />
+          <hr class="ma-auto" style="max-width: 90%" />
           <v-card-text>
             <v-text-field
               v-model="name"
@@ -49,12 +49,6 @@
           <v-alert v-if="!!errorMsg" color="error">
             <small>{{ errorMsg }}</small>
           </v-alert>
-          <div class="d-flex justify-center">
-            <v-switch
-              v-model="europeCitizenship"
-              :label="label.europeCitizenship"
-            />
-          </div>
           <v-card-actions class="pa-4">
             <v-btn
               type="submit"
@@ -84,13 +78,13 @@
   </v-dialog>
 </template>
 
-<script>
+<script lang="ts">
+import { NewUser } from '~/app/types/user';
 export default {
   name: 'Register',
   middleware: 'disconnect',
   data() {
     return {
-      europeCitizenship: false,
       isLoading: false,
       dialog: true,
       name: '',
@@ -100,28 +94,29 @@ export default {
         name: this.$t('name'),
         email: this.$t('email'),
         password: this.$t('password'),
-        europeCitizenship: this.$t('europeCitizenship'),
       },
       errorMsg: '',
+      from: null as any,
       rules: {
-        required: (value) => !!value || 'required',
-        email: (value) => {
+        required: (value: string) => !!value || 'required',
+        email: (value: string) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || `Not a Valid E-mail`;
         },
-        passwordLength: (value) => {
+        passwordLength: (value: string) => {
           const isValid = !!value && value.length >= 6;
           return isValid || 'at least 6 chars';
         },
-        passwordNumric: (value) => {
+        passwordNumric: (value: string) => {
           const isValid = !!value && !/^\d+$/.test(value);
           return isValid || 'Password must have digits and charcthers';
         },
       },
     };
   },
-  beforeRouteLeave(to, _, next) {
-    if (to.name.includes('register')) {
+  beforeRouteLeave(to, from, next) {
+    this.from = from;
+    if (to.name?.includes('register')) {
       this.displayModal(to);
     } else {
       next();
@@ -133,39 +128,42 @@ export default {
         return;
       }
       this.isLoading = true;
-      this.errorMeesge = '';
+      this.errorMsg = '';
       this.$store
-        .dispatch('user/signUp', {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          europeCitizenship: this.europeCitizenship,
-        })
+        .dispatch('user/signUp', this.getSignUpObj())
         .then(() => {
           this.$router.push('/');
         })
         .catch(() => {
-          this.errMsg = 'Server Error';
+          this.errorMsg = 'Server Error';
         })
         .finally(() => {
           this.isLoading = false;
         });
     },
+    getSignUpObj(): NewUser {
+      return {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+      };
+    },
     navigateToLoginPage() {
       this.dialog = false;
       this.$router.push('/login');
     },
-    displayModal(route) {
+    displayModal(route: any) {
       this.dialog = true;
       window.history.pushState({}, null, route.path);
     },
     hideModal() {
       this.dialog = false;
       window.history.pushState({}, null, this.$route.path);
-      if (window.history.length > 2) {
+
+      if (!this.from) {
         this.$router.push('/');
       } else {
-        this.$router.go(-1);
+        this.$router.go(this.from);
       }
     },
     isValid() {

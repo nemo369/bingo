@@ -8,9 +8,9 @@ $heading-font-family: 'Fredoka One', cursive;
 
 $baseFontSize: 16;
 :root {
-  --prim-color: #25408f;
+  --prim-color: #2bc600;
   --sec-color: #c4c4c4;
-  --op-color: #f33a3a;
+  --op-color: #e11b3b;
   --brown: #0e0200;
 }
 
@@ -25,6 +25,7 @@ $white: #f2f2f2;
 $mobile: '(max-width: 960px),(max-device-width: 760px),(orientation: portrait)';
 html {
   font-size: #{$baseFontSize}px;
+  font-size: 1vw;
 }
 body {
   font-size: #{$baseFontSize}px;

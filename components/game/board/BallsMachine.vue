@@ -1,26 +1,19 @@
 <template>
-  <aside class="game-balls-machine relative row-1-1" :class="{ full: !spin }">
-    <div class="machine">
-      <div class="spin" :class="{ animation: spin }">
-        <div
-          v-for="(ball, i) in balls"
-          :key="i"
-          class="ball"
-          :class="{ animation: spin }"
-          :style="{
-            left: `${getRandNum(-70, 70)}%`,
-            bottom: `${getRandNum(0, 45)}%`,
-            animationDuration: `1.${getRandNum(0, 50)}s`,
-          }"
-        >
-          <img :src="ball.url" />
-        </div>
-      </div>
+  <aside
+    class="game-balls-machine relative row-1-1 d-flex flex-column pb-2"
+    :class="{ full: !spin }"
+  >
+    <v-spacer></v-spacer>
+    <div
+      id="canvas-wrapper"
+      :style="{ backgroundImage: `url(${getImgUrl(`blower`)})` }"
+    >
+      <canvas id="canvas"></canvas>
     </div>
   </aside>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'GameBallsMachine',
   props: {
@@ -28,79 +21,183 @@ export default {
     spin: { type: Boolean, default: () => false },
   },
   data() {
-    return {};
+    return {
+      canvasWidth: 255,
+      canvasHeight: 255,
+      ballRadius: 15,
+      ballsCount: 0,
+      canvas: null,
+      cBalls: [],
+      needToInit: true,
+    };
+  },
+  watch: {
+    balls(val) {
+      this.ballsCount = val.length;
+      if (this.needToInit && val.length) {
+        this.needToInit = false;
+        setTimeout(() => {
+          this.initBlower();
+        }, 4000);
+      } else {
+        console.log('NEDD TO UPDATE BALLS');
+        //  this.cBalls = this.cBalls.splice
+      }
+    },
+  },
+  mounted() {
+    this.canvas = document.querySelector(`#canvas`);
   },
   methods: {
-    getRandNum(min = 0, max = 100) {
-      return Math.round(Math.random() * (max - min) + min);
+    onRenderTick() {},
+    createBall(render, i) {
+      const ball = this.$matter.Bodies.circle(
+        render.canvas.width / 2 - this.ballRadius,
+        render.canvas.height / 2 - 2 * this.ballRadius,
+        this.ballRadius,
+        {
+          restitution: 0.3,
+          render: {
+            sprite: {
+              texture: this.balls[i].url,
+            },
+          },
+        }
+      );
+      this.cBalls.push(ball);
+      return ball;
+    },
+    initBlower() {
+      const Engine = this.$matter.Engine;
+      const Render = this.$matter.Render;
+      const World = this.$matter.World;
+      const Bodies = this.$matter.Bodies;
+      const Body = this.$matter.Body;
+      const Runner = this.$matter.Runner;
+      const Events = this.$matter.Events;
+
+      const engine = Engine.create();
+      const runner = Runner.run(engine);
+
+      const render = Render.create({
+        canvas: this.canvas,
+        engine,
+        options: {
+          wireframes: false,
+          width: this.canvasWidth,
+          height: this.canvasHeight,
+          background: 'transparent',
+        },
+      });
+
+      const onRenderTick = () => {
+        this.cBalls.forEach((ball) => {
+          if (ball.position.y >= render.canvas.height - 100) {
+            Body.applyForce(
+              ball,
+              { x: ball.position.x, y: ball.position.y },
+              { x: 0.003, y: -0.003 }
+            );
+          }
+          if (ball.position.y < 120) {
+            Body.applyForce(
+              ball,
+              { x: ball.position.x, y: ball.position.y },
+              { x: -0.003, y: 0.003 }
+            );
+          }
+
+          if (ball.position.x < 80) {
+            Body.applyForce(
+              ball,
+              { x: ball.position.x, y: ball.position.y },
+              { x: 0.003, y: -0.003 }
+            );
+          }
+
+          if (ball.position.x > render.canvas.width - 80) {
+            Body.applyForce(
+              ball,
+              { x: ball.position.x, y: ball.position.y },
+              { x: -0.003, y: 0.003 }
+            );
+          }
+        });
+      };
+
+      // Add the balls to the scene
+      for (let i = 0; i < this.ballsCount; i++) {
+        World.add(engine.world, this.createBall(render, i));
+      }
+
+      // Run the engine
+      Engine.run(engine);
+      Render.run(render);
+
+      /**
+       * Build the circle bounds - BEGIN
+       * */
+      const addBody = (...bodies) => {
+        World.add(engine.world, ...bodies);
+      };
+
+      const addRect = ({ x = 0, y = 0, w = 10, h = 10, options = {} } = {}) => {
+        const body = Bodies.rectangle(x, y, w, h, options);
+        addBody(body);
+        return body;
+      };
+
+      const sW = this.canvasWidth;
+      const sH = this.canvasWidth;
+      const m = Math.min(sW, sH);
+      const rat = (1 / 4.5) * 2;
+      const r = m * rat;
+      const pegCount = 64;
+      const TAU = Math.PI * 2;
+      for (let i = 0; i < pegCount; i++) {
+        const segment = TAU / pegCount;
+        const angle2 = (i / pegCount) * TAU + segment / 2;
+        const x2 = Math.cos(angle2);
+        const y2 = Math.sin(angle2);
+        const cx2 = x2 * r + sW / 2;
+        const cy2 = y2 * r + sH / 2;
+        addRect({
+          x: cx2,
+          y: cy2,
+          w: (100 / 1000) * m,
+          h: (3000 / 1000) * m,
+          options: {
+            angle: angle2,
+            isStatic: true,
+            density: 1,
+            render: {
+              fillStyle: 'transparent',
+              strokeStyle: 'white',
+              lineWidth: 0,
+            },
+          },
+        });
+      }
+      // Build the circle bounds - END
+
+      // Start the blowing with X seconds delay
+      // setTimeout(() => {
+      //   Events.on(runner, 'tick', onRenderTick);
+      // }, 3000);
+    },
+    getImgUrl(file) {
+      return require(`~/assets/pngs/${file}.png`);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.game-balls-machine.full {
-  width: 260px;
-  height: 260px;
-  margin-top: 25px;
-}
-.game-balls-machine {
-  border-radius: 50%;
-  border-radius: 50%;
-  height: 180px;
-  /* overflow: hidden; */
-  width: 180px;
-  margin: 70px auto 0;
-}
-
-.spin {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  transition: top 1s linear;
-}
-.spin.animation {
-  animation: spin 3s linear infinite;
-}
-@keyframes spin {
-  100% {
-    transform: rotate(1turn);
-  }
-}
-
-.ball.animation {
-  animation: ball 0.4s linear infinite;
-  transform: rotate(var(--rot));
-}
-@keyframes ball {
-  50% {
-    transform: rotate(var(--rot)) translateY(100%);
-  }
-}
-.ball {
-  --rot: 0deg;
-  position: absolute;
-  width: 45px;
-  height: 45px;
-  background: rgb(0, 255, 21);
-  border-radius: 50%;
-  left: 0;
-  right: 0;
-  margin: auto;
-  bottom: 0;
-  img {
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-  }
-}
-@for $i from 1 to 100 {
-  .ball:nth-of-type(#{$i}) {
-    --rot: #{$i * 10}deg;
-    // animation-delay: -#{$i}s;
-  }
+#canvas-wrapper {
+  background-repeat: no-repeat;
+  background-size: cover;
+  flex: 1 0 255px;
+  max-height: 255px;
+  height: 255px;
 }
 </style>

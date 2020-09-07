@@ -54,14 +54,29 @@
         </label>
       </form>
     </div>
-    <div class="d-flex justify-end mt-4">
+    <div class="d-flex justify-end align-center mt-4">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon color="grey lighten-1">mdi-information</v-icon>
+          </v-btn>
+        </template>
+        <span>
+          {{ $t('Free your album photos open to users to play') }}
+          <br />
+          {{ $t('Make sure you have copyrights on them') }} &copy;
+        </span>
+      </v-tooltip>
+
+      <v-switch
+        v-model="isPublic"
+        :label="`${$t('Open To all')}`"
+        class="mr-16"
+      ></v-switch>
+
       <v-btn
         color="primary"
-        :disabled="
-          album.pictures.length < 25 ||
-          album.pictures.length > 99 ||
-          !choosedCard
-        "
+        :disabled="album.pictures.length > 99 || !choosedCard"
         :loading="loading"
         @click="createAlbum"
         >{{ $t('save') }}</v-btn
@@ -79,7 +94,7 @@ import { albumService } from '~/services/album.service.ts';
 
 export default {
   name: 'CreateAlbum',
-  middleware: 'auth',
+  // middleware: 'auth',
 
   components: {
     UploadImages,
@@ -90,7 +105,8 @@ export default {
     return {
       loading: false,
       choosedCard: '3x3',
-      label: this.$t('enter bingo name'),
+      label: this.$t('Enter Bingo Name'),
+      isPublic: false,
       rules: [
         (value) => !!value || 'Required.',
         (value) => (value && value.length <= 12) || 'Max 12 characters',
@@ -149,6 +165,7 @@ export default {
       this.loading = true;
       const album = {
         ...this.album,
+        isPublic: this.isPublic,
         card: {
           row: parseInt(this.choosedCard[0], 10),
           column: parseInt(this.choosedCard[2], 10),

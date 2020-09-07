@@ -1,12 +1,13 @@
 {
-    "To Join a game...": "To Join a game Enter it’s pin code. If you wish to create a new Matrix Bingo game  Sign In/Register",
+    "To Join a game...": "To Join a game Enter it’s pin code. If you wish to create a new Matrix Bingo game",
     "drop your pictures here, or browse": "Drop your pictures here, or Browse",
     "select or build an album": "select or build an album",
     "public board i played": "public board i played",
     "winning conditions": "winning conditions",
     "choose card type": "choose card type",
     "enter bingo name": "enter bingo name",
-    "welcome": "Welcome To Matrix Bingo",
+    "welcome to": "Welcome To",
+    "matrix bingo": "Matrix Bingo",
     "create_a_bingo": "Create a Bingo",
     "public bingos": "Public bingos",
     "public_bingos": "public bingos",
@@ -24,5 +25,6 @@
     "Start Game": "Start Game",
     "play now": "play now",
     "in a game and winning conditions": "in a game and winning conditions",
-    "save": "save"
+    "save": "save",
+    "continue": "Continue"
 }

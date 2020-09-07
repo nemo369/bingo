@@ -59,6 +59,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$bg: rgb(31, 31, 31);
 .screen {
   background-color: $white;
   z-index: 1;
@@ -70,19 +71,19 @@ export default {
   z-index: 3;
 }
 .game-main {
-  background-color: $sec-color;
+  background-color: $bg;
   grid-row: 1/7;
   grid-column: 1/8;
   z-index: 3;
 }
 .game-matrix {
-  background-color: $sec-color;
+  background-color: $bg;
   z-index: 3;
   grid-row: 7/10;
   grid-column: 1/8;
 }
 .game-prizes {
-  background-color: $sec-color;
+  background-color: $bg;
   grid-row: 1/10;
   grid-column: 8/10;
   z-index: 3;

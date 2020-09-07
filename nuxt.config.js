@@ -41,6 +41,7 @@ export default {
     '~/plugins/filters.ts',
     '~/plugins/upload-api.ts',
     '~/plugins/cloudinary.js',
+    '~/plugins/matter.client.js',
   ],
   env: {
     title: 'LivueJournal',
@@ -94,22 +95,20 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: false,
+      light: true,
       themes: {
-        themes: {
-          light: {
-            primary: '#25408F',
-            secondary: '#EDEEFF',
-            accent: '#8c9eff',
-            error: '#b71c1c',
-            info: '#2196F3',
-            success: '#4CAF50',
-            warning: '#FFC107',
-          },
+        light: {
+          primary: '#2bc600',
+          secondary: '#e11b3b',
+          accent: '#0e0200',
+          error: '#b71c1c',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FFC107',
         },
-        options: {
-          customProperties: true,
-        },
+      },
+      options: {
+        customProperties: true,
       },
     },
   },

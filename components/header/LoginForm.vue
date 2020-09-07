@@ -37,7 +37,7 @@
           <v-btn
             type="submit"
             form="login-form"
-            color="#4D4D4D"
+            color="primary"
             class="white--text ok-btn col-1-1"
             large
             :loading="isLoading"
@@ -118,7 +118,7 @@ export default {
         });
     },
     navigateToRegisterPage() {
-      this.hideModal();
+      // this.hideModal();
       this.$router.push('/register');
     },
     isValid() {

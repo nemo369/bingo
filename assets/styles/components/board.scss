@@ -6,12 +6,15 @@
 .board {
   // max-width: 1440px;
   // max-height: 900px;
-  max-width: 1800px;
-  max-height: 1125px;
-  width: 100%;
-  height: 100%;
-  height: calc(100vh - 15px);
+  // height: calc(100vh - 15px);
+
+  // max-width: 1800px;
+  // max-height: 1125px;
+
+  width: rem(1267); // 88% from 1440/900
+  height: rem(792);
   margin: auto;
+
 
   &__bg-img {
     z-index: 0;
@@ -40,3 +43,5 @@
   max-width: unset;
   z-index: -1;
 }
+
+

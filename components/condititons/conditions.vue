@@ -23,7 +23,7 @@
           class="mt-auto"
           @click="$emit('button-selected', prizes.splice(0, n))"
         >
-          {{ $t('play now') | startCase }}
+          {{ $t('continue') | startCase }}
         </v-btn>
       </v-card>
     </section>
