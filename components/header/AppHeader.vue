@@ -5,10 +5,12 @@
         <logo />
       </span>
     </nuxt-link>
-    <v-app-bar-nav-icon class="d-flex d-sm-none" @click="toglleIsDrawer()" />
+    <v-app-bar-nav-icon
+      class="d-flex d-sm-none"
+      @click="toglleIsDrawer(!isDrawer)"
+    />
     <v-spacer />
     <main-menu class="row-1-1 d-none d-sm-flex" />
-    <lang-menu />
     <user-profile />
 
     <!-- <AppHeaderUser /> -->
@@ -20,7 +22,6 @@
 
 <script lang="ts">
 import MainMenu from './MainMenu.vue';
-import LangMenu from './LangMenu.vue';
 import UserProfile from './UserProfile.vue';
 import { getSvg } from '~/app/utils/svgs';
 import Logo from '~/components/app/Logo.vue';
@@ -28,7 +29,6 @@ export default {
   name: 'AppHeader',
   components: {
     MainMenu,
-    LangMenu,
     UserProfile,
     Logo,
   },
@@ -36,5 +36,10 @@ export default {
     isDrawer: false,
     logo: getSvg('logo'),
   }),
+  methods: {
+    toglleIsDrawer(bol) {
+      this.isDrawer = bol;
+    },
+  },
 };
 </script>

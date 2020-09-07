@@ -1,4 +1,5 @@
 export const userLocalStorage = '__user__';
+export const playerLocalStorge = '__player__'; // {name, cardColors}
 
 export class Ls {
   public static set(key: string, data: any): void {

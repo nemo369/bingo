@@ -1,28 +1,43 @@
 <template>
-  <v-form
-    class="form d-flex flex-column"
-    style="width: 480px"
-    @submit.prevent="join"
-  >
+  <v-form class="join-form d-flex flex-column" @submit.prevent="join">
+    <v-alert v-if="!!err" color="error">
+      <small class="white--text">{{ err }}</small>
+    </v-alert>
     <v-text-field
+      v-if="!isNameNeeded"
       v-model="pin"
       type="number"
       class="input mb-6 d-flex align-center rounded-lg"
       required
-      :placeholder="placeholder"
+      :placeholder="placeholderPin"
       :loading="loading"
     />
+    <div v-if="isNameNeeded" class="tac">
+      <h3 class="h2">Enter Player Name:</h3>
+      <v-text-field
+        v-model="user"
+        type="text"
+        class="input mb-6 d-flex align-center rounded-lg"
+        :placeholder="placeholderUser"
+        :loading="loading"
+      />
+    </div>
     <button type="submit" class="btn rounded-lg" x-large>BINGO</button>
   </v-form>
 </template>
 
 <script>
+import { Ls, playerLocalStorge } from '~/app/utils/localStorage';
 export default {
   name: 'JoinBingo',
   data() {
     return {
       pin: '',
-      placeholder: this.$t('enter pin code'),
+      isNameNeeded: false,
+      err: '',
+      user: Ls.get(playerLocalStorge)?.name || '',
+      placeholderPin: this.$t('Game Pin'),
+      placeholderUser: this.$t('Player Name'),
       loading: false,
     };
   },
@@ -30,6 +45,20 @@ export default {
     join() {
       if (this.pin) {
         this.loading = true;
+        this.$store
+          .dispatch('game/joinGame')
+          .then((joinData) => {
+            this.loading = false;
+
+            this.isNameNeeded = true;
+            console.log(joinData);
+          })
+          .catch(() => {
+            this.loading = false;
+            this.isNameNeeded = true;
+
+            this.err = 'Oh No, Something wont Wrong...';
+          });
       }
     },
   },
@@ -61,5 +90,10 @@ export default {
   color: $op-color;
   font-family: $heading-font-family;
   font-size: 3rem;
+}
+@media #{$mobile} {
+  .form {
+    width: 99%;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Game, Condition, Prize } from '~/app/types/game';
+import { Game, Condition, Prize, JoinGameRes } from '~/app/types/game';
 import { Card } from '~/app/types/card';
 
 export class GameService {
@@ -36,6 +36,18 @@ export class GameService {
     const { data } = await axios.post<Promise<Game>>(
       `${this.baseUrl}/public`,
       gameToSet,
+      this.headers
+    );
+    return data;
+  }
+
+  public async joinGame(pinAndName: {
+    pin: number;
+    name: string;
+  }): Promise<JoinGameRes> {
+    const { data } = await axios.post<Promise<JoinGameRes>>(
+      `${this.baseUrl}/join`,
+      pinAndName,
       this.headers
     );
     return data;

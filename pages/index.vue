@@ -7,20 +7,28 @@
     </h1>
     <h3 style="max-width: 340px" class="my-16">
       {{ $t('To Join a game...') }}
-      <nuxt-link :to="localePath(`/login`)">{{ $t('Sign In') }}</nuxt-link>
-      /
-      <nuxt-link :to="localePath(`/register`)">{{ $t('Register') }}</nuxt-link>
+      <span v-if="!isLogedIn">
+        {{ $t('If you wish to create a new Matrix Bingo game') }}
+        <nuxt-link :to="localePath(`/login`)">{{ $t('Sign In') }}</nuxt-link>
+        /
+        <nuxt-link :to="localePath(`/register`)">{{
+          $t('Register')
+        }}</nuxt-link>
+      </span>
     </h3>
 
     <join-bingo class="mb-16" />
 
     <hr class="hr" />
-    <landing-page />
+    <div class="d-none d-sm-flex">
+      <landing-page />
+    </div>
     <v-divider class="my-16" />
   </div>
 </template>
 
 <script lang="ts">
+import { mapGetters } from 'vuex';
 import JoinBingo from '~/components/hp/JoinBingo.vue';
 import LandingPage from '~/components/hp/LandingPage.vue';
 export default {
@@ -30,6 +38,11 @@ export default {
     LandingPage,
   },
   data: () => ({}),
+  computed: {
+    ...mapGetters({
+      isLogedIn: 'user/isLogedIn',
+    }),
+  },
   head: {
     bodyAttrs: {
       class: 'home-page',

@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
 import { GAME } from './mutations-types';
-import { Game, Prize, Condition } from '~/app/types/game';
+import { Game, Prize, Condition, JoinGameRes } from '~/app/types/game';
 import { gameService } from '~/services/game.service';
 import { Picture } from '~/app/types/album';
 import { shuffleArray } from '~/app/utils/helpers';

@@ -2,6 +2,9 @@
   display: none !important;
 }
 @media #{$mobile} {
+  html {
+    font-size: #{$baseFontSize}px;
+  }
   .desktop {
     display: none;
   }

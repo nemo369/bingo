@@ -1,5 +1,6 @@
 import { User } from './user';
 import { Picture, Album } from './album';
+import { Card } from './card';
 
 export interface Game {
   name: string;
@@ -27,4 +28,13 @@ export interface Condition {
   row: number;
   column: number;
   patterns: number[][];
+}
+
+export interface JoinGameRes {
+  cards: Card[];
+  name: string;
+  isGameOpen: boolean;
+  gamePin: number;
+  gameHost: any;
+  erros: string[];
 }

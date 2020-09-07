@@ -25,3 +25,12 @@ body {
     font-style: italic;
   }
 }
+
+
+html {
+  font-size: #{$baseFontSize}px;
+  font-size: 1vw;
+}
+body {
+  font-size: #{$baseFontSize}px;
+}

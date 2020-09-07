@@ -13,4 +13,10 @@ export const GAME = {
   RESET_GAME: 'RESET_GAME',
   DRAW_A_BALL: 'DRAW_A_BALL',
   SET_PIC_NUM: 'SET_PIC_NUM',
+  SET_CARDS: 'SET_CARDS',
+};
+
+export const PLAYER = {
+  SET_CARDS: 'SET_CARDS',
+  SET_COLOR: 'SET_COLOR',
 };
