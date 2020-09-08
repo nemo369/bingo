@@ -14,3 +14,8 @@ export interface NewUser {
   email: string;
   password: string;
 }
+
+export interface ErrorObj {
+  data: any;
+  status: number;
+}

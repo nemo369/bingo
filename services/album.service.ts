@@ -7,7 +7,7 @@ export class AlbumService {
 
   public async getPublic(): Promise<Album[]> {
     const { data } = await axios.get<Promise<Album[]>>(
-      `${this.baseUrl}/public`,
+      `${this.baseUrl}/public/`,
       this.headers
     );
     return data;
@@ -20,7 +20,7 @@ export class AlbumService {
 
   public async getAlbum(albumId: number): Promise<Album> {
     const { data } = await axios.get<Promise<Album>>(
-      `${this.baseUrl}/${albumId}"`
+      `${this.baseUrl}/${albumId}/`
     );
     return data;
   }

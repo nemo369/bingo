@@ -24,3 +24,10 @@ export function shuffleArray<T>([...array]: T[]): T[] {
 
   return array;
 }
+
+export const convertErr = (err: any) => {
+  const objAsString = JSON.stringify(err, Object.getOwnPropertyNames(err));
+  const obj = JSON.parse(objAsString);
+  obj.data = JSON.parse(obj.message);
+  return obj;
+};

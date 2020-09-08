@@ -6,7 +6,7 @@
       </span>
     </nuxt-link>
     <v-app-bar-nav-icon
-      class="d-flex d-sm-none"
+      class="d-flex d-sm-none ml-auto"
       @click="toglleIsDrawer(!isDrawer)"
     />
     <v-spacer />
@@ -37,9 +37,11 @@ export default {
     logo: getSvg('logo'),
   }),
   methods: {
-    toglleIsDrawer(bol) {
+    toglleIsDrawer(bol: boolean) {
       this.isDrawer = bol;
     },
   },
 };
 </script>
+
+<style lang="scss" scoped></style>

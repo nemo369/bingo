@@ -261,3 +261,15 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+body .inherit{
+  color: inherit;
+  *{
+    color: inherit;
+  }
+}
+.v-application a:hover{
+  color:$prim-color;
+  opacity: 0.9;
+}

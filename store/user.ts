@@ -32,8 +32,17 @@ export const actions: ActionTree<UserState, UserState> = {
       commit(LOGIN.CHECK_IN, user, true);
     });
   },
+  resetPassword: (
+    { commit }: any,
+    obj: { password: string; token: string; email: string }
+  ) => {
+    return UserService.resetPassword(obj).then((user: User) => {
+      commit(LOGIN.CHECK_IN, user, true);
+    });
+  },
   logOut: ({ commit }: any) => {
     commit(LOGIN.CHECK_OUT);
+    return UserService.logOut();
   },
   signUp: ({ commit }: any, newUser: NewUser) => {
     return UserService.addUser(newUser).then((user: User) => {

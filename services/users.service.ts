@@ -2,39 +2,87 @@ import axios from 'axios';
 import { User, CredentialRequest, NewUser } from '~/app/types/user';
 
 class UserService {
-  private baseUrl = 'api/user';
+  private baseUrl = 'api/users';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
   public async getUser(credentias: CredentialRequest): Promise<User> {
-    const { data } = await axios.post<Promise<User>>(
-      `${this.baseUrl}/login`,
-      credentias,
-      this.headers
-    );
-    return {
-      ...data,
-    };
+    try {
+      const { data } = await axios.post<Promise<User>>(
+        `${this.baseUrl}/login/`,
+        {
+          username: credentias.email,
+          ...credentias,
+        },
+        this.headers
+      );
+
+      return data;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
   }
 
   public async addUser(newUser: NewUser): Promise<User> {
     const serilizeObj = {
       // Maybe need to fit BE parmas
+      username: newUser.email,
+      password1: newUser.password,
+      password2: newUser.password,
       ...newUser,
     };
-    const { data } = await axios.post<Promise<User>>(
-      `${this.baseUrl}/register`,
-      serilizeObj
-    );
-    return {
-      ...data,
-    };
+    try {
+      const { data } = await axios.post<Promise<User>>(
+        `${this.baseUrl}/register/`,
+        serilizeObj
+      );
+      return {
+        ...data,
+      };
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
   }
 
-  public async resetPassword(email: string): Promise<boolean> {
-    const { data } = await axios.post(`${this.baseUrl}/resetPassword`, {
-      email,
-    });
-    return !!data;
+  public async resetPassword({
+    password,
+    token,
+    email,
+  }: {
+    password: string;
+    token: string;
+    email: string;
+  }): Promise<User> {
+    try {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      const { data } = await axios.post(`${this.baseUrl}/password_reset/`, {
+        password1: password,
+        password2: password,
+        email,
+      });
+      return data;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
+  }
+
+  public async logOut() {
+    const { data } = await axios.post(`${this.baseUrl}/logout/`, {});
+    return data;
   }
 }
 

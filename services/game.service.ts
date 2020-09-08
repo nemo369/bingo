@@ -8,7 +8,7 @@ export class GameService {
 
   public async fetchGame(pin: string): Promise<Game> {
     const { data } = await axios.get<Promise<Game>>(
-      `${this.baseUrl}/?pin=${pin}`,
+      `${this.baseUrl}/?pin=${pin}/`,
       this.headers
     );
     return data;
@@ -34,7 +34,7 @@ export class GameService {
     prizes: Prize[];
   }): Promise<Game> {
     const { data } = await axios.post<Promise<Game>>(
-      `${this.baseUrl}/public`,
+      `${this.baseUrl}/public/`,
       gameToSet,
       this.headers
     );
@@ -46,7 +46,7 @@ export class GameService {
     name: string;
   }): Promise<JoinGameRes> {
     const { data } = await axios.post<Promise<JoinGameRes>>(
-      `${this.baseUrl}/join`,
+      `${this.baseUrl}/join/`,
       pinAndName,
       this.headers
     );

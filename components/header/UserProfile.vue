@@ -1,10 +1,20 @@
 <template>
   <div v-if="isLogedIn" class="user mx-1">
-    <button text @click="logOut">
-      <v-avatar color="red">
+    <button text @click="snackbar = true">
+      <v-avatar color="secondary">
         {{ userInitial }}
       </v-avatar>
     </button>
+    <v-snackbar v-model="snackbar">
+      <template v-slot:action="{ attrs }">
+        <v-btn text class="mr-6" @click="logOut"
+          >Are you sure you want to Log Out?</v-btn
+        >
+        <v-btn color="secondary" text v-bind="attrs" @click="snackbar = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -13,13 +23,18 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'UserProfile',
+  data() {
+    return {
+      snackbar: false,
+    };
+  },
   computed: {
     ...mapGetters({
       isLogedIn: 'user/isLogedIn',
       user: 'user/getUser',
     }),
     userInitial() {
-      if (this.user) {
+      if (this.user && this.user.name) {
         const [firstName, lastName] = this.user.name.split(' ');
         return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
       }
@@ -28,6 +43,7 @@ export default {
   },
   methods: {
     logOut() {
+      this.snackbar = false;
       this.$store.dispatch('user/logOut');
     },
   },

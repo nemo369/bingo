@@ -28,10 +28,11 @@
             required
             class="mb-4"
             :rules="[rules.required, rules.passwordLength]"
+            @input="errMsg = ''"
           />
         </v-card-text>
-        <v-alert v-if="!!errMsg" color="error">
-          <small>{{ errMsg }}</small>
+        <v-alert v-if="!!errMsg" color="error" class="mx-2">
+          <small class="white--text">{{ errMsg }}</small>
         </v-alert>
         <v-card-actions class="pa-4">
           <v-btn
@@ -70,6 +71,7 @@
 </template>
 
 <script>
+import { convertErr } from '~/app/utils/helpers';
 export default {
   name: 'LoginForm',
   data() {
@@ -110,8 +112,13 @@ export default {
         .then(() => {
           this.$router.push(this.localePath({ name: '/' }));
         })
-        .catch(() => {
-          this.errMsg = 'Server Error';
+        .catch((err) => {
+          const obj = convertErr(err);
+          if (obj.data.status === 400) {
+            this.errMsg = 'Unable to login with given credential';
+          } else {
+            this.errMsg = 'Server Error';
+          }
         })
         .finally(() => {
           this.isLoading = false;
