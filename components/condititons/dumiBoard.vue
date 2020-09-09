@@ -1,7 +1,7 @@
 <template>
   <div>
     <span class="my-2 pa-2 d-block"
-      >{{ addText }}<b>{{ condition.title }}</b></span
+      >{{ addText }}&nbsp;<b>{{ condition.title }}</b></span
     >
     <div
       class="board d-grid board-animation"
@@ -16,7 +16,7 @@
       }"
     >
       <div
-        v-for="index in (condition.row * condition.column)"
+        v-for="index in condition.row * condition.column"
         :key="index"
         class="svg block full d-flex align-center justify-center board__cell"
         :class="`row-${condition.row} cell-${index + 1}`"
@@ -53,7 +53,7 @@ $l-secondary-color: #b73239;
   grid-gap: 1px;
   height: 200px;
   &__cell {
-    background-color: #8a5105;
+    background-color: $prim-color;
     border-radius: 10px;
   }
 }

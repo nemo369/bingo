@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'LvImageUpload',
   props: ['conditionId'],
@@ -23,6 +25,11 @@ export default {
       isLoading: false,
       presetName: process.env.cloudinaryPreset,
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: 'user/getUser',
+    }),
   },
   methods: {
     async imageUpload(file) {
@@ -35,7 +42,8 @@ export default {
       const formData = new FormData();
       formData.append('upload_preset', this.presetName);
       formData.append('file', file);
-      formData.append('tags', ['prize', 'user_prizes']); // Optional - add tag for image admin in Cloudinary
+      formData.append('folder', 'users_prizes');
+      formData.append('tags', ['prize', 'user_prizes', this.user.username]);
 
       const response = await this.$uploadApi.$post('upload', formData);
       return response;

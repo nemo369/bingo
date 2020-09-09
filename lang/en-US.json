@@ -7,9 +7,11 @@
     "select or build an album": "select or build an album",
     "public board i played": "public board i played",
     "Choose the amount of": "Choose the amount of",
+    "Choose the prize for": "Choose the prize for",
     "winning conditions": "winning conditions",
     "choose card type": "choose card type",
     "enter bingo name": "enter bingo name",
+    "Enter Prize Name": "Enter Prize Name",
     "create_a_bingo": "Create a Bingo",
     "create a bingo": "create a bingo",
     "public bingos": "Public bingos",
@@ -32,9 +34,9 @@
     "Game Pin": "Game pin",
     "Sign In": "Sign in",
     "create": "create",
-    "prizes": "prizes",
     "public": "public",
+    "prizes": "prizes",
     "total": "total",
-    "save": "save",
-    "login": "login"
+    "bingo": "bingo",
+    "save": "save"
 }

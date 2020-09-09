@@ -13,7 +13,7 @@
       >
         <dumi-board
           :condition="condition"
-          :add-text="$t('Choose the prize for ')"
+          :add-text="$t('Choose the prize for')"
         />
         <v-img
           :src="prizes[i].picture.url"

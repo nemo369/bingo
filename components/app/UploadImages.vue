@@ -29,7 +29,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
 import { getSvg } from '~/app/utils/svgs';
 
 export default {

@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1 class="tac">{{ $t('winning conditions') }}</h1>
-    <h2 class="tac">{{ $t('bingo') }} NO.{{ album.id }} - {{ album.name }}</h2>
+    <h2 class="tac">{{ $t('bingo') }} - {{ album.name }}</h2>
 
     <v-stepper v-model="e1" class="bg-color pa-0 mb-16">
       <v-stepper-header>
@@ -66,6 +66,8 @@ export default {
   },
   methods: {
     chosedAlbum([...conditions]) {
+      console.log('images');
+
       this.conditions = conditions;
       this.setPrizes(conditions);
       // add pictue to conditions
@@ -94,10 +96,16 @@ export default {
       this.prizes = prizes;
     },
     getRandomPrizePic() {
-      const images = this.$cloudinary.url('prize', { type: 'list' });
-      console.log(images);
+      const prizes = [
+        `https://res.cloudinary.com/bingomatrix/image/upload/v1598971478/prizes/fauzan-saari-AmhdN68wjPc-unsplash_ttnxrg.jpg`,
+      ];
+      // const images = this.$cloudinary.url('v1598971478', {
+      //   width: 100,
+      //   crop: 'fit',
+      // });
+      // console.log('images,', images);
 
-      return images[0];
+      return { url: prizes[0] };
     },
   },
 };
