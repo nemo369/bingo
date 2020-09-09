@@ -1,27 +1,25 @@
 <template>
   <v-form class="join-form d-flex flex-column" @submit.prevent="join">
-    <v-alert v-if="!!err" color="error">
-      <small class="white--text">{{ err }}</small>
-    </v-alert>
     <v-text-field
-      v-if="!isNameNeeded"
       v-model="pin"
       type="number"
       class="input mb-6 d-flex align-center rounded-lg"
       required
       :placeholder="placeholderPin"
       :loading="loading"
+      max="9999"
+      @input="err = ''"
     />
-    <div v-if="isNameNeeded" class="tac">
-      <h3 class="h2">Enter Player Name:</h3>
-      <v-text-field
-        v-model="user"
-        type="text"
-        class="input mb-6 d-flex align-center rounded-lg"
-        :placeholder="placeholderUser"
-        :loading="loading"
-      />
-    </div>
+    <v-text-field
+      v-model="nickname"
+      type="text"
+      class="input mb-6 d-flex align-center rounded-lg"
+      :placeholder="placeholderUser"
+      :loading="loading"
+    />
+    <v-alert v-if="err" type="error">
+      {{ err }}
+    </v-alert>
     <button type="submit" class="btn rounded-lg" x-large>BINGO</button>
   </v-form>
 </template>
@@ -33,32 +31,47 @@ export default {
   data() {
     return {
       pin: '',
-      isNameNeeded: false,
+      isNameNeeded: true,
       err: '',
-      user: Ls.get(playerLocalStorge)?.name || '',
+      nickname: Ls.get(playerLocalStorge)?.name || '',
       placeholderPin: this.$t('Game Pin'),
       placeholderUser: this.$t('Player Name'),
       loading: false,
+      gameSocket: null,
+    };
+  },
+  mounted() {
+    // const gameId = this.pin;
+    // this.gameSocket = new WebSocket(`${process.env.socketUrl}/ws/game/`);
+    this.gameSocket = new WebSocket(
+      `${process.env.socketUrl}/ws/game/${this.pin}`
+    );
+    this.gameSocket.onopen = (e) => {
+      console.log(e);
+    };
+    this.gameSocket.onclose = (e) => {
+      console.err(`oh no`, e);
     };
   },
   methods: {
     join() {
-      if (this.pin) {
-        this.loading = true;
-        this.$store
-          .dispatch('game/joinGame')
-          .then((joinData) => {
-            this.loading = false;
+      if (this.pin.length === 4 && this.gameSocket) {
+        const data = {
+          game_id: this.pin,
+          nickname: this.nickname,
+        };
 
-            this.isNameNeeded = true;
-            console.log(joinData);
+        this.gameSocket.send(
+          JSON.stringify({
+            message_type: 'add.player',
+            data,
           })
-          .catch(() => {
-            this.loading = false;
-            this.isNameNeeded = true;
+        );
 
-            this.err = 'Oh No, Something wont Wrong...';
-          });
+        // this.$router.push(this.localePath({ name: 'Play' , query: { pin: this.pin } }));
+      }
+      if (this.pin.length !== 4) {
+        this.err = 'This Pin is Invalid';
       }
     },
   },

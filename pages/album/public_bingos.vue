@@ -21,7 +21,7 @@ export default {
   },
   async fetch () {
     try {
-      const {albums}= await albumService.getPublic();
+      const albums= await albumService.getPublic();
       this.albums = albums
     } catch (e) {
       this.error ={

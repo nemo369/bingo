@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
 export interface User {
   id: number;
-  name: string;
+  username: string;
   email: string;
+  first_name: string;
+  last_name: string;
   token: string;
   isActive: boolean;
 }

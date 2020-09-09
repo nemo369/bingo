@@ -39,9 +39,7 @@
       >
         <v-icon dark>mdi-square-edit-outline</v-icon>
       </v-btn>
-      <v-btn class="text-capitalize" @click="setGame">
-        let's Game
-      </v-btn>
+      <v-btn class="text-capitalize" @click="setGame"> let's Game </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -71,7 +69,7 @@ export default {
     editAlbum() {
       this.loading = true;
       this.$store
-        .dispatch('album/getBingo', this.album.id)
+        .dispatch('album/getBingo', this.album.album_id)
         .then(() => {
           this.$router.push(this.localePath({ name: 'album-create_a_bingo' }));
         })

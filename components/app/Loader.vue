@@ -31,33 +31,36 @@ export default {
   }
 }
 
-.circle--1,
-.circle--2 {
-  background-color: $prim-color;
-}
-.circle--3,
-.circle--4 {
-  background-color: $op-color;
-}
 .loader-ellipsis {
-  display: inline-block;
+  display: block;
   position: relative;
   width: 80px;
   height: 80px;
+  margin: auto;
 }
 .loader-ellipsis .circle {
   position: absolute;
+  z-index: 98;
   top: 33px;
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #fff;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
-
+.circle--1,
+.circle--3 {
+  background-color: $prim-color;
+}
+.circle--2,
+.circle--4 {
+  background-color: $op-color;
+}
 @keyframes loader-ellipsis1 {
   0% {
     transform: scale(0);
+  }
+  50% {
+    scale: 1.1;
   }
   100% {
     transform: scale(1);
@@ -66,6 +69,9 @@ export default {
 @keyframes loader-ellipsis2 {
   0% {
     transform: translate(0, 0);
+  }
+  50% {
+    scale: 1.1;
   }
   100% {
     transform: translate(24px, 0);

@@ -12,7 +12,7 @@
         <nuxt-link :to="localePath(`/login`)">{{ $t('Sign In') }}</nuxt-link>
         /
         <nuxt-link :to="localePath(`/register`)">{{
-          $t('Register')
+          $t('register')
         }}</nuxt-link>
       </span>
     </h3>

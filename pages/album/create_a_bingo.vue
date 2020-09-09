@@ -69,7 +69,7 @@
       </v-tooltip>
 
       <v-switch
-        v-model="isPublic"
+        v-model="is_public"
         :label="`${$t('Open To all')}`"
         class="mr-16"
       ></v-switch>
@@ -81,6 +81,9 @@
         @click="createAlbum"
         >{{ $t('save') }}</v-btn
       >
+      <v-alert v-if="errMsg" type="error">
+        {{ errMsg }}
+      </v-alert>
     </div>
   </div>
 </template>
@@ -91,6 +94,7 @@ import Card from '~/components/app/Card.vue';
 import ImagesGrid from '~/components/create/ImagesGrid.vue';
 import UploadImages from '~/components/app/UploadImages.vue';
 import { albumService } from '~/services/album.service.ts';
+import { convertErr } from '~/app/utils/helpers';
 
 export default {
   name: 'CreateAlbum',
@@ -106,7 +110,8 @@ export default {
       loading: false,
       choosedCard: '3x3',
       label: this.$t('Enter Bingo Name'),
-      isPublic: false,
+      is_public: false,
+      errMsg: '',
       rules: [
         (value) => !!value || 'Required.',
         (value) => (value && value.length <= 12) || 'Max 12 characters',
@@ -165,8 +170,8 @@ export default {
       this.loading = true;
       const album = {
         ...this.album,
-        isPublic: this.isPublic,
-        card: {
+        is_public: this.is_public,
+        board: {
           row: parseInt(this.choosedCard[0], 10),
           column: parseInt(this.choosedCard[2], 10),
         },
@@ -174,10 +179,19 @@ export default {
 
       albumService
         .createAlbum(album)
-        .then(() => {
+        .then((res) => {
+          console.log(res);
           this.$router.push(this.localePath({ name: 'album-my_bingos' }));
         })
-        .catch((e) => console.log(e));
+        .catch((err) => {
+          const obj = convertErr(err);
+          this.loading = false;
+          if (obj.data.status === 400) {
+            this.errMsg = 'Something is Missing in your Bingo';
+          } else {
+            this.errMsg = 'Server Error';
+          }
+        });
     },
   },
 };

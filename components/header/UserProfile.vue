@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLogedIn" class="user mx-1">
     <button text @click="snackbar = true">
-      <v-avatar color="secondary">
+      <v-avatar color="secondary" class="white--text text-capitalize">
         {{ userInitial }}
       </v-avatar>
     </button>
@@ -34,8 +34,8 @@ export default {
       user: 'user/getUser',
     }),
     userInitial() {
-      if (this.user && this.user.name) {
-        const [firstName, lastName] = this.user.name.split(' ');
+      if (this.user && this.user.username) {
+        const [firstName, lastName] = this.user.username.split(' ');
         return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
       }
       return '';

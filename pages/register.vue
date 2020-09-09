@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import { NewUser } from '~/app/types/user';
 export default {
   name: 'Register',
   middleware: 'disconnect',

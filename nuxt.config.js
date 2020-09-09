@@ -17,7 +17,7 @@ export default {
    */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: 'Matrix Bingo',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -47,6 +47,9 @@ export default {
     title: 'LivueJournal',
     cloudinaryName: process.env.CLOUDINARY_CLOUD_NAME,
     cloudinaryPreset: process.env.CLOUDINARY_PRESET,
+    socketUrl: process.env.SOCKET_URL,
+    serverUrl: process.env.SERVER_URL,
+    baseUrl: process.env.BASE_URL,
   },
   /*
    ** Auto import components
@@ -76,7 +79,7 @@ export default {
 
   proxy: {
     '/api/': {
-      target: process.env.BASE_URL,
+      target: process.env.SERVER_URL,
       changeOrigin: true,
     },
   },
@@ -143,5 +146,6 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
+
   build: {},
 };

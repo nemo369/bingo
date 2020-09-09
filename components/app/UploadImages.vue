@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import { getSvg } from '~/app/utils/svgs';
 
 export default {
@@ -41,6 +43,11 @@ export default {
     errorFiles: [],
     presetName: process.env.cloudinaryPreset,
   }),
+  computed: {
+    ...mapGetters({
+      user: 'user/getUser',
+    }),
+  },
   mounted() {
     const dropzone = this.$el;
     const fileupload = this.$el.querySelector('input');
@@ -115,8 +122,9 @@ export default {
       const uploaders = await Array.from(files).map((file) => {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('folder', 'users_uploads');
         formData.append('upload_preset', this.presetName);
-        formData.append('tags', ['album', 'user_album']); // Optional - add tag for image admin in Cloudinary
+        formData.append('tags', ['album', 'user_album', this.user.username]); // Optional - add tag for image admin in Cloudinary
         return this.$uploadApi.$post('upload', formData);
       });
       const images = await Promise.all(uploaders);

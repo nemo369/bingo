@@ -1,12 +1,17 @@
+import { User } from './user';
+
 /* eslint-disable camelcase */
 export interface Album {
   name: string;
-  id: number;
+  id: string;
+  numberOfPictures: number;
+  isPublic: boolean;
   pictures: Picture[];
-  board?: {
+  board: {
     column: number;
     row: number;
   };
+  user?: User;
 }
 
 export interface Picture {
@@ -30,12 +35,13 @@ export interface Picture {
   access_mode: string;
   existing: boolean;
   original_filename: string;
+  name?: string;
 }
 
 export interface NewAlbum {
   name: string;
-  pictures: NewPictures[];
-  card: {
+  pictures: Picture[];
+  board: {
     row: number;
     column: number;
     isEmptyCenter: boolean;
