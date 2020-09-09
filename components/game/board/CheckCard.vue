@@ -26,11 +26,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import { gameService } from '~/services/game.service';
 import { isCardValidate } from '~/app/utils/gameUtil';
-import { Card } from '~/app/types/card';
 import CardCmp from '~/components/app/Card.vue';
 
 export default {
@@ -41,7 +40,7 @@ export default {
   data() {
     return {
       cardId: null,
-      card: null as Card | null,
+      card: null,
     };
   },
   computed: {
@@ -67,8 +66,8 @@ export default {
         return;
       }
       gameService
-        .getCard({ cardId: this.cardId!, gameId: this.game.id })
-        .then((card: Card) => {
+        .getCard({ cardId: this.cardId, gameId: this.game.id })
+        .then((card) => {
           const conditions = this.game.conditions;
           const isValid = isCardValidate(card, conditions);
           this.card = card;

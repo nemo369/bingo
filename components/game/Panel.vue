@@ -5,7 +5,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import GameBallsMachine from './board/BallsMachine.vue';
 
@@ -14,7 +14,7 @@ export default {
   components: {
     GameBallsMachine,
   },
-  data(): {} {
+  data() {
     return {};
   },
   computed: {
@@ -24,7 +24,7 @@ export default {
     }),
   },
   methods: {
-    getImgUrl(file: string) {
+    getImgUrl(file) {
       return require(`~/assets/pngs/${file}.png`);
     },
   },

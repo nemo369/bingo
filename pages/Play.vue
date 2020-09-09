@@ -8,7 +8,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import Card from '~/components/app/Card.vue';
 import Colors from '~/components/player/Colors.vue';

@@ -55,7 +55,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import LangMenu from '~/components/header/LangMenu.vue';
 
 export default {
@@ -76,10 +76,6 @@ export default {
       {
         name: 'CONTACT US',
         href: '/contact_us',
-      },
-      {
-        name: 'BLOG',
-        href: '/blog',
       },
       {
         name: 'BLOG',

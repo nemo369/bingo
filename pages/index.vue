@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import JoinBingo from '~/components/hp/JoinBingo.vue';
 import LandingPage from '~/components/hp/LandingPage.vue';

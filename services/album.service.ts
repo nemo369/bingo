@@ -2,19 +2,20 @@ import axios from 'axios';
 import { Album, NewAlbum } from '~/app/types/album';
 
 export class AlbumService {
-  private baseUrl = '/api/album';
+  private baseUrl = '/api/game/albums/';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
-  public async getPublic(): Promise<Album[]> {
-    const { data } = await axios.get<Promise<Album[]>>(
-      `${this.baseUrl}/public/`,
-      this.headers
-    );
+  public async getPublic(): Promise<{ albums: Album[]; response: string }> {
+    const { data } = await axios.get<
+      Promise<{ albums: Album[]; response: string }>
+    >(`${this.baseUrl}`);
     return data;
   }
 
-  public async getBingos(): Promise<Album[]> {
-    const { data } = await axios.get<Promise<Album[]>>(`${this.baseUrl}`);
+  public async getBingos(): Promise<{ albums: Album[]; response: string }> {
+    const { data } = await axios.get<
+      Promise<{ albums: Album[]; response: string }>
+    >(`${this.baseUrl}`);
     return data;
   }
 

@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import GameMain from './board/Main.vue';
 import GameMatrix from './board/Matrix.vue';
@@ -44,10 +44,10 @@ export default {
     }),
   },
   methods: {
-    getImgUrl(file: string) {
+    getImgUrl(file) {
       return require(`~/assets/pngs/${file}.png`);
     },
-    toglleCheckBingo({ num, bol }: { num: number; bol: boolean }) {
+    toglleCheckBingo({ num, bol }) {
       // if (this.ballsInMachine.length < 3) {
       //   return;
       // }

@@ -63,7 +63,7 @@ class UserService {
     email: string;
   }): Promise<User> {
     try {
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      axios.defaults.headers.common.Authorization = `Token ${token}`;
       const { data } = await axios.post(`${this.baseUrl}/password_reset/`, {
         password1: password,
         password2: password,

@@ -21,7 +21,8 @@ export default {
   },
   async fetch () {
     try {
-      this.albums = await albumService.getPublic()
+      const {albums}= await albumService.getPublic();
+      this.albums = albums
     } catch (e) {
       this.error ={
         statusCode: 503,

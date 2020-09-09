@@ -16,7 +16,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 import Backgorund from '~/components/game/Backgorund.vue';
 import Board from '~/components/game/Board.vue';
@@ -24,7 +24,7 @@ import Panel from '~/components/game/Panel.vue';
 
 export default {
   name: 'Bingo',
-  layout(): any {
+  layout() {
     return 'game';
   },
   components: {
@@ -78,7 +78,7 @@ export default {
         })
         .catch(() => (this.error = 'Please Enter a Valid Game Pin'));
     },
-    updatePics(num: number) {
+    updatePics(num) {
       this.$store.dispatch('game/setPicNum', { women: num, ppl: num });
     },
   },
@@ -111,7 +111,7 @@ export default {
 }
 .error-msg {
   z-index: 4;
-  background-color: $brown;
+  background-color: $app-brown;
 
   h2 {
     color: $black;

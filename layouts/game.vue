@@ -23,7 +23,7 @@
   </v-app>
 </template>
 
-<script lang="ts">
+<script>
 import { Ls, userLocalStorage } from '~/app/utils/localStorage';
 import { LOGIN } from '~/store/mutations-types.ts';
 import GameHeader from '~/components/header/GameHeader.vue';
@@ -45,7 +45,7 @@ export default {
     }
   },
   methods: {
-    toglleDrawer(bol: boolean) {
+    toglleDrawer(bol) {
       this.drawer = bol;
     },
   },
@@ -54,10 +54,10 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-  background-color: $brown;
+  background-color: $app-brown;
 }
 header {
-  background-color: $brown;
+  background-color: $app-brown;
   position: fixed;
   top: 0;
   width: 100%;

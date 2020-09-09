@@ -11,13 +11,14 @@ export const state = (): UserState => ({
 
 export const getters = {
   getUser: (state: UserState) => state.user,
+  getToken: (state: UserState) => state.user?.token,
   isLogedIn: (state: UserState) => !!state.user,
 };
 
 export const mutations = {
   [LOGIN.CHECK_IN]: (state: UserState, user: User) => {
     state.user = user;
-    axios.defaults.headers.common.Authorization = `Bearer ${user.token}`;
+    axios.defaults.headers.common.Authorization = `Token ${user.token}`;
     Ls.set(userLocalStorage, user);
   },
   [LOGIN.CHECK_OUT]: (state: UserState) => {

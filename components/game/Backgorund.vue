@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
 
 export default {
@@ -38,7 +38,7 @@ export default {
     }),
   },
   methods: {
-    getImgUrl(file: string) {
+    getImgUrl(file) {
       return require(`~/assets/pngs/${file}.png`);
     },
   },

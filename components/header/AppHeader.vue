@@ -20,7 +20,7 @@
   </v-app-bar>
 </template>
 
-<script lang="ts">
+<script>
 import MainMenu from './MainMenu.vue';
 import UserProfile from './UserProfile.vue';
 import { getSvg } from '~/app/utils/svgs';
@@ -32,12 +32,14 @@ export default {
     UserProfile,
     Logo,
   },
-  data: () => ({
-    isDrawer: false,
-    logo: getSvg('logo'),
-  }),
+  data() {
+    return {
+      isDrawer: false,
+      logo: getSvg('logo'),
+    };
+  },
   methods: {
-    toglleIsDrawer(bol: boolean) {
+    toglleIsDrawer(bol) {
       this.isDrawer = bol;
     },
   },

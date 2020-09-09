@@ -78,7 +78,7 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
+<script>
 import { NewUser } from '~/app/types/user';
 export default {
   name: 'Register',
@@ -96,18 +96,18 @@ export default {
         password: this.$t('password'),
       },
       errorMsg: '',
-      from: null as any,
+      from: null,
       rules: {
-        required: (value: string) => !!value || 'required',
-        email: (value: string) => {
+        required: (value) => !!value || 'required',
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || `Not a Valid E-mail`;
         },
-        passwordLength: (value: string) => {
+        passwordLength: (value) => {
           const isValid = !!value && value.length >= 6;
           return isValid || 'at least 6 chars';
         },
-        passwordNumric: (value: string) => {
+        passwordNumric: (value) => {
           const isValid = !!value && !/^\d+$/.test(value);
           return isValid || 'Password must have digits and charcthers';
         },
@@ -141,7 +141,7 @@ export default {
           this.isLoading = false;
         });
     },
-    getSignUpObj(): NewUser {
+    getSignUpObj() {
       return {
         name: this.name,
         email: this.email,
@@ -152,7 +152,7 @@ export default {
       this.dialog = false;
       this.$router.push('/login');
     },
-    displayModal(route: any) {
+    displayModal(route) {
       this.dialog = true;
       window.history.pushState({}, null, route.path);
     },

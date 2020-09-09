@@ -24,19 +24,18 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { mapGetters } from 'vuex';
-import { Game, Prize, Condition } from '~/app/types/game';
 
 export default {
   name: 'GamePrizes',
   components: {},
   data() {
     return {
-      intervalId: null as NodeJS.Timeout | null,
-      currentPrize: null as Prize | null,
+      intervalId: null,
+      currentPrize: null,
       currentIndex: 0,
-      condition: null as Condition | null,
+      condition: null,
     };
   },
   computed: {
@@ -45,14 +44,14 @@ export default {
     }),
   },
   watch: {
-    game(newCount: Game, oldValue) {
+    game(newCount, oldValue) {
       if (newCount && !oldValue) {
         this.setGallery();
       }
     },
   },
   beforeDestroy() {
-    clearInterval(this.intervalId!);
+    clearInterval(this.intervalId);
   },
   methods: {
     setGallery() {
@@ -64,8 +63,7 @@ export default {
         this.currentIndex++;
         this.currentPrize = this.game.prizes[this.currentIndex];
         this.condition = this.game.conditions.find(
-          (condition: Condition) =>
-            condition.id === this.currentPrize?.conditionId
+          (condition) => condition.id === this.currentPrize?.conditionId
         );
       }, 7000);
     },

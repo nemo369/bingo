@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'GameCounter',
   props: {
@@ -26,7 +26,7 @@ export default {
     };
   },
   watch: {
-    curentNum(newVal: number, oldVal: number) {
+    curentNum(newVal, oldVal) {
       if (!oldVal) {
         this.num = newVal;
         return;
@@ -35,7 +35,7 @@ export default {
     },
   },
   methods: {
-    setCount(newVal: number, oldVal: number) {
+    setCount(newVal, oldVal) {
       this.num = oldVal;
       this.prevNum = newVal;
       this.isAnimation = true;

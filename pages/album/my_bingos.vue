@@ -34,7 +34,7 @@ export default {
   },
   async fetch () {
     try {
-      const albums = await albumService.getBingos();
+      const {albums} = await albumService.getBingos();
         this.myAlbums = albums.filter(album => !album.isPublic)
         this.publicAlbums = albums.filter(album => album.isPublic)
 } catch (e) {
