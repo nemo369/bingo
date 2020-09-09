@@ -31,8 +31,8 @@ export const newAlbum = (): Album => ({
   name: '',
   albumId: 'null',
   pictures: [],
-  number_of_pictures: 0,
-  is_public: false,
+  numberOfPictures: 0,
+  isPublic: false,
   board: {
     column: 3,
     row: 3,

@@ -3,7 +3,7 @@ import { User } from './user';
 /* eslint-disable camelcase */
 export interface Album {
   name: string;
-  id: string;
+  albumId: string;
   numberOfPictures: number;
   isPublic: boolean;
   pictures: Picture[];
