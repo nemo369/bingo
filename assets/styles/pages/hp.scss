@@ -1,9 +1,46 @@
-.home-page{
-    .container{
-        background-color: transparent !important;
-    }
+.home-page {
+  .container {
+    background-color: transparent !important;
+  }
 }
 
-.join-form{
-    width: 480px;
+.join-form {
+  width: 480px;
+  max-width: 95vw;
+}
+
+.home-page {
+  .logo {
+    #circle {
+      animation-name: bounce-7;
+      animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+    //   transform-origin: bottom;
+
+    }
+  }
+}
+@keyframes bounce-7 {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1, 1) translateY(0);
+  }
+  42% {
+    transform: scale(1, 1.01) translateY(-3px);
+  }
+  50% {
+    transform: scale(1, 1.03) translateY(0);
+  }
+  54% {
+    transform: scale(1, 1) translateY(-7px);
+  }
+  58% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
 }

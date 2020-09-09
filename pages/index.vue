@@ -1,9 +1,9 @@
 <template>
   <div class="tac d-flex flex-column align-center">
     <h1>
-      {{ $t('welcome to') | startCase }} <br />{{
-        $t('matrix bingo') | startCase
-      }}
+      {{ $t('welcome to') | startCase }} <br />
+      <span style="opacity: 0">{{ $t('matrix bingo') | startCase }}</span>
+      <logo class="logo" />
     </h1>
     <h3 style="max-width: 340px" class="my-16">
       {{ $t('To Join a game...') }}
@@ -31,11 +31,14 @@
 import { mapGetters } from 'vuex';
 import JoinBingo from '~/components/hp/JoinBingo.vue';
 import LandingPage from '~/components/hp/LandingPage.vue';
+import Logo from '~/components/app/Logo.vue';
+
 export default {
   name: 'HomePage',
   components: {
     JoinBingo,
     LandingPage,
+    Logo,
   },
   data: () => ({}),
   computed: {
@@ -57,5 +60,9 @@ export default {
     background-color: $op-color;
     color: $prim-color;
   }
+}
+.logo {
+  width: 290px;
+  margin: -94px auto 0;
 }
 </style>

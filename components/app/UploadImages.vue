@@ -1,6 +1,6 @@
 <template>
   <div class="upload my-4 mx-auto" tabindex="0">
-    <v-card class="pt-4 pt-4 pb-16" :class="{ active: dragover }">
+    <v-card class="pt-4 pt-4 pb-16 upload-box" :class="{ active: dragover }">
       <div class="drop mx-auto my-4 d-flex flex-column align-center tac">
         <div class="svg block mt-auto" v-html="noImg"></div>
         <h2 class="mb-2 h2">{{ $t('drop your pictures here, or browse') }}</h2>
@@ -18,8 +18,8 @@
         class="error pa-2 mb-4 mx-auto"
       >
         <span>{{ file.name }}</span> -
-        <span v-for="(err, i) in file.errors" :key="i" class="white--text">
-          <i v-if="i">,</i>
+        <span v-for="(err, ind) in file.errors" :key="ind" class="white--text">
+          <i v-if="ind">,</i>
           {{ err.msg }}
         </span>
       </v-alert>
@@ -192,5 +192,19 @@ span {
   width: 90%;
   border-radius: 4px;
   color: white;
+}
+
+.upload-box {
+  transition: all 0.3s;
+}
+.upload-box.active {
+  box-shadow: 0px 3px 1px -2px rgba(1, 124, 48, 0.2),
+    0px 2px 2px 0px rgba(1, 124, 48, 0.2), 0px 1px 5px 0px rgba(1, 124, 48, 0.2);
+  .drop {
+    border-color: $prim-color;
+    .first-img {
+      transform: rotate(3deg) translate(1px, 1px);
+    }
+  }
 }
 </style>

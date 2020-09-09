@@ -2,7 +2,10 @@ import axios from 'axios';
 import { Album, NewAlbum } from '~/app/types/album';
 
 export class AlbumService {
-  private baseUrl = process.env.serverUrl + '/api/game/albums/';
+  private proxy =
+    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+
+  private baseUrl = this.proxy + '/api/game/albums/';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
   public async getPublic(): Promise<Album[]> {

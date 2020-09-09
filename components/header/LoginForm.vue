@@ -3,7 +3,7 @@
     <v-form id="login-form" ref="form" @submit.prevent="login()">
       <v-card class="elevation-12">
         <v-toolbar color="#FFFFFF" flat>
-          <v-toolbar-title>{{ $t('Welcome Back ') }}</v-toolbar-title>
+          <v-toolbar-title>{{ $t('Welcome Back') }}</v-toolbar-title>
           <v-spacer />
           <v-btn color="#fff" elevation="0" @click="$emit('close-modal')">
             <v-icon>mdi-close</v-icon>
@@ -54,7 +54,7 @@
             @click.prevent="navigateToRegisterPage()"
           >
             {{ $t("Didn't Register Yet?") }}
-            <strong>&nbsp; {{ $t('Register') }}</strong>
+            <strong>&nbsp; {{ $t('register') }}</strong>
           </v-btn>
           <v-btn
             class="mt-1 mb-6"

@@ -3,7 +3,10 @@ import { Game, Condition, Prize, JoinGameRes } from '~/app/types/game';
 import { Card } from '~/app/types/card';
 
 export class GameService {
-  private baseUrl = process.env.serverUrl + '/api/game';
+  private proxy =
+    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+
+  private baseUrl = this.proxy + '/api/game';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
   public async fetchGame(pin: string): Promise<Game> {

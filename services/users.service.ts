@@ -2,7 +2,10 @@ import axios from 'axios';
 import { User, CredentialRequest, NewUser } from '~/app/types/user';
 
 class UserService {
-  private baseUrl = process.env.serverUrl + 'api/users';
+  private proxy =
+    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+
+  private baseUrl = this.proxy + '/api/users';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
   public async getUser(credentias: CredentialRequest): Promise<User> {

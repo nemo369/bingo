@@ -1,6 +1,6 @@
 <template>
   <div v-if="album">
-    <h1 class="col-1-1">{{ $t('create bingo') }}</h1>
+    <h1 class="col-1-1 mt-4">{{ $t('create bingo') }}</h1>
     <v-text-field
       :value="album.name"
       class="half mx-auto mb-8 v-text-field"
@@ -18,7 +18,7 @@
     ></images-grid>
     <div class="choose mt-10">
       <h2 class="tac">{{ $t('choose card type') }}</h2>
-      <form class="d-flex cards justify-space-around mt-10">
+      <form class="d-flex cards justify-space-around mt-10 flex-wrap">
         <label class="label">
           <input
             v-model="choosedCard"
@@ -76,8 +76,10 @@
 
       <v-btn
         color="primary"
+        class="px-16"
         :disabled="album.pictures.length > 99 || !choosedCard"
         :loading="loading"
+        x-large
         @click="createAlbum"
         >{{ $t('save') }}</v-btn
       >
@@ -209,6 +211,10 @@ export default {
     box-sizing: content-box;
     position: relative;
     cursor: pointer;
+    transition: all 0.3;
+    &:hover {
+      background-color: #e11b3c07;
+    }
   }
 }
 input[type='radio'] {
@@ -221,7 +227,7 @@ input[type='radio'] {
     width: 100%;
     height: 100%;
     top: 0;
-    background-color: rgba(30, 143, 255, 0.253);
+    background-color: $op-color;
     right: 0;
     margin: auto;
     z-index: 0;
@@ -235,5 +241,8 @@ input[type='radio'] {
 .small {
   display: block;
   margin-bottom: 5px;
+  color: $prim-color;
+  position: relative;
+  z-index: 2;
 }
 </style>

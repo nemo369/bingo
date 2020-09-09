@@ -37,6 +37,11 @@
     "public": "public",
     "prizes": "prizes",
     "total": "total",
+    "Didn't Register Yet?": "Didn't Register Yet?",
     "bingo": "bingo",
+    "Welcome Back": "Welcome Back",
+    "login": "login",
+    "email": "email",
+    "Forget Password": "Forget Password",
     "save": "save"
 }
