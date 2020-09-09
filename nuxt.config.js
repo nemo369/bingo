@@ -142,6 +142,7 @@ export default {
       cookieKey: 'i18n_redirected',
     },
   },
+  buildDir: 'dist',
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
