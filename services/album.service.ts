@@ -56,7 +56,7 @@ export class AlbumService {
     return {
       ...album,
       isPublic: album.is_public,
-      id: album.album_id,
+      id: album.albumId,
       numberOfPictures: album.number_of_pictures,
       pictures,
     };

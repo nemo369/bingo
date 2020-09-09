@@ -29,7 +29,7 @@ export const actions: ActionTree<AlbumState, AlbumState> = {
 
 export const newAlbum = (): Album => ({
   name: '',
-  album_id: 'null',
+  albumId: 'null',
   pictures: [],
   number_of_pictures: 0,
   is_public: false,

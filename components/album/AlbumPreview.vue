@@ -89,7 +89,7 @@ export default {
     editAlbum() {
       this.loading = true;
       this.$store
-        .dispatch('album/getBingo', this.album.album_id)
+        .dispatch('album/getBingo', this.album.albumId)
         .then(() => {
           this.$router.push(this.localePath({ name: 'album-create_a_bingo' }));
         })
