@@ -8,6 +8,7 @@
     <v-hover v-if="album.pictures.length" v-slot:default="{ hover }">
       <div
         class="d-grid imgs"
+        :class="`${hover ? 'hover-img' : ''}`"
         :style="{
           gridTemplateColumns: `repeat(${album.board.row}, 1fr)`,
           gridTemplateRows: ` repeat(${album.board.column}, 1fr)`,
@@ -17,12 +18,11 @@
           v-for="(pic, i) in album.board.column * album.board.column"
           :key="i"
           class="white--text align-end"
-          :class="`${hover ? 'hover-img' : ''}`"
         >
           <img v-if="album.pictures[i]" :src="album.pictures[i].url" />
           <div
             v-else
-            class="svg d-flex align-center justify-center"
+            class="svg d-flex align-center justify-center svg--clear"
             v-html="noImg"
           ></div>
         </div>
@@ -121,5 +121,9 @@ export default {
   height: 200px;
   background-color: $prim-color;
   grid-gap: 1px;
+}
+.svg--clear {
+  background-color: $sec-color;
+  height: 100%;
 }
 </style>
