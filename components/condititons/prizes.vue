@@ -81,7 +81,8 @@ export default {
   computed: {
     disabled() {
       // The every() method tests whether all elements in the array pass the test implemented by the
-      return this.prizes.every((prize) => prize.picture);
+      console.log(this.prizes.every((prize) => !!prize.picture));
+      return !this.prizes.every((prize) => !!prize.picture);
     },
   },
   methods: {

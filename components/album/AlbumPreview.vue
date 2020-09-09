@@ -6,16 +6,29 @@
     :disabled="loading"
   >
     <v-hover v-if="album.pictures.length" v-slot:default="{ hover }">
-      <v-img
-        class="white--text align-end"
-        height="200px"
-        :src="album.pictures[0].url"
-        :class="`${hover ? 'hover-img' : ''}`"
+      <div
+        class="d-grid imgs"
+        :style="{
+          gridTemplateColumns: `repeat(${album.board.row}, 1fr)`,
+          gridTemplateRows: ` repeat(${album.board.column}, 1fr)`,
+        }"
       >
-      </v-img>
+        <div
+          v-for="(pic, i) in album.board.column * album.board.column"
+          :key="i"
+          class="white--text align-end"
+          :class="`${hover ? 'hover-img' : ''}`"
+        >
+          <img v-if="album.pictures[i]" :src="album.pictures[i].url" />
+          <div
+            v-else
+            class="svg d-flex align-center justify-center"
+            v-html="noImg"
+          ></div>
+        </div>
+      </div>
     </v-hover>
-
-    <div v-else class="svg block" v-html="noImg"></div>
+    <div v-else class="svg block svg-full" v-html="noImg"></div>
 
     <v-card-text class="text--primary">
       <div>{{ album.name }}</div>
@@ -39,7 +52,14 @@
       >
         <v-icon dark>mdi-square-edit-outline</v-icon>
       </v-btn>
-      <v-btn class="text-capitalize" @click="setGame"> let's Game </v-btn>
+      <v-btn
+        class="text-capitalize"
+        :disabled="!!album.pictures.length"
+        color="primary"
+        @click="setGame"
+      >
+        let's Game
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -80,7 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.svg {
+.svg-full {
   width: 100%;
   height: 200px;
   display: flex;
@@ -96,5 +116,10 @@ export default {
 }
 .hover-img {
   transform: scale(1.02);
+}
+.imgs {
+  height: 200px;
+  background-color: $prim-color;
+  grid-gap: 1px;
 }
 </style>
