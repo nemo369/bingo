@@ -27,7 +27,7 @@ export const mutations = {
 };
 export const actions: ActionTree<SocketState, SocketState> = {
   initPlayerSocket(
-    { commit }: any,
+    { commit, dispatch }: any,
     data: { game_id: number; nickname: string }
   ) {
     // this.gameSocket = new WebSocket(`wss://echo.websocket.org`);
@@ -37,12 +37,10 @@ export const actions: ActionTree<SocketState, SocketState> = {
     commit(SOCKET.SET_CONNECTION, gameSocket);
 
     gameSocket.onopen = () => {
-      gameSocket.send(
-        JSON.stringify({
-          message_type: 'add.player',
-          data,
-        })
-      );
+      dispatch('sendMsg', {
+        message_type: 'add.player',
+        data,
+      });
       commit(SOCKET.ADD_MSG, 'User joined Game');
     };
     gameSocket.onmessage = (e) => {
@@ -52,6 +50,9 @@ export const actions: ActionTree<SocketState, SocketState> = {
     gameSocket.onclose = () => {
       commit(SOCKET.ON_ERROR, 'Couldnt Find Server');
     };
+  },
+  sendMsg({ state }: any, data: { [key: string]: any }) {
+    state.connection.send(JSON.stringify(data));
   },
 };
 

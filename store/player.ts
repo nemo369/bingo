@@ -40,6 +40,9 @@ export const actions: ActionTree<PlayerState, PlayerState> = {
     Ls.setInObj(playerLocalStorge, color, 'color');
     commit(PLAYER.SET_COLOR, color);
   },
+  setCards: ({ commit }: any, cards: Card[]) => {
+    commit(PLAYER.SET_CARDS, cards);
+  },
   setPlayer: ({ commit }: any, player: Player) => {
     const color = Ls.get(playerLocalStorge)?.color
       ? Ls.get(playerLocalStorge).color

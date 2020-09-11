@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 <template>
   <section class="play relative">
     <v-alert v-if="err" type="error">
@@ -16,6 +15,8 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
+
 import { mapGetters } from 'vuex';
 import Card from '~/components/app/Card.vue';
 import Colors from '~/components/player/Colors.vue';
@@ -44,7 +45,7 @@ export default {
       cards: 'player/getCards',
       socketMsgs: 'socket/getMsgs',
       socketErr: 'socket/getErr',
-      getConnection: 'socket/getConnection',
+      connection: 'socket/getConnection',
       player: 'player/getPlayer',
     }),
   },
@@ -52,6 +53,9 @@ export default {
     socketMsgs(msgs) {
       if (msgs[msgs.length - 1]?.data?.player_id) {
         this.$store.dispatch('player/setPlayer', msgs[msgs.length - 1].data);
+        if (msgs[msgs.length - 1]?.data?.board) {
+          this.$store.dispatch('player/setPlayer', msgs[msgs.length - 1].data);
+        }
       }
     },
   },
@@ -76,7 +80,12 @@ export default {
       this.$store.dispatch('socket/initPlayerSocket', data);
     },
     shout() {
-      console.error('BINGO!!!');
+      if (this.connection) {
+        this.$store.dispatch('socket/sendMsg', {
+          message_type: 'add.bingoCall',
+          data: { player: this.player },
+        });
+      }
     },
   },
 };
