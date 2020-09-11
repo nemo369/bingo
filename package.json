@@ -19,7 +19,8 @@
     "cloudinary-vue": "^1.1.1",
     "matter-js": "^0.14.2",
     "nuxt": "^2.14.0",
-    "nuxt-i18n": "^6.13.12"
+    "nuxt-i18n": "^6.13.12",
+    "vue-socket.io": "^3.0.10"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.0",

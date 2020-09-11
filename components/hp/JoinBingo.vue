@@ -1,5 +1,5 @@
 <template>
-  <v-form class="join-form d-flex flex-column" @submit.prevent="join">
+  <v-form class="join-form d-flex flex-column relative" @submit.prevent="join">
     <v-text-field
       v-model="pin"
       type="number"
@@ -7,8 +7,7 @@
       required
       :placeholder="placeholderPin"
       :loading="loading"
-      max="9999"
-      @input="err = ''"
+      @input="validatePin"
     />
     <v-text-field
       v-model="nickname"
@@ -16,18 +15,27 @@
       class="input mb-6 d-flex align-center rounded-lg"
       :placeholder="placeholderUser"
       :loading="loading"
+      :counter="16"
     />
     <v-alert v-if="err" type="error">
       {{ err }}
     </v-alert>
+    <loader v-if="isLoading" :is-loading="isLoading" class="loader" />
+
     <button type="submit" class="btn rounded-lg" x-large>BINGO</button>
   </v-form>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { Ls, playerLocalStorge } from '~/app/utils/localStorage';
+import Loader from '~/components/app/Loader.vue';
+
 export default {
   name: 'JoinBingo',
+  components: {
+    Loader,
+  },
   data() {
     return {
       pin: '',
@@ -37,41 +45,59 @@ export default {
       placeholderPin: this.$t('Game Pin'),
       placeholderUser: this.$t('Player Name'),
       loading: false,
-      gameSocket: null,
+      maxLength: 4,
+      isLoading: false,
     };
   },
-  mounted() {
-    // const gameId = this.pin;
-    // this.gameSocket = new WebSocket(`${process.env.socketUrl}/ws/game/`);
-    this.gameSocket = new WebSocket(
-      `${process.env.socketUrl}/ws/game/${this.pin}`
-    );
-    this.gameSocket.onopen = (e) => {
-      console.log(e);
-    };
-    this.gameSocket.onclose = (e) => {
-      console.err(`oh no`, e);
-    };
+  computed: {
+    ...mapGetters({
+      socketMsgs: 'socket/getMsgs',
+      socketErr: 'socket/getErr',
+    }),
+  },
+  watch: {
+    socketMsgs(newMsgs) {
+      this.loading = false;
+      this.err = '';
+      if (newMsgs.includes('User joined Game')) {
+        this.$router.push(
+          this.localePath({ name: 'Play', query: { pin: this.pin } })
+        );
+      }
+    },
+    socketErr() {
+      this.err = 'This Pin is Invalid';
+      this.isLoading = false;
+    },
   },
   methods: {
     join() {
-      if (this.pin.length === 4 && this.gameSocket) {
+      if (this.pin.length === 4) {
+        if (this.nickname.length > 16) {
+          this.nickname = this.nickname.slice(0, 16);
+        }
         const data = {
           game_id: this.pin,
           nickname: this.nickname,
         };
-
-        this.gameSocket.send(
-          JSON.stringify({
-            message_type: 'add.player',
-            data,
-          })
-        );
+        this.isLoading = true;
+        this.wsInit(data);
 
         // this.$router.push(this.localePath({ name: 'Play' , query: { pin: this.pin } }));
       }
-      if (this.pin.length !== 4) {
+      if (this.pin.length !== this.maxLength) {
         this.err = 'This Pin is Invalid';
+      }
+    },
+    wsInit(data) {
+      this.$store.dispatch('socket/initPlayerSocket', data);
+    },
+    validatePin() {
+      this.err = '';
+      if (this.pin.length > this.maxLength) {
+        setTimeout(() => {
+          this.pin = this.pin.slice(0, this.maxLength);
+        }, 0);
       }
     },
   },

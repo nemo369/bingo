@@ -19,4 +19,11 @@ export const GAME = {
 export const PLAYER = {
   SET_CARDS: 'SET_CARDS',
   SET_COLOR: 'SET_COLOR',
+  SET_PLAYER: 'SET_PLAYER',
+};
+
+export const SOCKET = {
+  SET_CONNECTION: 'SET_CONNECTION',
+  ADD_MSG: 'ADD_MSG',
+  ON_ERROR: 'ON_ERROR',
 };

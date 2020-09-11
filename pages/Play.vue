@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 <template>
   <section class="play relative">
     <v-alert v-if="err" type="error">
@@ -10,6 +11,7 @@
 
     <card v-if="card" :card="card" />
     <colors />
+    <game-status />
   </section>
 </template>
 
@@ -17,6 +19,7 @@
 import { mapGetters } from 'vuex';
 import Card from '~/components/app/Card.vue';
 import Colors from '~/components/player/Colors.vue';
+import GameStatus from '~/components/player/GameStatus.vue';
 import Loader from '~/components/app/Loader.vue';
 export default {
   name: 'Play',
@@ -25,6 +28,7 @@ export default {
     Card,
     Colors,
     Loader,
+    GameStatus,
   },
   data() {
     return {
@@ -38,31 +42,27 @@ export default {
   computed: {
     ...mapGetters({
       cards: 'player/getCards',
+      socketMsgs: 'socket/getMsgs',
+      socketErr: 'socket/getErr',
+      getConnection: 'socket/getConnection',
+      player: 'player/getPlayer',
     }),
   },
+  watch: {
+    socketMsgs(msgs) {
+      if (msgs[msgs.length - 1]?.data?.player_id) {
+        this.$store.dispatch('player/setPlayer', msgs[msgs.length - 1].data);
+      }
+    },
+  },
   mounted() {
-    if (!this.pin || this.pin.length !== 4) {
+    if (!this.pin || !this.getConnection) {
       this.$router.push(this.localePath('/'));
-      return;
     }
-    // const gameId = this.pin;
-    // this.gameSocket = new WebSocket(`${process.env.socketUrl}/ws/game/`);
-    this.gameSocket = new WebSocket(
-      `${process.env.socketUrl}/ws/game/${this.pin}`
-    );
-    this.gameSocket.onopen = (e) => {
-      console.log(e);
-      this.isLoading = false;
-    };
-    this.gameSocket.onclose = (e) => {
-      console.err(`oh no`, e);
-      this.isLoading = false;
-    };
-
-    this.gameSocket.addEventListener('error', () => {
-      this.err = `No luck, Something wont wrong`;
-      this.isLoading = false;
-    });
+    // if (!this.getConnection) {
+    //   this.wsInit({ nickname: 'unknown', game_id: this.pin });
+    // }
+    this.isLoading = false;
   },
   beforeRouteLeave(to, _, next) {
     if (to.name?.includes('bingo')) {
@@ -72,6 +72,9 @@ export default {
     }
   },
   methods: {
+    wsInit(data) {
+      this.$store.dispatch('socket/initPlayerSocket', data);
+    },
     shout() {
       console.error('BINGO!!!');
     },
