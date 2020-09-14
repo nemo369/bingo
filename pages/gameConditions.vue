@@ -33,6 +33,9 @@
             @start-game="startGame"
             @update-prizes="updatePrizes"
           />
+          <v-alert v-if="!!errMsg" color="error" class="ma-2">
+            <small class="white--text">{{ errMsg }}</small>
+          </v-alert>
           <div class="d-flex align-center justify-center">
             <h4 class="mr-6">Choose Game Type:</h4>
             <v-switch
@@ -70,6 +73,7 @@ export default {
       conditions: [],
       prizes: [],
       isPublic: true,
+      errMsg: '',
     };
   },
 
@@ -80,8 +84,6 @@ export default {
   },
   methods: {
     chosedAlbum([...conditions]) {
-      console.log('images');
-
       this.conditions = conditions;
       this.setPrizes(conditions);
       // add pictue to conditions
@@ -99,6 +101,9 @@ export default {
         })
         .then(() => {
           this.$router.push(this.localePath({ name: '/bingo' }));
+        })
+        .catch(() => {
+          this.errMsg = 'Oh no :)';
         });
     },
     setPrizes(conditions) {

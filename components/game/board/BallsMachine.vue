@@ -59,7 +59,7 @@ export default {
           restitution: 0.3,
           render: {
             sprite: {
-              texture: this.balls[i].url,
+              texture: `https://res.cloudinary.com/demo/image/upload/w_75,h_75,c_fill,r_max/${this.balls[i].public_id}`,
             },
           },
         }

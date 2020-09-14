@@ -10,6 +10,51 @@ export class GameService {
   private baseUrl = this.proxy + '/api/game';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
+  public async gameConfirm(pin: number): Promise<string> {
+    try {
+      const { data } = await axios.post(
+        `${this.baseUrl}/game-confirm/`,
+        { game_id: pin },
+        this.headers
+      );
+      const res: string = (await data.response) ? data.response : '';
+      // can return 'not enough balance' || 'Game started'
+      return res;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
+  }
+
+  public async lockGame(
+    pin: number
+  ): Promise<{ gameCost: number; numOfPlayers: number }> {
+    try {
+      const { data } = await axios.post(
+        `${this.baseUrl}/game-request/`,
+        { game_id: pin },
+        this.headers
+      );
+      const res = await data;
+      return {
+        ...res,
+        gameCost: +res.game_cost,
+        numOfPlayers: +res.num_of_players,
+      };
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
+  }
+
   public async fetchGame(pin: string): Promise<Game> {
     const { data } = await axios.get<Promise<Game>>(
       `${this.baseUrl}/?pin=${pin}/`,
