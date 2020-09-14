@@ -2,7 +2,7 @@ import { ActionTree } from 'vuex';
 import { GAME } from './mutations-types';
 import { Game, Prize, Condition, JoinGameRes } from '~/app/types/game';
 import { gameService } from '~/services/game.service';
-import { Picture } from '~/app/types/album';
+import { Picture, Album } from '~/app/types/album';
 import { shuffleArray } from '~/app/utils/helpers';
 
 export const state = (): GameState => ({
@@ -61,10 +61,7 @@ export const mutations = {
   },
 };
 export const actions: ActionTree<GameState, GameState> = {
-  trySetGame: (
-    { commit }: any,
-    gameToset: { conditions: Condition[]; prizes: Prize[] }
-  ) => {
+  trySetGame: ({ commit }: any, gameToset: GameToSet) => {
     return gameService.createGame(gameToset).then((game: Game) => {
       commit(GAME.SET_GAME, game);
     });
@@ -104,4 +101,11 @@ interface GameStatus {
 interface PicNum {
   women: number;
   ppl: number;
+}
+
+export interface GameToSet {
+  conditions: Condition[];
+  prizes: Prize[];
+  isPublic: boolean;
+  album: Album;
 }

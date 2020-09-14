@@ -1,5 +1,5 @@
 .main--game {
-  .v-main__wrap{
+  .v-main__wrap {
     height: 100%;
   }
 }
@@ -14,7 +14,6 @@
   width: rem(1267); // 88% from 1440/900
   height: rem(792);
   margin: auto;
-
 
   &__bg-img {
     z-index: 0;
@@ -34,7 +33,7 @@
   z-index: 2;
 }
 
-.game-border{
+.game-border {
   position: absolute;
   top: 0;
   left: -8px;
@@ -44,4 +43,14 @@
   z-index: -1;
 }
 
-
+.board {
+  &__cell {
+    img {
+      max-width: unset;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}

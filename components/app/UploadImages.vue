@@ -24,23 +24,38 @@
         </span>
       </v-alert>
     </v-card>
+    <v-dialog v-model="isDialog">
+      <v-card class="pt-4 pt-4 pb-16 tac">
+        <h2>Your Photos are being uploaded</h2>
+        <loader :is-loading="isDialog" />
+        <span class="h2">{{ count.singal }} / {{ count.total }}</span>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { getSvg } from '~/app/utils/svgs';
-
+import Loader from '~/components/app/Loader.vue';
 export default {
   name: 'UploadImages',
+  components: {
+    Loader,
+  },
   data: () => ({
     noImg: getSvg('noImg'),
     supports: ['jpg', 'jpeg', 'png'],
     maxFileSize: 2000,
     maxPictures: 99,
     dragover: false,
+    isDialog: false,
     errorFiles: [],
     presetName: process.env.cloudinaryPreset,
+    count: {
+      singal: 0,
+      total: 0,
+    },
   }),
   computed: {
     ...mapGetters({
@@ -114,10 +129,19 @@ export default {
         this.errorFiles = [];
       }, 6000);
       if (validFiles) {
+        this.isDialog = true;
+        this.count.singal = 1;
+        this.count.total = files.length;
         this.uploadToCl(files);
       }
     },
     async uploadToCl(files) {
+      Array.from(files).forEach((_, i) => {
+        setTimeout(() => {
+          this.count.singal = i;
+        }, 700 * i);
+      });
+
       const uploaders = await Array.from(files).map((file) => {
         const formData = new FormData();
         formData.append('file', file);
@@ -128,6 +152,11 @@ export default {
       });
       const images = await Promise.all(uploaders);
       this.$emit('filesSelected', images);
+      setTimeout(() => {
+        this.isDialog = false;
+        this.count.singal = 0;
+        this.count.total = 0;
+      }, 700);
     },
     doValidation(files) {
       if (!files) {

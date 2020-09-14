@@ -25,7 +25,7 @@
         <div class="d-flex flex-column mx-4">
           <lv-image-upload :condition-id="condition.id" @upload="imgUploaded" />
           <v-text-field
-            v-model="condition.name"
+            v-model="prizes[i].name"
             :placeholder="$t('Enter Prize Name')"
           ></v-text-field>
         </div>
@@ -81,14 +81,13 @@ export default {
   computed: {
     disabled() {
       // The every() method tests whether all elements in the array pass the test implemented by the
-      console.log(this.prizes.every((prize) => !!prize.picture));
       return !this.prizes.every((prize) => !!prize.picture);
     },
   },
   methods: {
     startGame() {
       this.loading = true;
-      this.emit('start-game', this.conditions);
+      this.$emit('start-game', this.conditions);
     },
     imgUploaded({ img, conditionId }) {
       const prizes = this.prizes.map((prize) => {

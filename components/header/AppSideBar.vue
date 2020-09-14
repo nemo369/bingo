@@ -20,9 +20,11 @@
     <v-divider></v-divider>
 
     <v-list dense>
-      <v-list-item v-for="menu in menus" :key="menu.name" link>
+      <v-list-item v-for="menu in menus" :key="menu.id" link>
         <v-list-item-content>
-          <v-list-item-title>{{ menu.name }}</v-list-item-title>
+          <v-list-item-title @click="reDirect(menu)">{{
+            menu.name
+          }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -31,6 +33,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { newAlbum } from '~/store/album';
 export default {
   name: 'AppSideBar',
   props: ['drawer'],
@@ -38,14 +41,17 @@ export default {
     return {
       menus: [
         {
+          id: 1,
           name: this.$t('create a bingo'),
           href: this.localePath('album-create_a_bingo'),
         },
         {
+          id: 2,
           name: this.$t('my bingos'),
           href: this.localePath('album-my_bingos'),
         },
         {
+          id: 3,
           name: this.$t('add funds'),
           href: this.localePath('#'),
         },
@@ -56,6 +62,15 @@ export default {
     ...mapGetters({
       user: 'user/getUser',
     }),
+  },
+  methods: {
+    reDirect(menu) {
+      console.log(menu);
+      if (menu.id === 1) {
+        this.$store.dispatch('album/setAlbum', newAlbum());
+      }
+      this.$router.push(menu.href);
+    },
   },
 };
 </script>

@@ -18,15 +18,28 @@
       <div
         v-for="index in condition.row * condition.column"
         :key="index"
-        class="svg block full d-flex align-center justify-center board__cell"
+        class="full d-flex align-center justify-center board__cell ovh"
         :class="`row-${condition.row} cell-${index + 1}`"
-        v-html="noImg"
-      ></div>
+      >
+        <cld-image
+          v-if="album.pictures[index]"
+          :public-id="album.pictures[index].public_id"
+          width="100"
+          height="100"
+          crop="fit"
+          fetch-format="auto"
+          quality="auto"
+          loading="lazy"
+          class="full"
+        />
+        <span v-else class="svg block" v-html="noImg"></span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { getSvg } from '~/app/utils/svgs';
 
 export default {
@@ -35,6 +48,11 @@ export default {
   data: () => ({
     noImg: getSvg('noImg'),
   }),
+  computed: {
+    ...mapGetters({
+      album: 'album/getAlbum',
+    }),
+  },
 };
 </script>
 
@@ -55,6 +73,13 @@ $l-secondary-color: #b73239;
   &__cell {
     background-color: $prim-color;
     border-radius: 10px;
+    img {
+      max-width: unset;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
   }
 }
 </style>

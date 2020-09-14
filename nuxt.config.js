@@ -71,6 +71,7 @@ export default {
     '@nuxt/content',
     'nuxt-i18n',
     // Doc: https://cloudinary.nuxtjs.org/setup
+    '@nuxtjs/cloudinary',
   ],
   /*
    ** Axios module configuration
@@ -141,6 +142,10 @@ export default {
       useCookie: true,
       cookieKey: 'i18n_redirected',
     },
+  },
+  cloudinary: {
+    cloudName: 'bingomatrix',
+    useComponent: true,
   },
   buildDir: 'dist',
   /*

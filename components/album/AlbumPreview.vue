@@ -11,15 +11,24 @@
         :class="`${hover ? 'hover-img' : ''}`"
         :style="{
           gridTemplateColumns: `repeat(${album.board.row}, 1fr)`,
-          gridTemplateRows: ` repeat(${album.board.column}, 1fr)`,
+          gridAutoRows: `${200 / album.board.column}px`,
         }"
       >
         <div
           v-for="(pic, i) in album.board.column * album.board.column"
           :key="i"
-          class="white--text align-end"
+          class="white--text justify-center full d-flex flex-column ovh"
         >
-          <img v-if="album.pictures[i]" :src="album.pictures[i].url" />
+          <!-- <img v-if="album.pictures[i]" :src="album.pictures[i].url" /> -->
+          <cld-image
+            v-if="album.pictures[i]"
+            :public-id="album.pictures[i].public_id"
+            width="200"
+            crop="scale"
+            fetch-format="auto"
+            quality="auto"
+            loading="lazy"
+          />
           <div
             v-else
             class="svg d-flex align-center justify-center svg--clear"
@@ -54,7 +63,7 @@
       </v-btn>
       <v-btn
         class="text-capitalize"
-        :disabled="!!album.pictures.length"
+        :disabled="!album.pictures.length"
         color="primary"
         @click="setGame"
       >
@@ -88,6 +97,7 @@ export default {
     },
     editAlbum() {
       this.loading = true;
+      console.log(this.album.albumId);
       this.$store
         .dispatch('album/getBingo', this.album.albumId)
         .then(() => {
@@ -118,9 +128,15 @@ export default {
   transform: scale(1.02);
 }
 .imgs {
-  height: 200px;
+  height: 206px;
   background-color: $prim-color;
   grid-gap: 1px;
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-position: center;
+  }
 }
 .svg--clear {
   background-color: $sec-color;

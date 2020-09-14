@@ -1,19 +1,20 @@
 <template>
   <v-tabs v-model="currentRoute">
-    <nuxt-link
+    <a
       v-for="route in routes"
       :key="route.link"
-      :to="localePath(`/album/${route.path}`)"
       class="li"
+      @click="reDirect(route)"
     >
       <v-tab ripple class="row-1-1">
         {{ $t(route.text) }}
       </v-tab>
-    </nuxt-link>
+    </a>
   </v-tabs>
 </template>
 
 <script>
+import { newAlbum } from '~/store/album';
 export default {
   name: 'AlbumMenu',
   computed: {
@@ -50,6 +51,13 @@ export default {
     isActive(href) {
       const currentRoute = this.$nuxt.$route.path;
       return currentRoute.includes(href);
+    },
+    reDirect(menu) {
+      if (menu.path === 'create_a_bingo') {
+        console.log(menu.path);
+        this.$store.dispatch('album/setAlbum', newAlbum());
+      }
+      this.$router.push(this.localePath({ name: `album-${menu.path}` }));
     },
   },
 };

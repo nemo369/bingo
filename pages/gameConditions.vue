@@ -33,6 +33,19 @@
             @start-game="startGame"
             @update-prizes="updatePrizes"
           />
+          <div class="d-flex align-center justify-center">
+            <h4 class="mr-6">Choose Game Type:</h4>
+            <v-switch
+              v-model="isPublic"
+              color="secondary"
+              inset
+              :label="`${
+                isPublic
+                  ? 'Open - anyone can join'
+                  : 'Selective - host approvel requiered'
+              }`"
+            ></v-switch>
+          </div>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -56,6 +69,7 @@ export default {
       e1: 1,
       conditions: [],
       prizes: [],
+      isPublic: true,
     };
   },
 
@@ -73,9 +87,16 @@ export default {
       // add pictue to conditions
       this.e1 = 2;
     },
-    startGame([...conditions], [...prizes]) {
+    startGame([...conditions]) {
+      const prizes = [...this.prizes];
+      const isPublic = this.isPublic;
       this.$store
-        .dispatch('game/trySetGame', { conditions, prizes })
+        .dispatch('game/trySetGame', {
+          conditions,
+          prizes,
+          isPublic,
+          album: this.album,
+        })
         .then(() => {
           this.$router.push(this.localePath({ name: '/bingo' }));
         });
@@ -111,9 +132,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .bg-color {
   background-color: #e0e6e9;
   min-height: calc(100vh - 250px);
+}
+.v-input--switch {
+  flex: 0 0 320px;
 }
 </style>

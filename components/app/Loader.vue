@@ -70,9 +70,6 @@ export default {
   0% {
     transform: translate(0, 0);
   }
-  50% {
-    scale: 1.1;
-  }
   100% {
     transform: translate(24px, 0);
   }

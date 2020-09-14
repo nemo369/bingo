@@ -3,13 +3,13 @@
     <ul v-if="isLogedIn" class="d-flex justify-end row-1-1 gray--color">
       <li
         v-for="menu in menus"
-        :key="menu.href"
+        :key="menu.id"
         :class="{ active: isActive(menu.href) }"
         class="px-4 tac inherit row-1-1 d-flex justify-center flex-column"
       >
-        <nuxt-link :to="menu.href" class="text-uppercase fs18">
+        <a class="text-uppercase fs18" @click="reDirect(menu)">
           {{ menu.name }}
-        </nuxt-link>
+        </a>
       </li>
     </ul>
     <ul v-else class="d-flex justify-end row-1-1 gray--color">
@@ -29,6 +29,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { newAlbum } from '~/store/album';
 
 export default {
   name: 'MainMenu',
@@ -36,14 +37,17 @@ export default {
     return {
       menus: [
         {
+          id: 1,
           name: this.$t('create a bingo'),
           href: this.localePath('album-create_a_bingo'),
         },
         {
+          id: 2,
           name: this.$t('my bingos'),
           href: this.localePath('album-my_bingos'),
         },
         {
+          id: 3,
           name: this.$t('add funds'),
           href: this.localePath('#'),
         },
@@ -61,6 +65,12 @@ export default {
       if (currentRoute.includes(href)) {
         return true;
       }
+    },
+    reDirect(menu) {
+      if (menu.id === 1) {
+        this.$store.dispatch('album/setAlbum', newAlbum());
+      }
+      this.$router.push(menu.href);
     },
   },
 };

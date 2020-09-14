@@ -147,7 +147,6 @@ export default {
       return false;
     },
     addTitle({ title, assetId }) {
-      console.log(title, assetId);
       const pictures = this.album.pictures.map((img) => {
         if (img.asset_id === assetId) {
           return {
@@ -182,7 +181,6 @@ export default {
       albumService
         .createAlbum(album)
         .then((res) => {
-          console.log(res);
           this.$router.push(this.localePath({ name: 'album-my_bingos' }));
         })
         .catch((err) => {

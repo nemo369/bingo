@@ -35,8 +35,10 @@ export default {
   async fetch () {
     try {
       const albums = await albumService.getBingos();
+      if(albums){
         this.myAlbums = albums.filter(album => !album.isPublic)
         this.publicAlbums = albums.filter(album => album.isPublic)
+      }
 } catch (e) {
       this.error ={
         statusCode: 503,

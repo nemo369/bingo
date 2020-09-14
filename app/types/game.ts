@@ -1,12 +1,12 @@
-import { User } from './user';
-import { Picture, Album } from './album';
+import { ServerCondition } from '../const/conditions';
+import { Album, Picture } from './album';
 import { Card } from './card';
 
 export interface Game {
   name: string;
   pin: number;
   conditions: Condition[];
-  host: User;
+  hostId: number;
   album: Album;
   bingo: any;
 }
@@ -28,6 +28,7 @@ export interface Condition {
   row: number;
   column: number;
   patterns: number[][];
+  serverName: ServerCondition;
 }
 
 export interface JoinGameRes {

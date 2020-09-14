@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { Game, Condition, Prize, JoinGameRes } from '~/app/types/game';
 import { Card } from '~/app/types/card';
+import { Game, JoinGameRes, Prize } from '~/app/types/game';
+import { GameToSet } from '~/store/game';
 
 export class GameService {
   private proxy =
@@ -32,16 +33,24 @@ export class GameService {
     return data;
   }
 
-  public async createGame(gameToSet: {
-    conditions: Condition[];
-    prizes: Prize[];
-  }): Promise<Game> {
-    const { data } = await axios.post<Promise<Game>>(
-      `${this.baseUrl}/public/`,
-      gameToSet,
-      this.headers
-    );
-    return data;
+  public async createGame(gameToSet: GameToSet): Promise<Game> {
+    const gameToSetServerObj = this.toServerObj(gameToSet);
+    try {
+      const { data } = await axios.post<Promise<any>>(
+        `${this.baseUrl}/game-ready/`,
+        gameToSetServerObj,
+        this.headers
+      );
+      const game = await this.serverToGame(data);
+      return game;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
   }
 
   public async joinGame(pinAndName: {
@@ -54,6 +63,44 @@ export class GameService {
       this.headers
     );
     return data;
+  }
+
+  private serverToGame(game: any): Game {
+    const prizes: Prize[] = [];
+    if (game.prizes[0]) {
+      Object.keys(game.prizes[0]).forEach((key) => {
+        prizes.push({
+          ...game.prizes[0][key],
+          conditionId: key,
+        });
+      });
+    }
+
+    return {
+      ...game,
+      pin: game.game_id,
+      conditions: game.winning_conditions,
+      hostId: game.user_id,
+      album: game.album_id,
+      prizes,
+      // bingo: any,
+    };
+  }
+
+  private toServerObj(game: GameToSet) {
+    const prizes: any = {};
+    game.prizes.forEach((prize) => {
+      prizes[`condition_${prize.conditionId}`] = prize;
+    });
+
+    return {
+      album_name: game.album.name,
+      album_id: game.album.albumId,
+      board_size: game.conditions[0].row,
+      winning_conditions: game.conditions[0].serverName, // connert to array
+      is_public: game.isPublic,
+      prizes,
+    };
   }
 }
 
