@@ -29,6 +29,24 @@
         <h2>Your Photos are being uploaded</h2>
         <loader :is-loading="isDialog" />
         <span class="h2">{{ count.singal }} / {{ count.total }}</span>
+        <v-alert
+          v-for="(file, i) in errorFiles"
+          :key="i"
+          dense
+          outlined
+          type="error"
+          class="error pa-2 mb-4 mx-auto"
+        >
+          <span>{{ file.name }}</span> -
+          <span
+            v-for="(err, ind) in file.errors"
+            :key="ind"
+            class="white--text"
+          >
+            <i v-if="ind">,</i>
+            {{ err.msg }}
+          </span>
+        </v-alert>
       </v-card>
     </v-dialog>
   </div>
@@ -143,12 +161,14 @@ export default {
       });
 
       const uploaders = await Array.from(files).map((file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('folder', 'users_uploads');
-        formData.append('upload_preset', this.presetName);
-        formData.append('tags', ['album', 'user_album', this.user.username]); // Optional - add tag for image admin in Cloudinary
-        return this.$uploadApi.$post('upload', formData);
+        if (this.fileValid(file)) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('folder', 'users_uploads');
+          formData.append('upload_preset', this.presetName);
+          formData.append('tags', ['album', 'user_album', this.user.username]); // Optional - add tag for image admin in Cloudinary
+          return this.$uploadApi.$post('upload', formData);
+        }
       });
       const images = await Promise.all(uploaders);
       this.$emit('filesSelected', images);
@@ -190,6 +210,18 @@ export default {
           title: '',
         };
       });
+    },
+    fileValid(file) {
+      const type = file.type.split('/');
+      if (!type[0].includes('image') || !this.supports.includes(type[1])) {
+        return false;
+      }
+      // valid size -> from byes to KB
+      const sizeInKb = file.size / 1024;
+      if (sizeInKb > this.maxFileSize) {
+        return false;
+      }
+      return true;
     },
   },
 };

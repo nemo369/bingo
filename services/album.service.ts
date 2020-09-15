@@ -67,12 +67,8 @@ export class AlbumService {
 
   private albumToServer(album: NewAlbum) {
     const picObj: any = {};
-    album.pictures.forEach((pic) => {
-      if (pic.name) {
-        picObj[pic.name] = { ...pic, remote_id: pic.asset_id };
-      } else {
-        picObj[pic.asset_id] = { ...pic, remote_id: pic.asset_id };
-      }
+    album.pictures.forEach((pic, i) => {
+      picObj[`pic${i + 1}`] = { ...pic, remote_id: pic.asset_id };
     });
     return {
       ...album,

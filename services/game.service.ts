@@ -13,7 +13,7 @@ export class GameService {
   public async gameConfirm(pin: number): Promise<string> {
     try {
       const { data } = await axios.post(
-        `${this.baseUrl}/game-confirm/`,
+        `${this.baseUrl}/game-create/`,
         { game_id: pin },
         this.headers
       );
@@ -142,7 +142,9 @@ export class GameService {
       album_name: game.album.name,
       album_id: game.album.albumId,
       board_size: game.conditions[0].row,
-      winning_conditions: game.conditions[0].serverName, // connert to array
+      winning_conditions: game.conditions.map(
+        (condition) => condition.serverName
+      ), // connert to array
       is_public: game.isPublic,
       prizes,
     };
