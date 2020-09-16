@@ -56,11 +56,20 @@ export class GameService {
   }
 
   public async fetchGame(pin: string): Promise<Game> {
-    const { data } = await axios.get<Promise<Game>>(
-      `${this.baseUrl}/?pin=${pin}/`,
-      this.headers
-    );
-    return data;
+    try {
+      const { data } = await axios.get<Promise<Game>>(
+        `${this.baseUrl}/game-info/?game_id=${pin}`,
+        this.headers
+      );
+      return data;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
   }
 
   public async getCard({

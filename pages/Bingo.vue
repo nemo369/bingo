@@ -5,16 +5,18 @@
       <board />
       <panel />
       <backgorund />
-      <form v-if="error" class="error-msg" @submit.prevent="fetchGame">
-        <h2>{{ error }}</h2>
-        <v-text-field
-          v-model="pin"
-          type="text"
-          class="half mx-auto my-3"
-          maxlength="5"
-        />
-        <v-btn rounded color="primary" type="submit">Let's Play</v-btn>
-      </form>
+      <v-card v-if="error" elevation="6" class="error-msg py-6">
+        <form @submit.prevent="fetchGame">
+          <h2>{{ error }}</h2>
+          <v-text-field
+            v-model="pin"
+            type="text"
+            class="half mx-auto my-3"
+            maxlength="5"
+          />
+          <v-btn rounded color="primary" type="submit">Let's Play</v-btn>
+        </form>
+      </v-card>
     </section>
   </div>
 </template>
@@ -50,11 +52,10 @@ export default {
       socketErr: 'socket/getErr',
     }),
     isBlur() {
-      if (
-        !this.game ||
-        !this.game.response ||
-        this.game.response === 'Game is ready'
-      ) {
+      if (!this.game) {
+        return false;
+      }
+      if (!this.game.response || this.game.response === 'Game is ready') {
         return true;
       }
       return false;
@@ -108,13 +109,9 @@ export default {
     },
     wsInit() {
       const data = {
-        message_type: 'add.player',
         firstMsg: 'WS Game Is On',
-        data: {
-          game_id: this.pin,
-        },
       };
-      this.$store.dispatch('socket/initPlayerSocket', data);
+      this.$store.dispatch('socket/initSocket', data);
     },
     updatePics(num) {
       this.$store.dispatch('game/setPicNum', { women: num, ppl: num });
@@ -150,7 +147,7 @@ export default {
 }
 .error-msg {
   z-index: 4;
-  background-color: $app-brown;
+  background-color: $white;
 
   h2 {
     color: $black;

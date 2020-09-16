@@ -8,7 +8,9 @@
     >
     <loader v-if="isLoading" :is-loading="isLoading" />
 
-    <card v-if="card" :card="card" />
+    <div v-for="(card, i) in cards" :key="i">
+      <card :card="card" />
+    </div>
     <colors />
     <game-status />
   </section>
@@ -23,8 +25,7 @@ import Colors from '~/components/player/Colors.vue';
 import GameStatus from '~/components/player/GameStatus.vue';
 import Loader from '~/components/app/Loader.vue';
 export default {
-  name: 'Play',
-
+  name: 'PlayBingo',
   components: {
     Card,
     Colors,
@@ -35,7 +36,6 @@ export default {
     return {
       gameSocket: null,
       pin: this.$route.query.pin,
-      card: null,
       err: '',
       isLoading: true,
     };
@@ -50,22 +50,12 @@ export default {
     }),
   },
   watch: {
-    socketMsgs(msgs) {
-      if (msgs[msgs.length - 1]?.data?.player_id) {
-        this.$store.dispatch('player/setPlayer', msgs[msgs.length - 1].data);
-        if (msgs[msgs.length - 1]?.data?.board) {
-          this.$store.dispatch('player/setPlayer', msgs[msgs.length - 1].data);
-        }
-      }
-    },
+    socketMsgs() {},
   },
   mounted() {
-    if (!this.pin || !this.getConnection) {
+    if (!this.pin || !this.connection) {
       this.$router.push(this.localePath('/'));
     }
-    // if (!this.getConnection) {
-    //   this.wsInit({ nickname: 'unknown', game_id: this.pin });
-    // }
     this.isLoading = false;
   },
   beforeRouteLeave(to, _, next) {
@@ -77,7 +67,7 @@ export default {
   },
   methods: {
     wsInit(data) {
-      this.$store.dispatch('socket/initPlayerSocket', data);
+      this.$store.dispatch('socket/initSocket', data);
     },
     shout() {
       if (this.connection) {

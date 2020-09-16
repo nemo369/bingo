@@ -70,7 +70,8 @@ export default {
         .then((card) => {
           const conditions = this.game.conditions;
           const isValid = isCardValidate(card, conditions);
-          this.card = card;
+          // this.card = card;
+          this.card = card.card;
           if (isValid) {
             this.$emit('check-bingo', { num: 3, bol: true });
           } else {

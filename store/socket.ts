@@ -26,7 +26,7 @@ export const mutations = {
   },
 };
 export const actions: ActionTree<SocketState, SocketState> = {
-  initPlayerSocket({ commit, dispatch }: any, data: { [key: string]: any }) {
+  initSocket({ commit, dispatch }: any, data: { [key: string]: any }) {
     // this.gameSocket = new WebSocket(`wss://echo.websocket.org`);
     const gameSocket = new WebSocket(
       `${process.env.socketUrl}/ws/game/${data.game_id}/`
@@ -34,8 +34,10 @@ export const actions: ActionTree<SocketState, SocketState> = {
     commit(SOCKET.SET_CONNECTION, gameSocket);
 
     gameSocket.onopen = () => {
-      dispatch('sendMsg', data);
-      commit(SOCKET.ADD_MSG, data.firstMsg);
+      if (data.data) {
+        dispatch('sendMsg', data);
+      }
+      // commit(SOCKET.ADD_MSG, data.firstMsg);
     };
     gameSocket.onmessage = (e) => {
       const msg = msgHandler(e);

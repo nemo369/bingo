@@ -59,10 +59,19 @@ export default {
     socketMsgs(newMsgs) {
       this.loading = false;
       this.err = '';
-      if (newMsgs.includes('User joined Game')) {
-        this.$router.push(
-          this.localePath({ name: 'Play', query: { pin: this.pin } })
+      if (
+        newMsgs[newMsgs.length - 1].data &&
+        newMsgs[newMsgs.length - 1].data.player_id
+      ) {
+        this.$store.dispatch(
+          'player/setPlayer',
+          newMsgs[newMsgs.length - 1].data
         );
+        this.$router.push({
+          path: this.localePath('/PlayBingo'),
+          query: { pin: this.pin },
+        });
+        console.log(newMsgs[newMsgs.length - 1].data.player_id);
       }
     },
     socketErr() {
@@ -79,6 +88,7 @@ export default {
         const data = {
           message_type: 'add.player',
           firstMsg: 'User joined Game',
+          game_id: this.pin,
           data: {
             game_id: this.pin,
             nickname: this.nickname,
@@ -94,7 +104,7 @@ export default {
       }
     },
     wsInit(data) {
-      this.$store.dispatch('socket/initPlayerSocket', data);
+      this.$store.dispatch('socket/initSocket', data);
     },
     validatePin() {
       this.err = '';

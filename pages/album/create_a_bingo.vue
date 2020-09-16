@@ -28,7 +28,7 @@
             value="3x3"
           />
           <small class="tac small">Recommended: 22 - 36 pictures</small>
-          <Card :card="{ pictures: [], card: { row: 3, column: 3 } }" />
+          <Card :card="{ pictures: [], row: 3, column: 3 }" />
         </label>
         <label class="label">
           <input
@@ -39,7 +39,7 @@
             value="4x4"
           />
           <small class="tac small">Recommended: 22 - 36 pictures</small>
-          <Card :card="{ pictures: [], card: { row: 4, column: 4 } }" />
+          <Card :card="{ pictures: [], row: 4, column: 4 }" />
         </label>
         <label class="label">
           <input
@@ -50,7 +50,7 @@
             value="5x5"
           />
           <small class="tac small">Recommended: 22 - 36 pictures</small>
-          <Card :card="{ pictures: [], card: { row: 5, column: 5 } }" />
+          <Card :card="{ pictures: [], row: 5, column: 5 }" />
         </label>
       </form>
     </div>
@@ -121,11 +121,6 @@ export default {
       ],
     };
   },
-  mounted() {
-    if (this.album.board) {
-      this.choosedCard = `${this.album.board.row}x${this.album.board.column}`;
-    }
-  },
   computed: {
     isDisabled() {
       return false;
@@ -134,6 +129,11 @@ export default {
     ...mapGetters({
       album: 'album/getAlbum',
     }),
+  },
+  mounted() {
+    if (this.album.board) {
+      this.choosedCard = `${this.album.board.row}x${this.album.board.column}`;
+    }
   },
   methods: {
     setFiles(addedPictures) {

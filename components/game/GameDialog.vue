@@ -74,7 +74,7 @@ export default {
       gameData: {},
       needAprrove: false,
       url: process.client ? window.location.origin : '',
-      players: ['nemo', 'sabaka', 'other', 'nemo1', 'sabaka2', 'other3'],
+      players: [],
     };
   },
   computed: {
@@ -90,6 +90,11 @@ export default {
         return true;
       }
       return false;
+    },
+  },
+  watch: {
+    socketMsgs() {
+      this.players = [...this.players, 'new'];
     },
   },
   methods: {
@@ -118,7 +123,7 @@ export default {
           this.isLoading = false;
           this.needAprrove = true;
           this.gameData = response;
-          console.log(response, 'XXXXX?????');
+          this.$store.dispatch('game/update', response);
         })
         .catch((err) => {
           this.isLoading = false;

@@ -1,7 +1,8 @@
+import { Picture } from './album';
+
 export interface Card {
-  id: number;
   row: number;
   column: number;
-  pictureIds: string[];
+  pictures: Picture[];
   userId: number;
 }

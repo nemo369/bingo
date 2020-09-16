@@ -62,6 +62,9 @@ export const mutations = {
     };
     state.gameStatus = newStatus;
   },
+  [GAME.UPDATE_GAME]: (state: GameState, data: any) => {
+    state.game = { ...state.game, ...data };
+  },
 };
 export const actions: ActionTree<GameState, GameState> = {
   trySetGame: ({ commit }: any, gameToset: GameToSet) => {
@@ -79,6 +82,9 @@ export const actions: ActionTree<GameState, GameState> = {
   },
   resetGame: ({ commit }: any, album: Album) => {
     commit(GAME.RESET_GAME, album);
+  },
+  updateGame: ({ commit }: any, data: { [key: string]: any }) => {
+    commit(GAME.UPDATE_GAME, data);
   },
   drawBall: ({ commit, getters }: any) => {
     const { pin } = getters.getGame;

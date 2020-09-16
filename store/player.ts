@@ -7,6 +7,7 @@ import { gameService } from '~/services/game.service';
 import { JoinGameRes } from '~/app/types/game';
 
 import { Ls, playerLocalStorge } from '~/app/utils/localStorage';
+import { Picture } from '~/app/types/album';
 const getDefuletColor = (): Color => ({
   prim: 'red',
   sec: 'red',
@@ -47,11 +48,31 @@ export const actions: ActionTree<PlayerState, PlayerState> = {
     const color = Ls.get(playerLocalStorge)?.color
       ? Ls.get(playerLocalStorge).color
       : getDefuletColor();
-    Ls.set(playerLocalStorge, { ...player, color });
-    commit(PLAYER.SET_PLAYER, player);
+    const playerObj = serverToPlayer({ ...player, color });
+    const cards = serverToCards(player);
+    Ls.set(playerLocalStorge, playerObj);
+    commit(PLAYER.SET_PLAYER, playerObj);
+    commit(PLAYER.SET_CARDS, cards);
   },
 };
 
+const serverToPlayer = (server: any): Player => {
+  return {
+    ...server,
+    playerId: server.player_id,
+    playerGameId: server.player_game_id,
+  };
+};
+const serverToCards = (server: any): Card[] => {
+  return [
+    {
+      userId: +server.player_game_id,
+      pictures: server.board,
+      column: Math.sqrt(server.board.length), // שורש
+      row: Math.sqrt(server.board.length),
+    },
+  ];
+};
 interface PlayerState {
   cards: Card[];
   color: Color;
@@ -64,11 +85,11 @@ interface Color {
 }
 
 interface Player {
-  player_id: string;
+  playerId: string;
   created: string;
   nickname: string;
   player_game_id: number;
   approved: boolean;
   game: number;
-  board: unknown;
+  board: Picture[];
 }
