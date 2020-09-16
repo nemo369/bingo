@@ -14,6 +14,7 @@ export const GAME = {
   DRAW_A_BALL: 'DRAW_A_BALL',
   SET_PIC_NUM: 'SET_PIC_NUM',
   SET_CARDS: 'SET_CARDS',
+  SET_IS_DRAWING: 'SET_IS_DRAWING',
 };
 
 export const PLAYER = {

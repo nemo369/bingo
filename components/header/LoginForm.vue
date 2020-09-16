@@ -5,7 +5,12 @@
         <v-toolbar color="#FFFFFF" flat>
           <v-toolbar-title>{{ $t('Welcome Back') }}</v-toolbar-title>
           <v-spacer />
-          <v-btn color="#fff" elevation="0" @click="$emit('close-modal')">
+          <v-btn
+            rounded
+            color="#fff"
+            elevation="0"
+            @click="$emit('close-modal')"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -36,6 +41,7 @@
         </v-alert>
         <v-card-actions class="pa-4">
           <v-btn
+            rounded
             type="submit"
             form="login-form"
             color="primary"
@@ -48,6 +54,7 @@
         </v-card-actions>
         <div class="tac">
           <v-btn
+            rounded
             class="mt-6 mb-1"
             type="button"
             text
@@ -57,6 +64,7 @@
             <strong>&nbsp; {{ $t('register') }}</strong>
           </v-btn>
           <v-btn
+            rounded
             class="mt-1 mb-6"
             type="button"
             text

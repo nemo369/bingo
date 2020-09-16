@@ -30,7 +30,7 @@ export class GameService {
     }
   }
 
-  public async lockGame(
+  public async gameRequest(
     pin: number
   ): Promise<{ gameCost: number; numOfPlayers: number }> {
     try {
@@ -82,7 +82,7 @@ export class GameService {
     const gameToSetServerObj = this.toServerObj(gameToSet);
     try {
       const { data } = await axios.post<Promise<any>>(
-        `${this.baseUrl}/game-ready/`,
+        `${this.baseUrl}/game-create/`,
         gameToSetServerObj,
         this.headers
       );
@@ -108,6 +108,16 @@ export class GameService {
       this.headers
     );
     return data;
+  }
+
+  public async nextBall(gameId: number): Promise<any> {
+    try {
+      const { data } = await axios.get(
+        `${this.baseUrl}/game-play/?game_id=${gameId}`,
+        this.headers
+      );
+      return data;
+    } catch (error) {}
   }
 
   private serverToGame(game: any): Game {

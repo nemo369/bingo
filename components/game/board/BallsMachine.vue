@@ -1,19 +1,19 @@
 <template>
   <aside
-    class="game-balls-machine relative row-1-1 d-flex flex-column pb-2"
+    class="game-balls-machine relative row-1-1 pb-2"
     :class="{ full: !spin }"
   >
-    <v-spacer></v-spacer>
-    <div
-      id="canvas-wrapper"
-      :style="{ backgroundImage: `url(${getImgUrl(`blower`)})` }"
-    >
+    <!-- <v-spacer></v-spacer> -->
+    <!-- :style="{ backgroundImage: `url(${getImgUrl(`blower`)})` }" -->
+    <div id="canvas-wrapper">
       <canvas id="canvas"></canvas>
     </div>
   </aside>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'GameBallsMachine',
   props: {
@@ -29,7 +29,14 @@ export default {
       canvas: null,
       cBalls: [],
       needToInit: true,
+      runner: null,
+      render: null,
     };
+  },
+  computed: {
+    ...mapGetters({
+      isDrawing: 'game/getIsDrawing',
+    }),
   },
   watch: {
     balls(val) {
@@ -38,10 +45,17 @@ export default {
         this.needToInit = false;
         setTimeout(() => {
           this.initBlower();
-        }, 4000);
+        }, 0);
       } else {
         console.log('NEDD TO UPDATE BALLS');
         //  this.cBalls = this.cBalls.splice
+      }
+    },
+    isDrawing() {
+      if (this.isDrawing) {
+        this.setBlowerAniamtion();
+      } else {
+        this.removeBlowerAniamtion();
       }
     },
   },
@@ -49,17 +63,52 @@ export default {
     this.canvas = document.querySelector(`#canvas`);
   },
   methods: {
-    onRenderTick() {},
-    createBall(render, i) {
+    onRenderTick() {
+      const Body = this.$matter.Body;
+
+      this.cBalls.forEach((ball) => {
+        if (ball.position.y >= this.render.canvas.height - 100) {
+          Body.applyForce(
+            ball,
+            { x: ball.position.x, y: ball.position.y },
+            { x: 0.003, y: -0.003 }
+          );
+        }
+        if (ball.position.y < 120) {
+          Body.applyForce(
+            ball,
+            { x: ball.position.x, y: ball.position.y },
+            { x: -0.003, y: 0.003 }
+          );
+        }
+
+        if (ball.position.x < 80) {
+          Body.applyForce(
+            ball,
+            { x: ball.position.x, y: ball.position.y },
+            { x: 0.003, y: -0.003 }
+          );
+        }
+
+        if (ball.position.x > this.render.canvas.width - 80) {
+          Body.applyForce(
+            ball,
+            { x: ball.position.x, y: ball.position.y },
+            { x: -0.003, y: 0.003 }
+          );
+        }
+      });
+    },
+    createBall(i) {
       const ball = this.$matter.Bodies.circle(
-        render.canvas.width / 2 - this.ballRadius,
-        render.canvas.height / 2 - 2 * this.ballRadius,
+        this.render.canvas.width / 2 - this.ballRadius,
+        this.render.canvas.height / 2 - 2 * this.ballRadius,
         this.ballRadius,
         {
           restitution: 0.3,
           render: {
             sprite: {
-              texture: `https://res.cloudinary.com/demo/image/upload/w_75,h_75,c_fill,r_max/${this.balls[i].public_id}`,
+              texture: `https://res.cloudinary.com/${process.env.cloudinaryName}/image/upload/w_75,h_75,c_fill,r_max/v1/${this.balls[i].public_id}.png`,
             },
           },
         }
@@ -72,12 +121,10 @@ export default {
       const Render = this.$matter.Render;
       const World = this.$matter.World;
       const Bodies = this.$matter.Bodies;
-      const Body = this.$matter.Body;
       const Runner = this.$matter.Runner;
-      const Events = this.$matter.Events;
 
       const engine = Engine.create();
-      const runner = Runner.run(engine);
+      this.runner = Runner.run(engine);
 
       const render = Render.create({
         canvas: this.canvas,
@@ -89,45 +136,11 @@ export default {
           background: 'transparent',
         },
       });
-
-      const onRenderTick = () => {
-        this.cBalls.forEach((ball) => {
-          if (ball.position.y >= render.canvas.height - 100) {
-            Body.applyForce(
-              ball,
-              { x: ball.position.x, y: ball.position.y },
-              { x: 0.003, y: -0.003 }
-            );
-          }
-          if (ball.position.y < 120) {
-            Body.applyForce(
-              ball,
-              { x: ball.position.x, y: ball.position.y },
-              { x: -0.003, y: 0.003 }
-            );
-          }
-
-          if (ball.position.x < 80) {
-            Body.applyForce(
-              ball,
-              { x: ball.position.x, y: ball.position.y },
-              { x: 0.003, y: -0.003 }
-            );
-          }
-
-          if (ball.position.x > render.canvas.width - 80) {
-            Body.applyForce(
-              ball,
-              { x: ball.position.x, y: ball.position.y },
-              { x: -0.003, y: 0.003 }
-            );
-          }
-        });
-      };
+      this.render = render;
 
       // Add the balls to the scene
       for (let i = 0; i < this.ballsCount; i++) {
-        World.add(engine.world, this.createBall(render, i));
+        World.add(engine.world, this.createBall(i));
       }
 
       // Run the engine
@@ -181,9 +194,20 @@ export default {
       // Build the circle bounds - END
 
       // Start the blowing with X seconds delay
-      // setTimeout(() => {
-      //   Events.on(runner, 'tick', onRenderTick);
-      // }, 3000);
+      setTimeout(() => {
+        this.setBlowerAniamtion();
+        setTimeout(() => {
+          this.removeBlowerAniamtion();
+        }, 10000);
+      }, 3000);
+    },
+    setBlowerAniamtion() {
+      const Events = this.$matter.Events;
+      Events.on(this.runner, 'tick', this.onRenderTick);
+    },
+    removeBlowerAniamtion() {
+      const Events = this.$matter.Events;
+      Events.on(this.runner, 'tick', () => {});
     },
     getImgUrl(file) {
       return require(`~/assets/pngs/${file}.png`);
@@ -196,8 +220,10 @@ export default {
 #canvas-wrapper {
   background-repeat: no-repeat;
   background-size: cover;
-  flex: 1 0 255px;
-  max-height: 255px;
-  height: 255px;
+  // background-size: 150% 100%;
+  // flex: 1 0 a;
+  // max-height: 255px;
+  // height: 255px;
+  height: 100%;
 }
 </style>

@@ -7,7 +7,7 @@
           :key="menu.href"
           class="px-4 tac black--text row-1-1 d-flex justify-center flex-column fs18"
         >
-          <nuxt-link :to="menu.href" color="secondery">
+          <nuxt-link :to="menu.href" color="secondary">
             {{ menu.name }}
           </nuxt-link>
         </div>

@@ -9,6 +9,7 @@ export interface Game {
   hostId: number;
   album: Album;
   bingo: any;
+  response: string;
 }
 
 export interface GameToSend {

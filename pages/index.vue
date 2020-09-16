@@ -5,7 +5,7 @@
       <span style="opacity: 0">{{ $t('matrix bingo') | startCase }}</span>
       <logo class="logo" />
     </h1>
-    <h3 style="max-width: 340px" class="my-16">
+    <h3 style="max-width: 340px" class="welcome-text my-16">
       {{ $t('To Join a game...') }}
       <span v-if="!isLogedIn">
         {{ $t('If you wish to create a new Matrix Bingo game') }}
@@ -64,5 +64,10 @@ export default {
 .logo {
   width: 290px;
   margin: -94px auto 0;
+}
+@media #{$mobile} {
+  .welcome-text {
+    margin: -20px 0 1px !important;
+  }
 }
 </style>

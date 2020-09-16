@@ -3,7 +3,7 @@ import { User } from './user';
 /* eslint-disable camelcase */
 export interface Album {
   name: string;
-  albumId: string;
+  albumId: string | null;
   numberOfPictures: number;
   isPublic: boolean;
   pictures: Picture[];
@@ -44,7 +44,7 @@ export interface NewAlbum {
   board: {
     row: number;
     column: number;
-    isEmptyCenter: boolean;
+    isEmptyCenter?: boolean;
   };
 }
 

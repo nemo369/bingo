@@ -32,6 +32,7 @@
       </v-card>
     </section>
     <v-btn
+      rounded
       class="mx-auto d-flex"
       x-large
       color="success"

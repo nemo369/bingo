@@ -18,9 +18,9 @@
     <div v-if="card" class="full d-flex justify-space-between">
       <card-cmp :card="card" class="half" />
       <div>
-        <v-btn @click="checkAnother"> Check Another Card</v-btn>
-        <v-btn @click="continueGame"> Continue</v-btn>
-        <v-btn @click="endGame"> End Game</v-btn>
+        <v-btn rounded @click="checkAnother"> Check Another Card</v-btn>
+        <v-btn rounded @click="continueGame"> Continue</v-btn>
+        <v-btn rounded @click="endGame"> End Game</v-btn>
       </div>
     </div>
   </div>

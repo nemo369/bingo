@@ -62,9 +62,10 @@
         <v-icon dark>mdi-square-edit-outline</v-icon>
       </v-btn>
       <v-btn
-        class="text-capitalize"
-        :disabled="!album.pictures.length"
+        class="text-capitalize px-6"
+        :disabled="isDisabled"
         color="primary"
+        x-large
         @click="setGame"
       >
         let's Game
@@ -88,6 +89,25 @@ export default {
     loading: false,
     noImg: getSvg('noImg'),
   }),
+  computed: {
+    isDisabled() {
+      if (!this.album || !this.album.pictures.length) {
+        return true;
+      }
+      console.log(this.album);
+      if (this.album.pictures.length < 25 && this.album.board.row === 3) {
+        return true;
+      }
+      if (this.album.pictures.length < 36 && this.album.board.row === 4) {
+        return true;
+      }
+      if (this.album.pictures.length < 36 && this.album.board.row === 5) {
+        return true;
+      }
+
+      return false;
+    },
+  },
   methods: {
     setGame() {
       this.loading = true;
@@ -97,7 +117,6 @@ export default {
     },
     editAlbum() {
       this.loading = true;
-      console.log(this.album.albumId);
       this.$store
         .dispatch('album/getBingo', this.album.albumId)
         .then(() => {

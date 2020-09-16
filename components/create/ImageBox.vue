@@ -1,7 +1,17 @@
 <template>
   <div class="box pa-2 relative" elevation="2">
     <v-badge color="green" :content="index" />
-    <v-img :src="img.url" :aspect-ratio="1" width="150" class="ma-auto"></v-img>
+    <h4>{{ img.title }} &nbsp;</h4>
+    <cld-image
+      :public-id="img.public_id"
+      width="150"
+      height="150"
+      crop="fit"
+      fetch-format="auto"
+      quality="auto"
+      loading="lazy"
+      class="ma-auto"
+    ></cld-image>
     <v-text-field
       v-model="title"
       label="Name"

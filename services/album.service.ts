@@ -9,7 +9,7 @@ export class AlbumService {
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
   public async getPublic(): Promise<Album[]> {
-    const { data } = await axios.get(`${this.baseUrl}?albums=public`);
+    const { data } = await axios.get(`/api/game/public-albums/`);
     const res = await data.albums.map((album: any) =>
       this.serverToAlbum(album)
     );
@@ -17,18 +17,37 @@ export class AlbumService {
   }
 
   public async getBingos(): Promise<Album[]> {
-    const { data } = await axios.get(`${this.baseUrl}?albums`);
+    const { data } = await axios.get(`${this.baseUrl}`);
     const res = await data.albums.map((album: any) =>
       this.serverToAlbum(album)
     );
     return res;
   }
 
-  public async getAlbum(albumId: number): Promise<Album> {
-    const { data } = await axios.get<Promise<Album>>(
-      `/api/game/pictures/?albumId=${albumId}`
+  public async updateAlbum(album: NewAlbum, albumId: string): Promise<Album> {
+    const putAlbum = this.albumToServer(album);
+    const { data } = await axios.put<Promise<Album>>(
+      `${this.baseUrl}?album_id=${albumId}`,
+      putAlbum
     );
     return data;
+  }
+
+  public async getAlbum(albumId: number): Promise<Album> {
+    try {
+      const { data } = await axios.get<Promise<any>>(
+        `${this.baseUrl}?album_id=${albumId}`
+      );
+      const { album } = await data;
+      return this.serverToAlbum(album);
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
   }
 
   public async createAlbum(album: NewAlbum): Promise<Album> {
@@ -77,6 +96,14 @@ export class AlbumService {
           ...picObj,
         },
       ],
+    };
+  }
+
+  private albumToNewAlbum(album: Album): NewAlbum {
+    return {
+      name: album.name,
+      pictures: album.pictures,
+      board: album.board,
     };
   }
 }

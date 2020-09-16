@@ -15,12 +15,16 @@
 </template>
 
 <script>
+import ImageBox from '~/components/create/ImageBox.vue';
 export default {
   name: 'ImagesGrid',
+  components: {
+    ImageBox,
+  },
   props: {
     images: {
       type: Array,
-      default: [],
+      default: () => [],
     },
   },
   methods: {

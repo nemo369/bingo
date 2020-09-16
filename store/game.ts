@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
 import { GAME } from './mutations-types';
-import { Game, Prize, Condition, JoinGameRes } from '~/app/types/game';
+import { Game, Prize, Condition } from '~/app/types/game';
 import { gameService } from '~/services/game.service';
 import { Picture, Album } from '~/app/types/album';
 import { shuffleArray } from '~/app/utils/helpers';
@@ -16,6 +16,7 @@ export const state = (): GameState => ({
     women: 4,
     ppl: 1,
   },
+  isDraiwng: false,
 });
 
 export const getters = {
@@ -25,39 +26,41 @@ export const getters = {
   getDrawnBall: (state: GameState) => state.gameStatus.drawnBall,
   getGameStatus: (state: GameState) => state.gameStatus,
   getPicNum: (state: GameState) => state.picNum,
+  getIsDrawing: (state: GameState) => state.isDraiwng,
 };
 
 export const mutations = {
   [GAME.SET_PIC_NUM]: (state: GameState, num: PicNum) =>
     (state.picNum = { ...state.picNum, ...num }),
+  [GAME.SET_IS_DRAWING]: (state: GameState, isDraiwng: boolean) =>
+    (state.isDraiwng = isDraiwng),
   [GAME.SET_GAME]: (state: GameState, game: Game) => (state.game = { ...game }),
-  [GAME.RESET_GAME]: (state: GameState) => {
+  [GAME.RESET_GAME]: (state: GameState, album: Album) => {
     state.gameStatus.drawnBall = null;
     state.gameStatus.ballsPicked = [];
-    state.gameStatus.ballsInMachine = state.game
-      ? shuffleArray(
-          state.game.album.pictures.map((pic, i) => ({
-            ...pic,
-            ballNumber: i + 1,
-          }))
-        )
-      : [];
+    state.gameStatus.ballsInMachine =
+      state.game && album.pictures
+        ? shuffleArray(
+            album.pictures.map((pic, i) => ({
+              ...pic,
+              ballNumber: i + 1,
+            }))
+          )
+        : [];
   },
-  [GAME.DRAW_A_BALL]: (state: GameState) => {
-    const { ballsPicked, ballsInMachine, drawnBall } = state.gameStatus;
-    const newBallsInMachine = ballsInMachine.filter((ball, i) =>
-      i ? ball : null
+  [GAME.DRAW_A_BALL]: (state: GameState, pickedBall: Picture) => {
+    const { ballsPicked, ballsInMachine } = state.gameStatus;
+    const newBallsInMachine = ballsInMachine.filter(
+      (ball) => ball.asset_id !== pickedBall.asset_id
     );
-    const ballsPickedNew = [...ballsPicked];
-    if (drawnBall) {
-      ballsPickedNew.unshift(drawnBall);
-    }
+    const ballsPickedNew = [...ballsPicked, { ...pickedBall }];
+
     const newStatus: GameStatus = {
       ballsPicked: ballsPickedNew,
-      drawnBall: ballsInMachine[0],
+      drawnBall: { ...pickedBall },
       ballsInMachine: newBallsInMachine,
     };
-    state.gameStatus = { ...newStatus };
+    state.gameStatus = newStatus;
   },
 };
 export const actions: ActionTree<GameState, GameState> = {
@@ -74,16 +77,18 @@ export const actions: ActionTree<GameState, GameState> = {
   setPicNum: ({ commit }: any, num: PicNum) => {
     commit(GAME.SET_PIC_NUM, num);
   },
-  resetGame: ({ commit }: any) => {
-    commit(GAME.RESET_GAME);
+  resetGame: ({ commit }: any, album: Album) => {
+    commit(GAME.RESET_GAME, album);
   },
   drawBall: ({ commit, getters }: any) => {
-    const { ballsInMachine } = getters.getGameStatus;
-    if (!ballsInMachine.length) {
-      console.log('GAME IS OVER!!!!!');
-      return;
-    }
-    commit(GAME.DRAW_A_BALL);
+    const { pin } = getters.getGame;
+    commit(GAME.SET_IS_DRAWING, true);
+    return gameService.nextBall(pin).then((newStatus: NewStatus) => {
+      setTimeout(() => {
+        commit(GAME.SET_IS_DRAWING, false);
+      }, 1000);
+      commit(GAME.DRAW_A_BALL, newStatus.picture);
+    });
   },
 };
 
@@ -91,6 +96,7 @@ export interface GameState {
   game?: Game;
   gameStatus: GameStatus;
   picNum: PicNum;
+  isDraiwng: boolean;
 }
 interface GameStatus {
   ballsPicked: Picture[];
@@ -108,4 +114,10 @@ export interface GameToSet {
   prizes: Prize[];
   isPublic: boolean;
   album: Album;
+}
+
+export interface NewStatus {
+  // eslint-disable-next-line camelcase
+  remaining_pictures: number;
+  picture: Picture;
 }

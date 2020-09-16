@@ -1,19 +1,22 @@
 <template>
-  <section class="board relative">
-    <board />
-    <panel />
-    <backgorund />
-    <form v-if="error" class="error-msg" @submit.prevent="fetchGame">
-      <h2>{{ error }}</h2>
-      <v-text-field
-        v-model="pin"
-        type="text"
-        class="half mx-auto my-3"
-        maxlength="5"
-      />
-      <v-btn color="primary" type="submit">Let's Play</v-btn>
-    </form>
-  </section>
+  <div class="board-wrapper relative">
+    <game-dialog />
+    <section class="board relative" :class="{ blur: isBlur }">
+      <board />
+      <panel />
+      <backgorund />
+      <form v-if="error" class="error-msg" @submit.prevent="fetchGame">
+        <h2>{{ error }}</h2>
+        <v-text-field
+          v-model="pin"
+          type="text"
+          class="half mx-auto my-3"
+          maxlength="5"
+        />
+        <v-btn rounded color="primary" type="submit">Let's Play</v-btn>
+      </form>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -21,7 +24,7 @@ import { mapGetters } from 'vuex';
 import Backgorund from '~/components/game/Backgorund.vue';
 import Board from '~/components/game/Board.vue';
 import Panel from '~/components/game/Panel.vue';
-
+import GameDialog from '~/components/game/GameDialog.vue';
 export default {
   name: 'Bingo',
   layout() {
@@ -31,6 +34,7 @@ export default {
     Board,
     Panel,
     Backgorund,
+    GameDialog,
   },
   data() {
     return {
@@ -41,7 +45,20 @@ export default {
   computed: {
     ...mapGetters({
       game: 'game/getGame',
+      album: 'album/getAlbum',
+      socketMsgs: 'socket/getMsgs',
+      socketErr: 'socket/getErr',
     }),
+    isBlur() {
+      if (
+        !this.game ||
+        !this.game.response ||
+        this.game.response === 'Game is ready'
+      ) {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
     if (!this.game) {
@@ -51,15 +68,26 @@ export default {
         this.error = 'Please Enter a Valid Game Pin';
       }
     } else {
-      this.$store.dispatch('game/resetGame');
+      if (this.game && this.game.album) {
+        this.$store.dispatch('album/getBingo', this.game.album).then(() => {
+          this.$store.dispatch('game/resetGame', this.album);
+        });
+      }
+
       setTimeout(() => {
         this.updatePics(1);
       }, 8000);
     }
+    if (this.pin) {
+      this.wsInit();
+    }
   },
   beforeRouteLeave(to, _, next) {
     if (to.name?.includes('bingo')) {
-      prompt('Are you sure you want to Exit game?');
+      const answer = window.confirm('Are you sure you want to Exit game??');
+      if (answer) {
+        next();
+      }
     } else {
       next();
     }
@@ -71,12 +99,22 @@ export default {
         .dispatch('game/fetchGame', this.pin)
         .then(() => {
           this.error = '';
-          this.$store.dispatch('game/resetGame');
+          // this.$store.dispatch('game/resetGame');
           setTimeout(() => {
             this.updatePics(1);
           }, 3000);
         })
         .catch(() => (this.error = 'Please Enter a Valid Game Pin'));
+    },
+    wsInit() {
+      const data = {
+        message_type: 'add.player',
+        firstMsg: 'WS Game Is On',
+        data: {
+          game_id: this.pin,
+        },
+      };
+      this.$store.dispatch('socket/initPlayerSocket', data);
     },
     updatePics(num) {
       this.$store.dispatch('game/setPicNum', { women: num, ppl: num });
@@ -90,6 +128,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(24, 1fr);
   grid-template-rows: repeat(24, 1fr);
+  transition: filter 0.3s;
 }
 .backgorund {
   grid-row: 1/25;
@@ -121,5 +160,9 @@ export default {
   z-index: 3;
   text-align: center;
   border-radius: 10px;
+}
+
+.board.blur {
+  filter: blur(5px);
 }
 </style>

@@ -3,17 +3,20 @@
     height: 100%;
   }
 }
-.board {
-  // max-width: 1440px;
-  // max-height: 900px;
-  // height: calc(100vh - 15px);
-
-  // max-width: 1800px;
-  // max-height: 1125px;
-
+.board-wrapper{
   width: rem(1267); // 88% from 1440/900
   height: rem(792);
-  margin: auto;
+  width: 100vw;
+  height: calc(100vh - 15px);
+
+  margin: 15px auto 0;
+}
+.board {
+  // max-width: 1800px;
+  // max-height: 1125px;
+  width: 100%;
+  height: 100%;
+
 
   &__bg-img {
     z-index: 0;

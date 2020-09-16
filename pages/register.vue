@@ -51,6 +51,7 @@
           </v-alert>
           <v-card-actions class="pa-4">
             <v-btn
+              rounded
               type="submit"
               form="register"
               class="white--text ok-btn col-1-1"

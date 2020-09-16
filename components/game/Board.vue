@@ -1,5 +1,5 @@
 <template>
-  <div v-if="game" class="screen full relative">
+  <div v-if="game && album" class="screen full relative">
     <img
       :src="getImgUrl(`screen-border`)"
       loading="eager"
@@ -10,8 +10,8 @@
     <game-matrix />
     <game-prizes @check-bingo="toglleCheckBingo" />
     <game-counter
-      :curent-num="game.album.pictures.length - ballsInMachine.length"
-      :total="game.album.pictures.length"
+      :curent-num="album.pictures.length - ballsInMachine.length"
+      :total="album.pictures.length"
     />
     <v-dialog v-model="checkBingoDiglaog" persistent width="450px">
       <check-card @check-bingo="toglleCheckBingo" />
@@ -40,6 +40,7 @@ export default {
   computed: {
     ...mapGetters({
       game: 'game/getGame',
+      album: 'album/getAlbum',
       ballsInMachine: 'game/getBallsInMachine',
     }),
   },

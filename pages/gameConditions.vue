@@ -80,6 +80,7 @@ export default {
   computed: {
     ...mapGetters({
       album: 'album/getAlbum',
+      game: 'game/getGame',
     }),
   },
   methods: {
@@ -100,7 +101,9 @@ export default {
           album: this.album,
         })
         .then(() => {
-          this.$router.push(this.localePath({ name: '/bingo' }));
+          this.$router.push(
+            this.localePath({ name: 'Bingo', query: { pin: this.game.pin } })
+          );
         })
         .catch(() => {
           this.errMsg = 'Oh no :)';

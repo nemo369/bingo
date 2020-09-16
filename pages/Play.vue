@@ -3,7 +3,7 @@
     <v-alert v-if="err" type="error">
       {{ err }}
     </v-alert>
-    <v-btn text class="text--secondery" @click="shout"
+    <v-btn text class="text--secondary" @click="shout"
       ><h2>SHOUT FOR BINGO</h2></v-btn
     >
     <loader v-if="isLoading" :is-loading="isLoading" />

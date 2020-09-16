@@ -75,13 +75,14 @@
       ></v-switch>
 
       <v-btn
+        rounded
         color="primary"
         class="px-16"
         :disabled="album.pictures.length > 99 || !choosedCard"
         :loading="loading"
         x-large
         @click="createAlbum"
-        >{{ $t('save') }}</v-btn
+        >{{ !album.albumId ? $t('save') : $t('update') }}</v-btn
       >
       <v-alert v-if="errMsg" type="error">
         {{ errMsg }}
@@ -120,19 +121,24 @@ export default {
       ],
     };
   },
+  mounted() {
+    if (this.album.board) {
+      this.choosedCard = `${this.album.board.row}x${this.album.board.column}`;
+    }
+  },
   computed: {
     isDisabled() {
       return false;
       // return !this.images.length < 36;
     },
-
     ...mapGetters({
       album: 'album/getAlbum',
     }),
   },
   methods: {
     setFiles(addedPictures) {
-      const pictures = [...this.album.pictures, ...addedPictures];
+      const clearErros = addedPictures.filter((pic) => !!pic);
+      const pictures = [...this.album.pictures, ...clearErros];
       this.$store.dispatch('album/setAlbum', { pictures });
       // console.log(files);
     },
@@ -171,27 +177,44 @@ export default {
       this.loading = true;
       const album = {
         ...this.album,
+        name: this.album.name ? this.album.name : 'Untitled',
         is_public: this.is_public,
         board: {
           row: parseInt(this.choosedCard[0], 10),
           column: parseInt(this.choosedCard[2], 10),
         },
       };
-
+      if (this.album.albumId) {
+        this.updateAlbum(album);
+        return;
+      }
       albumService
         .createAlbum(album)
-        .then((res) => {
+        .then(() => {
           this.$router.push(this.localePath({ name: 'album-my_bingos' }));
         })
         .catch((err) => {
-          const obj = convertErr(err);
-          this.loading = false;
-          if (obj.data.status === 400) {
-            this.errMsg = 'Something is Missing in your Bingo';
-          } else {
-            this.errMsg = 'Server Error';
-          }
+          this.handleErr(err);
         });
+    },
+    updateAlbum(album) {
+      albumService
+        .updateAlbum(album, this.album.albumId)
+        .then(() => {
+          this.$router.push(this.localePath({ name: 'album-my_bingos' }));
+        })
+        .catch((err) => {
+          this.handleErr(err);
+        });
+    },
+    handleErr(err) {
+      const obj = convertErr(err);
+      this.loading = false;
+      if (obj.data.status === 400) {
+        this.errMsg = 'Something is Missing in your Bingo';
+      } else {
+        this.errMsg = 'Server Error';
+      }
     },
   },
 };

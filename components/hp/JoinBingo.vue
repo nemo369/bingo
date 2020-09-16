@@ -22,7 +22,7 @@
     </v-alert>
     <loader v-if="isLoading" :is-loading="isLoading" class="loader" />
 
-    <button type="submit" class="btn rounded-lg" x-large>BINGO</button>
+    <button type="submit" class="join-bingo-btn learn-more">BINGO</button>
   </v-form>
 </template>
 
@@ -77,8 +77,12 @@ export default {
           this.nickname = this.nickname.slice(0, 16);
         }
         const data = {
-          game_id: this.pin,
-          nickname: this.nickname,
+          message_type: 'add.player',
+          firstMsg: 'User joined Game',
+          data: {
+            game_id: this.pin,
+            nickname: this.nickname,
+          },
         };
         this.isLoading = true;
         this.wsInit(data);
@@ -121,7 +125,6 @@ export default {
 .v-input input {
   font-family: $heading-font-family;
 }
-.btn,
 .v-btn {
   width: 100%;
   flex: 0 0 100px;

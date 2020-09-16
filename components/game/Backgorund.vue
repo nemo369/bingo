@@ -47,6 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 img {
-  max-width: unset;
+  object-fit: cover;
+  object-position: center;
 }
 </style>

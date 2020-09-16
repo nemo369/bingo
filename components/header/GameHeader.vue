@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer :value="drawer" absolute temporary right>
+  <v-navigation-drawer :value="drawer" app temporary right>
     <v-list-item v-if="user">
       <v-list-item-avatar>
         <v-img :src="user.avatar"></v-img>
