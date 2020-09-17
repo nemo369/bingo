@@ -33,17 +33,28 @@ export const actions: ActionTree<SocketState, SocketState> = {
     );
     commit(SOCKET.SET_CONNECTION, gameSocket);
 
-    gameSocket.onopen = () => {
+    gameSocket.onopen = (e) => {
+      const msg = {
+        type: e.type,
+        timeStamp: e.timeStamp,
+        // data,
+      };
+      commit(SOCKET.ADD_MSG, msg);
       if (data.data) {
         dispatch('sendMsg', data);
       }
-      // commit(SOCKET.ADD_MSG, data.firstMsg);
     };
     gameSocket.onmessage = (e) => {
+      console.log(e);
+
       const msg = msgHandler(e);
       commit(SOCKET.ADD_MSG, msg);
     };
-    gameSocket.onclose = () => {
+    gameSocket.onclose = (err) => {
+      console.log(err);
+      commit(SOCKET.ON_ERROR, 'Couldnt Find Server');
+    };
+    gameSocket.onerror = (err) => {
       commit(SOCKET.ON_ERROR, 'Couldnt Find Server');
     };
   },
@@ -60,6 +71,7 @@ const msgHandler = (msg: MessageEvent): SocketMsg => {
     data = { error: 'No Messege' };
   }
   const res = {
+    msg: { ...msg },
     type: msg.type,
     timeStamp: msg.timeStamp,
     data,

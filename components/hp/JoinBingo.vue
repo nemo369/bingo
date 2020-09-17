@@ -22,7 +22,13 @@
     </v-alert>
     <loader v-if="isLoading" :is-loading="isLoading" class="loader" />
 
-    <button type="submit" class="join-bingo-btn learn-more">BINGO</button>
+    <button
+      type="submit"
+      class="join-bingo-btn learn-more"
+      :disabled="isLoading"
+    >
+      BINGO
+    </button>
   </v-form>
 </template>
 
@@ -81,6 +87,9 @@ export default {
   },
   methods: {
     join() {
+      if (this.isLoading) {
+        return;
+      }
       if (this.pin.length === 4) {
         if (this.nickname.length > 16) {
           this.nickname = this.nickname.slice(0, 16);

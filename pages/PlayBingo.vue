@@ -78,6 +78,12 @@ export default {
       }
     },
   },
+
+  head() {
+    return {
+      title: 'Play bingo',
+    };
+  },
 };
 </script>
 

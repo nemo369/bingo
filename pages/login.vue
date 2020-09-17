@@ -50,6 +50,12 @@ export default {
       return isFormValid;
     },
   },
+
+  head() {
+    return {
+      title: 'Log in',
+    };
+  },
 };
 </script>
 

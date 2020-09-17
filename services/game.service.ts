@@ -31,12 +31,13 @@ export class GameService {
   }
 
   public async gameRequest(
-    pin: number
+    pin: number,
+    playersApproved: any[]
   ): Promise<{ gameCost: number; numOfPlayers: number }> {
     try {
       const { data } = await axios.post(
         `${this.baseUrl}/game-request/`,
-        { game_id: pin },
+        { game_id: pin, players_approved: playersApproved },
         this.headers
       );
       const res = await data;
@@ -61,7 +62,8 @@ export class GameService {
         `${this.baseUrl}/game-info/?game_id=${pin}`,
         this.headers
       );
-      return data;
+      const game = await this.serverToGame(data);
+      return game;
     } catch (error) {
       throw new Error(
         JSON.stringify({
@@ -142,11 +144,14 @@ export class GameService {
 
     return {
       ...game,
-      pin: game.game_id,
+      pin: +game.game_id,
       conditions: game.winning_conditions,
       hostId: game.user_id,
       album: game.album_id,
       prizes,
+      picturesPool: game.pictures_pool || [],
+      picturesList: game.players_list || [],
+      shownPictures: game.shown_pictures || [],
       // bingo: any,
     };
   }

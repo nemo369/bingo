@@ -16,7 +16,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
+    titleTemplate: '%s - ' + 'Matrix Bingo',
     title: 'Matrix Bingo',
     meta: [
       { charset: 'utf-8' },
@@ -24,7 +24,13 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || '',
+        content:
+          'Invite your friends and host your own multiplayer Bingo online. Build beautiful matrix bingo albums as your bingo cards or use a public one',
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: process.env.BASE_URL + 'matrix_bingo.jpg',
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
@@ -42,6 +48,7 @@ export default {
     '~/plugins/upload-api.ts',
     '~/plugins/cloudinary.js',
     '~/plugins/matter.client.js',
+    '~/plugins/ga.client.js',
   ],
   env: {
     title: 'LivueJournal',
@@ -146,6 +153,15 @@ export default {
   cloudinary: {
     cloudName: 'bingomatrix',
     useComponent: true,
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'custom',
+        path: '*',
+        component: resolve(__dirname, 'pages/404.vue'),
+      });
+    },
   },
   buildDir: 'dist',
   /*

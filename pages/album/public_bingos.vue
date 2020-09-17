@@ -34,6 +34,11 @@ export default {
     albums: [],
     error: null
   }),
+  head() {
+    return {
+      title: 'Public albums for your bingo',
+    };
+  },
 };
 </script>
 

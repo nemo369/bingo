@@ -63,24 +63,19 @@ export default {
   },
   mounted() {
     if (!this.game) {
-      if (this.pin) {
-        this.fetchGame();
-      } else {
-        this.error = 'Please Enter a Valid Game Pin';
-      }
-    } else {
-      if (this.game && this.game.album) {
-        this.$store.dispatch('album/getBingo', this.game.album).then(() => {
-          this.$store.dispatch('game/resetGame', this.album);
-        });
-      }
+      this.pin
+        ? this.fetchGame()
+        : (this.error = 'Please Enter a Valid Game Pin');
+    }
 
+    if (this.game) {
+      this.$store.dispatch('album/setAlbum', this.game.album);
       setTimeout(() => {
         this.updatePics(1);
       }, 8000);
-    }
-    if (this.pin) {
-      this.wsInit();
+      if (this.pin) {
+        this.wsInit();
+      }
     }
   },
   beforeRouteLeave(to, _, next) {
@@ -109,6 +104,7 @@ export default {
     },
     wsInit() {
       const data = {
+        game_id: this.pin,
         firstMsg: 'WS Game Is On',
       };
       this.$store.dispatch('socket/initSocket', data);
@@ -116,6 +112,12 @@ export default {
     updatePics(num) {
       this.$store.dispatch('game/setPicNum', { women: num, ppl: num });
     },
+  },
+
+  head() {
+    return {
+      title: 'Host Bingo Game',
+    };
   },
 };
 </script>

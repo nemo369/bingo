@@ -5,7 +5,7 @@
       <span style="opacity: 0">{{ $t('matrix bingo') | startCase }}</span>
       <logo class="logo" />
     </h1>
-    <h3 style="max-width: 340px" class="welcome-text my-16">
+    <h3 style="max-width: 340px" class="welcome-text my-1">
       {{ $t('To Join a game...') }}
       <span v-if="!isLogedIn">
         {{ $t('If you wish to create a new Matrix Bingo game') }}
@@ -41,15 +41,20 @@ export default {
     Logo,
   },
   data: () => ({}),
+
   computed: {
     ...mapGetters({
       isLogedIn: 'user/isLogedIn',
     }),
   },
-  head: {
-    bodyAttrs: {
-      class: 'home-page',
-    },
+
+  head() {
+    return {
+      title: 'Join a matrix bingo game',
+      bodyAttrs: {
+        class: 'home-page',
+      },
+    };
   },
 };
 </script>

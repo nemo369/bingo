@@ -23,7 +23,7 @@
         <div class="half px-6">
           <h4>requsted:</h4>
           <v-divider class="mb-2"></v-divider>
-          <div v-for="player in players" :key="player">
+          <div v-for="player in playersAskToJoin" :key="player">
             <div class="d-flex align-center justify-space-between">
               <span class="mb-6">@{{ player }}</span>
               <v-btn
@@ -75,6 +75,7 @@ export default {
       needAprrove: false,
       url: process.client ? window.location.origin : '',
       players: [],
+      playersAskToJoin: [],
     };
   },
   computed: {
@@ -94,17 +95,25 @@ export default {
   },
   watch: {
     socketMsgs() {
-      this.players = [...this.players, 'new'];
+      console.log(this.socketMsgs);
+      this.playersAskToJoin = [
+        ...this.playersAskToJoin,
+        this.socketMsgs[this.socketMsgs.length - 1],
+      ];
     },
   },
   methods: {
     approve(player) {
       console.log(player);
+      this.playersAskToJoin = this.playersAskToJoin.filter(
+        (p) => p.id !== player.id
+      );
+      this.players.unshift(player);
     },
     gameRequest() {
       this.isLoading = true;
       gameService
-        .gameRequest(this.game.pin)
+        .gameRequest(this.game.pin, this.players)
         .then((response) => {
           this.isLoading = false;
           this.needAprrove = true;
