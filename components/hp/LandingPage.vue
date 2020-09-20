@@ -1,5 +1,5 @@
 <template>
-  <section class="d-flex justify-space-between mx-auto col-1-1">
+  <section class="d-flex justify-space-between mx-auto col-1-1 flex-wrap">
     <nuxt-link :to="localePath('/album')" class="card">
       <h2 class="tac">1</h2>
       <v-card elevtion="3" class="d-flex flex-column pa-4 mt-2">

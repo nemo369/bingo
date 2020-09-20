@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     reDirect(menu) {
-      console.log(menu);
       if (menu.id === 1) {
         this.$store.dispatch('album/setAlbum', newAlbum());
       }

@@ -49,7 +49,7 @@ export default {
         {
           id: 3,
           name: this.$t('add funds'),
-          href: this.localePath('#'),
+          href: this.localePath('payments-deposits'),
         },
       ],
     };
