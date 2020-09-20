@@ -154,17 +154,17 @@ export default {
       }
     },
     async uploadToCl(files) {
-      Array.from(files).forEach((_, i) => {
+      Array.from(files).forEach((file, i) => {
         setTimeout(() => {
           this.count.singal = i;
-        }, 700 * i);
+        }, 100 * i + file.size / 1024);
       });
 
       const uploaders = await Array.from(files).map((file) => {
         if (this.fileValid(file)) {
           const formData = new FormData();
           formData.append('file', file);
-          formData.append('folder', 'users_uploads');
+          formData.append('folder', `users_uploads/${this.user.username}`);
           formData.append('upload_preset', this.presetName);
           formData.append('tags', ['album', 'user_album', this.user.username]); // Optional - add tag for image admin in Cloudinary
           return this.$uploadApi.$post('upload', formData);

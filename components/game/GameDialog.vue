@@ -19,13 +19,17 @@
       <v-card-title class="headline">
         Number of tickets handled{{ game.numOfPlayers }}
       </v-card-title>
-      <div class="d-flex justify-space-around">
-        <div class="half px-6">
+      <div class="d-flex justify-space-around pb-4">
+        <div v-if="!game.is_public" class="half px-6">
           <h4>requsted:</h4>
           <v-divider class="mb-2"></v-divider>
-          <div v-for="player in playersAskToJoin" :key="player">
+          <div v-for="player in playersAskToJoin" :key="player.player_id">
             <div class="d-flex align-center justify-space-between">
-              <span class="mb-6">@{{ player }}</span>
+              <span
+                >@{{
+                  player.nickname ? player.nickname : 'Approved User'
+                }}</span
+              >
               <v-btn
                 :loading="isLoading"
                 color="primary"
@@ -38,12 +42,18 @@
             </div>
           </div>
         </div>
-        <div class="half px-6">
-          <h4>approved</h4>
+        <div class="px-6" :class="{ half: !game.is_public }">
+          <h4 v-if="!game.is_public">approved</h4>
           <v-divider class="mb-2"></v-divider>
-          <span v-for="(player, i) in players" :key="player" class="mb-6">
+          <span
+            v-for="(player, i) in players"
+            :key="player.player_id"
+            class="mb-6"
+          >
             <span v-if="i" class="mr-3">,</span>
-            <span>@{{ player }}</span>
+            <span
+              >@{{ player.nickname ? player.nickname : 'Approved User' }}</span
+            >
           </span>
         </div>
       </div>
@@ -58,6 +68,12 @@
       <v-card-actions class="d-flex">
         <v-btn :loading="isLoading" @click="confirmGame">Confirm</v-btn>
       </v-card-actions>
+      <v-alert v-if="err" dense outlined type="error" class="error">
+        {{ err }}
+      </v-alert>
+      <v-alert v-if="game.is_ended" dense outlined type="error" class="error">
+        This Game Is Over - please create a new one
+      </v-alert>
     </v-card>
   </section>
 </template>
@@ -76,6 +92,7 @@ export default {
       url: process.client ? window.location.origin : '',
       players: [],
       playersAskToJoin: [],
+      err: '',
     };
   },
   computed: {
@@ -95,11 +112,25 @@ export default {
   },
   watch: {
     socketMsgs() {
-      console.log(this.socketMsgs);
-      this.playersAskToJoin = [
-        ...this.playersAskToJoin,
-        this.socketMsgs[this.socketMsgs.length - 1],
-      ];
+      const newPlayer = this.socketMsgs[this.socketMsgs.length - 1];
+      console.log(newPlayer);
+      if (
+        newPlayer &&
+        newPlayer.type === 'message' &&
+        newPlayer.data.player_id
+      ) {
+        this.playersAskToJoin = [...this.playersAskToJoin, newPlayer.data];
+      }
+    },
+    game() {
+      this.players = [...this.game.players_list];
+      if (this.game.game_requested) {
+        this.needAprrove = true;
+        this.gameData = {
+          gameCost: this.game.game_cost,
+          numOfPlayers: this.game.players_list.length,
+        };
+      }
     },
   },
   methods: {
@@ -111,6 +142,7 @@ export default {
       this.players.unshift(player);
     },
     gameRequest() {
+      this.err = '';
       this.isLoading = true;
       gameService
         .gameRequest(this.game.pin, this.players)
@@ -121,22 +153,37 @@ export default {
         })
         .catch((err) => {
           this.isLoading = false;
+          this.err = 'Hmm...Our server having some issue';
+
           console.log(err);
         });
     },
     confirmGame() {
       this.isLoading = true;
+      this.err = '';
       gameService
         .gameConfirm(this.game.pin)
         .then((response) => {
           this.isLoading = false;
           this.needAprrove = true;
-          this.gameData = response;
-          this.$store.dispatch('game/update', response);
+          // this.gameData = response;
+          this.$store.dispatch('game/updateGame', response);
+          console.log(response);
+          if (response && response.toLowerCase() === 'not enough balance') {
+            this.err = response;
+            Object.assign(document.createElement('a'), {
+              target: '_blank',
+              href: `${process.env.baseUrl}/payments/deposits?amount=${this.gameData.gameCost}`,
+            }).click();
+          }
+          if (response && response.response === 'good to go') {
+            console.log('GAME STARTED-- YAY!!');
+            this.isDialog = false;
+          }
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
-          console.log(err);
+          this.err = 'Hmm...Our server having some issue';
         });
     },
   },

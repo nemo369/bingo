@@ -24,12 +24,19 @@ export default {
   data() {
     return {};
   },
-  mounted() {
+  created() {
     // client side only
-    const user = Ls.get(userLocalStorage);
-    if (user) {
-      this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
-    }
+    this.logUserIn();
+  },
+  methods: {
+    logUserIn() {
+      if (process.browser) {
+        const user = Ls.get(userLocalStorage);
+        if (user) {
+          this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
+        }
+      }
+    },
   },
 };
 </script>

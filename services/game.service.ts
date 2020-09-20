@@ -13,7 +13,7 @@ export class GameService {
   public async gameConfirm(pin: number): Promise<string> {
     try {
       const { data } = await axios.post(
-        `${this.baseUrl}/game-create/`,
+        `${this.baseUrl}/game-confirm/`,
         { game_id: pin },
         this.headers
       );

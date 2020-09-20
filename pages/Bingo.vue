@@ -95,6 +95,7 @@ export default {
         .dispatch('game/fetchGame', this.pin)
         .then(() => {
           this.error = '';
+          this.wsInit();
           // this.$store.dispatch('game/resetGame');
           setTimeout(() => {
             this.updatePics(1);

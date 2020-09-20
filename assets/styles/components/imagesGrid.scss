@@ -4,3 +4,9 @@
   grid-gap: 25px;
   justify-content: center;
 }
+@media #{$mobile} {
+  .images-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 45vw);
+  }
+}

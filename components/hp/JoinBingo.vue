@@ -66,6 +66,7 @@ export default {
       this.loading = false;
       this.err = '';
       if (
+        newMsgs.length &&
         newMsgs[newMsgs.length - 1].data &&
         newMsgs[newMsgs.length - 1].data.player_id
       ) {

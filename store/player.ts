@@ -45,14 +45,16 @@ export const actions: ActionTree<PlayerState, PlayerState> = {
     commit(PLAYER.SET_CARDS, cards);
   },
   setPlayer: ({ commit }: any, player: Player) => {
+    console.log(player);
+
     const color = Ls.get(playerLocalStorge)?.color
       ? Ls.get(playerLocalStorge).color
       : getDefuletColor();
     const playerObj = serverToPlayer({ ...player, color });
-    const cards = serverToCards(player);
+    // const cards = serverToCards(player);
     Ls.set(playerLocalStorge, playerObj);
     commit(PLAYER.SET_PLAYER, playerObj);
-    commit(PLAYER.SET_CARDS, cards);
+    // commit(PLAYER.SET_CARDS, cards);
   },
 };
 
@@ -91,5 +93,8 @@ interface Player {
   player_game_id: number;
   approved: boolean;
   game: number;
-  board: Picture[];
+  board_dict: Picture[];
+  board_id: number;
+
+  winnings: string[];
 }
