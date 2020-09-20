@@ -8,9 +8,22 @@
     >
     <loader v-if="isLoading" :is-loading="isLoading" />
 
-    <div v-for="(card, i) in cards" :key="i">
-      <card :card="card" />
-    </div>
+    <v-card class="wrapper mb-2">
+      <v-tabs v-model="tab">
+        <v-tab v-for="(card, i) in cards" :key="i">
+          {{ card.board_id }}
+        </v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item v-for="(card, i) in cards" :key="i">
+          <v-card flat>
+            <card ::card="card" />
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card>
+
     <colors />
     <game-status />
   </section>
@@ -38,6 +51,7 @@ export default {
       pin: this.$route.query.pin,
       err: '',
       isLoading: true,
+      tab: 1,
     };
   },
   computed: {
@@ -53,10 +67,25 @@ export default {
     socketMsgs() {},
   },
   mounted() {
-    if (!this.pin || !this.connection) {
+    if (!this.pin && !this.connection) {
       this.$router.push(this.localePath('/'));
     }
-    this.isLoading = false;
+    if (this.pin && !this.connection) {
+      const data = {
+        message_type: 'add.player',
+        firstMsg: 'User joined Game',
+        game_id: this.pin,
+        data: {
+          game_id: this.pin,
+          // nickname: this.nickname,
+        },
+      };
+      this.wsInit(data);
+    }
+
+    if (this.connection) {
+      this.isLoading = false;
+    }
   },
   beforeRouteLeave(to, _, next) {
     if (to.name?.includes('bingo')) {
@@ -87,4 +116,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wrapper {
+  min-height: 50vh;
+}
+</style>

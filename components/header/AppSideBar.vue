@@ -20,11 +20,9 @@
     <v-divider></v-divider>
 
     <v-list dense>
-      <v-list-item v-for="menu in menus" :key="menu.id" link>
-        <v-list-item-content>
-          <v-list-item-title @click="reDirect(menu)">{{
-            menu.name
-          }}</v-list-item-title>
+      <v-list-item v-for="menu in menus" :key="menu.id">
+        <v-list-item-content @click="reDirect(menu)">
+          <v-list-item-title>{{ menu.name }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -53,7 +51,7 @@ export default {
         {
           id: 3,
           name: this.$t('add funds'),
-          href: this.localePath('#'),
+          href: this.localePath('payments-deposits'),
         },
       ],
     };

@@ -1,6 +1,6 @@
 <template>
   <section class="d-block pt-6 main-footer">
-    <footer class="">
+    <!-- <footer class="">
       <div class="footer-inner d-flex justify-space-around mb-2 align-center">
         <div
           v-for="menu in menus"
@@ -13,7 +13,7 @@
         </div>
         <lang-menu />
       </div>
-    </footer>
+    </footer> -->
     <footer class="">
       <div class="footer-inner d-flex justify-center mb-2 align-center">
         <span class="mx-2">&copy; {{ new Date().getFullYear() }}</span>

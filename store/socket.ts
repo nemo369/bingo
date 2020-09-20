@@ -54,7 +54,7 @@ export const actions: ActionTree<SocketState, SocketState> = {
       console.log(err);
       commit(SOCKET.ON_ERROR, 'Couldnt Find Server');
     };
-    gameSocket.onerror = (err) => {
+    gameSocket.onerror = () => {
       commit(SOCKET.ON_ERROR, 'Couldnt Find Server');
     };
   },

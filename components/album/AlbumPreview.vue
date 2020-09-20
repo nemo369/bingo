@@ -94,7 +94,6 @@ export default {
       if (!this.album || !this.album.pictures.length) {
         return true;
       }
-      console.log(this.album);
       if (this.album.pictures.length < 25 && this.album.board.row === 3) {
         return true;
       }

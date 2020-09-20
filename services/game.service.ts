@@ -156,6 +156,24 @@ export class GameService {
     };
   }
 
+  public async gameWinnings(boardId: number, pin: number): Promise<string[]> {
+    try {
+      const { data } = await axios.get<Promise<any>>(
+        `${this.baseUrl}/game-winnings/?board_id=${boardId}&game_id=${pin}
+      `,
+        this.headers
+      );
+      return data;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
+  }
+
   private toServerObj(game: GameToSet) {
     const prizes: any = {};
     game.prizes.forEach((prize) => {
