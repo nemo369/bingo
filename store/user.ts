@@ -1,9 +1,8 @@
-import { ActionTree } from 'vuex';
 import axios from 'axios';
+import { ActionTree } from 'vuex';
 import { LOGIN } from './mutations-types';
-import { User, CredentialRequest, NewUser } from '~/app/types/user';
+import { NewUser, User } from '~/app/types/user';
 import UserService from '~/services/users.service';
-import { Ls, userLocalStorage } from '~/app/utils/localStorage.ts';
 
 export const state = (): UserState => ({
   user: null,
@@ -18,7 +17,7 @@ export const getters = {
 export const mutations = {
   [LOGIN.CHECK_IN]: (state: UserState, user: User) => {
     state.user = user;
-    // axios.defaults.headers.common.Authorization = `Token ${user.token}`;
+    axios.defaults.headers.common.Authorization = `Token ${user.token}`;
     // Ls.set(userLocalStorage, user);
   },
   [LOGIN.CHECK_OUT]: (state: UserState) => {
@@ -47,7 +46,12 @@ export const actions: ActionTree<UserState, UserState> = {
   },
   signUp: ({ commit }: any, newUser: NewUser) => {
     return UserService.addUser(newUser).then((user: User) => {
-      commit(LOGIN.CHECK_IN, user, true);
+      // console.log(user);
+      if (user.response) {
+        commit(LOGIN.CHECK_IN, user, true);
+      } else {
+        throw new Error(JSON.stringify({ ...user, status: 400 }));
+      }
     });
   },
 };

@@ -26,15 +26,17 @@ export default {
   },
   mounted() {
     // client side only
-    // this.logUserIn();
+    this.logUserIn();
+    // console.log(this.$auth);
   },
   methods: {
     logUserIn() {
       if (process.browser) {
-        const user = Ls.get(userLocalStorage);
-        if (user) {
-          this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
-        }
+        console.log(this.$auth.$state);
+        // const user = Ls.get(userLocalStorage);
+        // if (user) {
+        // this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
+        // }
       }
     },
   },

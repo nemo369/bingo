@@ -7,6 +7,7 @@ export interface User {
   last_name: string;
   token: string;
   isActive: boolean;
+  response: string;
 }
 export interface CredentialRequest {
   email: string;

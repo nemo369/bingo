@@ -137,9 +137,8 @@ export default {
         const { data } = await this.$auth.loginWith('local', {
           data: { username: this.email, password: this.password },
         });
-        console.log(data);
         this.$store.dispatch('user/logIn', data);
-        this.$router.push(this.localePath({ name: '/' }));
+        this.$router.push('/');
       } catch (err) {
         const obj = convertErr(err);
         if (obj.data.status === 400) {

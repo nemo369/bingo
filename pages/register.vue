@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { convertErr } from '~/app/utils/helpers';
 export default {
   name: 'Register',
   middleware: 'disconnect',
@@ -131,11 +132,19 @@ export default {
       this.errorMsg = '';
       this.$store
         .dispatch('user/signUp', this.getSignUpObj())
-        .then(() => {
-          this.$router.push('/');
+        .then(async () => {
+          const { data } = await this.$auth.loginWith('local', {
+            data: { username: this.email, password: this.password },
+          });
+          this.$store.dispatch('user/logIn', data);
         })
-        .catch(() => {
-          this.errorMsg = 'Server Error';
+        .catch((err) => {
+          const obj = convertErr(err);
+          if (obj.data.status === 400) {
+            this.errorMsg = 'Unable to register with given credential';
+          } else {
+            this.errorMsg = 'Server Error';
+          }
         })
         .finally(() => {
           this.isLoading = false;
