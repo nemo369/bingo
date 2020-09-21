@@ -154,7 +154,6 @@ export default {
         .catch((err) => {
           this.isLoading = false;
           this.err = 'Hmm...Our server having some issue';
-
           console.log(err);
         });
     },
