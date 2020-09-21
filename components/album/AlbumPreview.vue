@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="album.board"
     class="mx-auto album-grid__li overflow-hidden"
     max-width="400"
     :loading="loading"

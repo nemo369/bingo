@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-form id="login-form" ref="form" @submit.prevent="login()">
+    <v-form id="login-form" ref="form" @submit.prevent="userLogin()">
       <v-card class="elevation-12">
         <v-toolbar color="#FFFFFF" flat>
           <v-toolbar-title>{{ $t('Welcome Back') }}</v-toolbar-title>
@@ -131,6 +131,23 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    async userLogin() {
+      try {
+        const { data } = await this.$auth.loginWith('local', {
+          data: { username: this.email, password: this.password },
+        });
+        console.log(data);
+        this.$store.dispatch('user/logIn', data);
+        this.$router.push(this.localePath({ name: '/' }));
+      } catch (err) {
+        const obj = convertErr(err);
+        if (obj.data.status === 400) {
+          this.errMsg = 'Unable to login with given credential';
+        } else {
+          this.errMsg = 'Server Error';
+        }
+      }
     },
     navigateToRegisterPage() {
       // this.hideModal();

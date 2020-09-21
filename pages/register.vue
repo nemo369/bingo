@@ -116,7 +116,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     this.from = from;
-    if (to.name?.includes('register')) {
+    if (to && to.name.includes('register')) {
       this.displayModal(to);
     } else {
       next();

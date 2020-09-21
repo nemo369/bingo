@@ -97,7 +97,24 @@ export default {
   },
   // https://auth.nuxtjs.org/guide/setup.html
   auth: {
-    // Options
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/users/login/',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: { url: '/api/users/logout/', method: 'post' },
+        },
+        autoFetchUser: false,
+        user: false,
+        tokenType: 'Token',
+        tokenName: 'Token',
+        // tokenRequired: true,
+        // globalToken: true,
+      },
+    },
   },
   /*
    ** Content module configuration
@@ -175,5 +192,9 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
 
-  build: {},
+  build: {
+    babel: {
+      plugins: ['@babel/plugin-proposal-optional-chaining'],
+    },
+  },
 };

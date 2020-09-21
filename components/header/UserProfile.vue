@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLogedIn" class="user mx-1">
+  <div v-if="$auth.loggedIn" class="user mx-1">
     <button text @click="snackbar = true">
       <v-avatar color="secondary" class="white--text text-capitalize">
         {{ userInitial }}
@@ -44,7 +44,8 @@ export default {
   methods: {
     logOut() {
       this.snackbar = false;
-      this.$store.dispatch('user/logOut');
+      this.$auth.logout();
+      // this.$store.dispatch('user/logOut');
     },
   },
 };

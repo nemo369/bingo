@@ -18,20 +18,20 @@ export const getters = {
 export const mutations = {
   [LOGIN.CHECK_IN]: (state: UserState, user: User) => {
     state.user = user;
-    axios.defaults.headers.common.Authorization = `Token ${user.token}`;
-    Ls.set(userLocalStorage, user);
+    // axios.defaults.headers.common.Authorization = `Token ${user.token}`;
+    // Ls.set(userLocalStorage, user);
   },
   [LOGIN.CHECK_OUT]: (state: UserState) => {
-    Ls.remove(userLocalStorage);
+    // Ls.remove(userLocalStorage);
     state.user = null;
     location.reload();
   },
 };
 export const actions: ActionTree<UserState, UserState> = {
-  logIn: ({ commit }: any, credentias: CredentialRequest) => {
-    return UserService.getUser(credentias).then((user: User) => {
-      commit(LOGIN.CHECK_IN, user, true);
-    });
+  logIn: ({ commit }: any, user: User) => {
+    commit(LOGIN.CHECK_IN, user, true);
+    // return UserService.getUser(credentias).then((user: User) => {
+    // });
   },
   resetPassword: (
     { commit }: any,

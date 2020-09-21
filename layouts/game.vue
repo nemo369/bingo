@@ -46,10 +46,10 @@ export default {
   },
   mounted() {
     // client side only
-    const user = Ls.get(userLocalStorage);
-    if (user) {
-      this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
-    }
+    // const user = Ls.get(userLocalStorage);
+    // if (user) {
+    //   this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
+    // }
   },
   methods: {
     toglleDrawer(bol) {

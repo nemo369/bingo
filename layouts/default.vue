@@ -26,7 +26,7 @@ export default {
   },
   mounted() {
     // client side only
-    this.logUserIn();
+    // this.logUserIn();
   },
   methods: {
     logUserIn() {
