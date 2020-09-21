@@ -4,9 +4,9 @@ import { Game, JoinGameRes, Prize } from '~/app/types/game';
 import { GameToSet } from '~/store/game';
 
 export class GameService {
-  private proxy =
-    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
-
+  // private proxy =
+  //   process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  private proxy = ``;
   private baseUrl = this.proxy + '/api/game';
   private headers = { headers: { 'Content-Type': 'application/json' } };
 

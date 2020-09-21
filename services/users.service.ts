@@ -2,8 +2,9 @@ import axios from 'axios';
 import { User, CredentialRequest, NewUser } from '~/app/types/user';
 
 class UserService {
-  private proxy =
-    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  // private proxy =
+  //   process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  private proxy = ``;
 
   private baseUrl = this.proxy + '/api/users';
   private headers = { headers: { 'Content-Type': 'application/json' } };

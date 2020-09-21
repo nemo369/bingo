@@ -2,8 +2,9 @@ import axios from 'axios';
 import { Album, NewAlbum } from '~/app/types/album';
 
 export class AlbumService {
-  private proxy =
-    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  // private proxy =
+  //   process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  private proxy = ``;
 
   private baseUrl = this.proxy + '/api/game/albums/';
   private headers = { headers: { 'Content-Type': 'application/json' } };

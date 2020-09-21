@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 class PaymentService {
-  private proxy =
-    process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  // private proxy =
+  //   process.env.NODE_ENV === 'production' ? process.env.serverUrl : '';
+  private proxy = ``;
 
   private baseUrl = this.proxy + '/payments';
   private headers = { headers: { 'Content-Type': 'application/json' } };
