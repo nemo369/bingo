@@ -167,9 +167,8 @@ export default {
           this.needAprrove = true;
           // this.gameData = response;
           this.$store.dispatch('game/updateGame', response);
-          console.log(response);
           if (response && response.toLowerCase() === 'not enough balance') {
-            this.err = response;
+            this.err = `${response} -  Please add more funds in the opened tab and then press confirm again. Don't close this window`;
             Object.assign(document.createElement('a'), {
               target: '_blank',
               href: `${process.env.baseUrl}/payments/deposits?amount=${this.gameData.gameCost}`,

@@ -1,6 +1,7 @@
 <template>
   <nav>
-    <ul v-if="isLogedIn" class="d-flex justify-end row-1-1 gray--color">
+    <!-- $auth.loggedIn -->
+    <ul v-if="$auth.loggedIn" class="d-flex justify-end row-1-1 gray--color">
       <li
         v-for="menu in menus"
         :key="menu.id"
@@ -12,7 +13,7 @@
         </a>
       </li>
     </ul>
-    <ul v-else class="d-flex justify-end row-1-1 gray--color">
+    <ul v-if="!$auth.loggedIn" class="d-flex justify-end row-1-1 gray--color">
       <li class="px-4 tac inherit row-1-1 d-flex justify-center flex-column">
         <nuxt-link :to="localePath('login')" class="text-uppercase fs18">
           {{ $t('login') }}

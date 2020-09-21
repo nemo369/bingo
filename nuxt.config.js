@@ -79,6 +79,7 @@ export default {
     'nuxt-i18n',
     // Doc: https://cloudinary.nuxtjs.org/setup
     '@nuxtjs/cloudinary',
+    '@nuxtjs/auth',
   ],
   /*
    ** Axios module configuration
@@ -94,10 +95,15 @@ export default {
   axios: {
     proxy: true,
   },
+  // https://auth.nuxtjs.org/guide/setup.html
+  auth: {
+    // Options
+  },
   /*
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration
    */
+
   content: {},
   /*
    ** vuetify module configuration

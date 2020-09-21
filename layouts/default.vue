@@ -24,7 +24,7 @@ export default {
   data() {
     return {};
   },
-  created() {
+  mounted() {
     // client side only
     this.logUserIn();
   },
