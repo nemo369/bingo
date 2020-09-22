@@ -186,7 +186,7 @@ export default {
       });
     },
   },
-  buildDir: 'dist',
+  //  buildDir: 'nuxt-dist',
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
