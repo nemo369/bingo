@@ -12,37 +12,30 @@
 
 //
 <script>
-// import AppHeader from '~/components/header/AppHeader.vue';
-// import AppFooter from '~/components/footer/AppFooter.vue';
-// import { Ls, userLocalStorage } from '~/app/utils/localStorage';
-// import { LOGIN } from '~/store/mutations-types.ts';
-// export default {
-//   name: `default`,
-//   components: {
-//     AppFooter,
-//     AppHeader,
-//   },
-//   data() {
-//     return {};
-//   },
-//   mounted() {
-//     // client side only
-//     this.logUserIn();
-//     // console.log(this.$auth);
-//   },
-//   methods: {
-//     logUserIn() {
-//       if (process.browser) {
-//         console.log(this.$auth.$state);
-//         // const user = Ls.get(userLocalStorage);
-//         // if (user) {
-//         // this.$store.commit(`user/${LOGIN.CHECK_IN}`, user);
-//         // }
-//       }
-//     },
-//   },
-// };
-//
+import AppHeader from '~/components/header/AppHeader.vue';
+import AppFooter from '~/components/footer/AppFooter.vue';
+export default {
+  name: `default`,
+  components: {
+    AppFooter,
+    AppHeader,
+  },
+  data() {
+    return {};
+  },
+  created() {
+    // client side only
+    if (process.browser) {
+      this.logUserIn();
+    }
+  },
+  methods: {
+    logUserIn() {
+      console.log(this.$auth.user);
+      // this.$axios.defaults.headers.common.Authorization = `Token ${user.token}`;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -34,8 +34,8 @@ export default {
       user: 'user/getUser',
     }),
     userInitial() {
-      if (this.user && this.user.username) {
-        const [firstName, lastName] = this.user.username.split(' ');
+      if (this.$auth.user && this.$auth.user.username) {
+        const [firstName, lastName] = this.$auth.user.username.split(' ');
         return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
       }
       return '';

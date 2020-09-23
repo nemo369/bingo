@@ -18,13 +18,23 @@
       <div class="footer-inner d-flex justify-center mb-2 align-center">
         <span class="mx-2">&copy; {{ new Date().getFullYear() }}</span>
         <span class="mx-2">MATRIX BINGO</span>
+        <span class="mx-2"
+          >DEV:&nbsp;
+          <a
+            href="http://actappon.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Actappon</a
+          >&nbsp; &
+        </span>
         <a
           href="http://naamanfrenkel.dev"
           target="_blank"
           rel="noopener noreferrer"
-          class="mx-2"
+          class=""
         >
-          <svg
+          NEMO
+          <!-- <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 50 50"
             width="35"
@@ -48,7 +58,7 @@
                 d="M35.973 13.409a4.936 4.936 0 010 6.993 4.936 4.936 0 01-6.994 0 4.936 4.936 0 010-6.993c1.936-1.937 5.097-1.937 6.994 0zm-11.17 12.413c.975.936-.898 4.267-5.66 8.833-4.763 4.566-7.652 5.8-8.628 4.828-.975-.936.274-3.706 5.036-8.272 4.801-4.566 8.237-6.362 9.252-5.389z"
               />
             </g>
-          </svg>
+          </svg> -->
         </a>
       </div>
     </footer>

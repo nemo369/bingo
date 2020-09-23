@@ -136,7 +136,8 @@ export default {
           const { data } = await this.$auth.loginWith('local', {
             data: { username: this.email, password: this.password },
           });
-          this.$store.dispatch('user/logIn', data);
+          // this.$store.dispatch('user/logIn', data);
+          this.$auth.setUser(data);
         })
         .catch((err) => {
           const obj = convertErr(err);

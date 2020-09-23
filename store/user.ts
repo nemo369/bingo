@@ -3,6 +3,7 @@ import { ActionTree } from 'vuex';
 import { LOGIN } from './mutations-types';
 import { NewUser, User } from '~/app/types/user';
 import UserService from '~/services/users.service';
+import { Ls, userLocalStorage } from '~/app/utils/localStorage';
 
 export const state = (): UserState => ({
   user: null,
@@ -18,10 +19,11 @@ export const mutations = {
   [LOGIN.CHECK_IN]: (state: UserState, user: User) => {
     state.user = user;
     axios.defaults.headers.common.Authorization = `Token ${user.token}`;
-    // Ls.set(userLocalStorage, user);
+    // $auth.setUser(data);
+    Ls.set(userLocalStorage, user);
   },
   [LOGIN.CHECK_OUT]: (state: UserState) => {
-    // Ls.remove(userLocalStorage);
+    Ls.remove(userLocalStorage);
     state.user = null;
     location.reload();
   },
@@ -29,8 +31,6 @@ export const mutations = {
 export const actions: ActionTree<UserState, UserState> = {
   logIn: ({ commit }: any, user: User) => {
     commit(LOGIN.CHECK_IN, user, true);
-    // return UserService.getUser(credentias).then((user: User) => {
-    // });
   },
   resetPassword: (
     { commit }: any,
