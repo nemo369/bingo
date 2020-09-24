@@ -57,20 +57,33 @@ class UserService {
     }
   }
 
-  public async resetPassword({
-    password,
-    token,
-    email,
-  }: {
-    password: string;
+  public async newPassword(newPasswords: {
+    password1: string;
+    password2: string;
     token: string;
-    email: string;
+    uid: string;
   }): Promise<User> {
     try {
-      axios.defaults.headers.common.Authorization = `Token ${token}`;
+      axios.defaults.headers.common.Authorization = `Token ${newPasswords.token}`;
+      const { data } = await axios.post(
+        `${this.baseUrl}/password_reset/`,
+        newPasswords
+      );
+      return data;
+    } catch (error) {
+      throw new Error(
+        JSON.stringify({
+          ...error.response.data,
+          status: error.response.status,
+        })
+      );
+    }
+  }
+
+  public async resetPassword(email: string): Promise<User> {
+    try {
+      delete axios.defaults.headers.common.Authorization;
       const { data } = await axios.post(`${this.baseUrl}/password_reset/`, {
-        password1: password,
-        password2: password,
         email,
       });
       return data;

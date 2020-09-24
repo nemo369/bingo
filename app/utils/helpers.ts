@@ -28,6 +28,10 @@ export function shuffleArray<T>([...array]: T[]): T[] {
 export const convertErr = (err: any) => {
   const objAsString = JSON.stringify(err, Object.getOwnPropertyNames(err));
   const obj = JSON.parse(objAsString);
-  obj.data = JSON.parse(obj.message);
+  if (typeof obj.message === 'object') {
+    obj.data = JSON.parse(obj.message);
+  } else {
+    obj.data = obj.message;
+  }
   return obj;
 };

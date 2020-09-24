@@ -138,15 +138,15 @@ export default {
           data: { username: this.email, password: this.password },
         });
         this.$auth.setUser(data);
-        // this.$store.dispatch('user/logIn', data);
+        this.$store.dispatch('user/logIn', data);
         this.$router.push('/');
       } catch (err) {
-        const obj = convertErr(err);
-        if (obj.data.status === 400) {
-          this.errMsg = 'Unable to login with given credential';
-        } else {
-          this.errMsg = 'Server Error';
-        }
+        this.errMsg = 'Unable to login with given credential';
+        // const obj = convertErr(err);
+        // if (obj.data.status === 400) {
+        // } else {
+        //   this.errMsg = 'Server Error';
+        // }
       }
     },
     navigateToRegisterPage() {

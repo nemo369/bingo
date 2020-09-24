@@ -64,7 +64,7 @@ export default {
   data: () => ({
     noImg: getSvg('noImg'),
     supports: ['jpg', 'jpeg', 'png'],
-    maxFileSize: 2000,
+    maxFileSize: 8000,
     maxPictures: 99,
     dragover: false,
     isDialog: false,

@@ -17,7 +17,7 @@
 
     <v-card v-if="!needAprrove" class="deta">
       <v-card-title class="headline">
-        Number of tickets handled{{ game.numOfPlayers }}
+        Number of tickets handled:&nbsp;<b>{{ players.length }}</b>
       </v-card-title>
       <div class="d-flex justify-space-around pb-4">
         <div v-if="!game.is_public" class="half px-6">
@@ -42,7 +42,7 @@
             </div>
           </div>
         </div>
-        <div class="px-6" :class="{ half: !game.is_public }">
+        <div class="px-6 half ml-auto">
           <h4 v-if="!game.is_public">approved</h4>
           <v-divider class="mb-2"></v-divider>
           <span
@@ -114,12 +114,13 @@ export default {
     socketMsgs() {
       const newPlayer = this.socketMsgs[this.socketMsgs.length - 1];
       console.log(newPlayer);
-      if (
-        newPlayer &&
-        newPlayer.type === 'message' &&
-        newPlayer.data.player_id
-      ) {
+      console.log(newPlayer.data);
+      console.log(newPlayer.data.player_id);
+      if (newPlayer && newPlayer.data && newPlayer.data.player_id) {
         this.playersAskToJoin = [...this.playersAskToJoin, newPlayer.data];
+        if (this.game.is_public) {
+          this.players = [...this.players, newPlayer.data];
+        }
       }
     },
     game() {

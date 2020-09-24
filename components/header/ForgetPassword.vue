@@ -24,10 +24,14 @@
             type="text"
             class="mb-4"
             :rules="[rules.required, rules.email]"
+            @input="errMsg = ''"
           />
         </v-card-text>
         <v-alert v-if="!!errMsg" color="error">
           <small>{{ errMsg }}</small>
+        </v-alert>
+        <v-alert v-if="!!successMsg" color="success" class="px-2">
+          <small>{{ successMsg }}</small>
         </v-alert>
         <v-card-actions class="pa-4">
           <v-btn
@@ -38,7 +42,7 @@
             large
             :loading="isLoading"
           >
-            {{ $t('login') }}
+            {{ $t('Send Reset Email') }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -54,6 +58,7 @@ export default {
     return {
       isLoading: false,
       errMsg: '',
+      successMsg: '',
       email: '',
       labels: {
         email: this.$t('email'),
@@ -69,8 +74,20 @@ export default {
   },
   methods: {
     forget() {
-      UserService.resetPassword(this.email);
-      this.$emit('close-modal');
+      this.errMsg = '';
+      this.isLoading = true;
+      UserService.resetPassword(this.email)
+        .then((res) => {
+          console.log(res);
+          this.successMsg = 'We sent you an email to reset your password';
+          setTimeout(() => {
+            this.$emit('close-modal');
+          }, 5000);
+        })
+        .catch(() => {
+          this.errMsg = 'Something isnt right';
+        })
+        .finally(() => (this.isLoading = false));
     },
   },
 };

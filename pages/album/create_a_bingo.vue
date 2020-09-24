@@ -117,7 +117,7 @@ export default {
       errMsg: '',
       rules: [
         (value) => !!value || 'Required.',
-        (value) => (value && value.length <= 12) || 'Max 12 characters',
+        (value) => (value && value.length <= 25) || 'Max 25 characters',
       ],
     };
   },

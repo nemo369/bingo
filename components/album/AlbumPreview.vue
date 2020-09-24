@@ -1,12 +1,14 @@
 <template>
   <v-card
-    v-if="album.board"
     class="mx-auto album-grid__li overflow-hidden"
     max-width="400"
     :loading="loading"
     :disabled="loading"
   >
-    <v-hover v-if="album.pictures.length" v-slot:default="{ hover }">
+    <v-hover
+      v-if="album.pictures.length && album.board"
+      v-slot:default="{ hover }"
+    >
       <div
         class="d-grid imgs"
         :class="`${hover ? 'hover-img' : ''}`"
@@ -49,10 +51,9 @@
         album.board.column
       }}
     </v-card-subtitle>
-
     <v-card-actions class="d-flex justify-end">
       <v-btn
-        v-if="!album.isPublic"
+        v-if="$auth.loggedIn && album.user.email === $auth.user.email"
         class="mx-2"
         fab
         dark

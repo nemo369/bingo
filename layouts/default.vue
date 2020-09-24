@@ -20,21 +20,6 @@ export default {
     AppFooter,
     AppHeader,
   },
-  data() {
-    return {};
-  },
-  created() {
-    // client side only
-    if (process.browser) {
-      this.logUserIn();
-    }
-  },
-  methods: {
-    logUserIn() {
-      console.log(this.$auth.user);
-      // this.$axios.defaults.headers.common.Authorization = `Token ${user.token}`;
-    },
-  },
 };
 </script>
 

@@ -133,7 +133,7 @@ export default {
   width: 480px;
 }
 .input {
-  flex: 0 0 100px;
+  // flex: 0 0 100px;
   width: 100%;
   border: 1px solid $prim-color;
   font-size: 24px;
