@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { Lang } from '~/app/types/app';
 export default {
   name: `LangMenu`,
   data() {

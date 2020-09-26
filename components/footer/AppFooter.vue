@@ -66,12 +66,12 @@
 </template>
 
 <script>
-import LangMenu from '~/components/header/LangMenu.vue';
+// import LangMenu from '~/components/header/LangMenu.vue';
 
 export default {
   name: 'AppFooter',
   components: {
-    LangMenu,
+    // LangMenu,
   },
   data: () => ({
     menus: [
