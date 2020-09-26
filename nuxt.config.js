@@ -109,7 +109,7 @@ export default {
           user: { url: '/api/users/auth/', method: 'post' },
           // user: false,
         },
-        autoFetchUser: false,
+        // autoFetchUser: false,
         tokenName: 'Authorization',
         tokenType: 'Token',
         // tokenRequired: true,

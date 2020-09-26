@@ -134,11 +134,11 @@ export default {
     },
     async userLogin() {
       try {
-        const { data } = await this.$auth.loginWith('local', {
+        await this.$auth.loginWith('local', {
           data: { username: this.email, password: this.password },
         });
-        this.$auth.setUser(data);
-        this.$store.dispatch('user/logIn', data);
+        // this.$auth.setUser(data);
+        // this.$store.dispatch('user/logIn', data);
         this.$router.push('/');
       } catch (err) {
         this.errMsg = 'Unable to login with given credential';

@@ -133,11 +133,10 @@ export default {
       this.$store
         .dispatch('user/signUp', this.getSignUpObj())
         .then(async () => {
-          const { data } = await this.$auth.loginWith('local', {
+          await this.$auth.loginWith('local', {
             data: { username: this.email, password: this.password },
           });
-          // this.$store.dispatch('user/logIn', data);
-          this.$auth.setUser(data);
+          this.$router.push('/');
         })
         .catch((err) => {
           const obj = convertErr(err);
