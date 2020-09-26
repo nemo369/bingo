@@ -83,7 +83,7 @@
 import { convertErr } from '~/app/utils/helpers';
 export default {
   name: 'Register',
-  middleware: 'disconnect',
+  middleware: 'guest',
   data() {
     return {
       isLoading: false,

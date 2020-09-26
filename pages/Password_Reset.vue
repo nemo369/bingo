@@ -65,7 +65,7 @@
 import UsersService from '~/services/users.service';
 export default {
   name: 'PasswordReset',
-  middleware: 'disconnect',
+  middleware: 'guest',
   data() {
     return {
       isLoading: false,

@@ -14,7 +14,7 @@ import LoginForm from '~/components/header/LoginForm.vue';
 import ForgetPassword from '~/components/header/ForgetPassword.vue';
 export default {
   name: 'Login',
-  middleware: 'disconnect',
+  middleware: 'guest',
   components: {
     LoginForm,
     ForgetPassword,
