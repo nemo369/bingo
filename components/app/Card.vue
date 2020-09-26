@@ -52,6 +52,7 @@ import { getSvg } from '~/app/utils/svgs';
 
 export default {
   name: 'Card',
+  // eslint-disable-next-line vue/require-prop-types
   props: ['card'],
   data: () => ({
     noImg: getSvg('noImg'),
