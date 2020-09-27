@@ -82,7 +82,6 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-      console.log(data);
     },
   },
 };

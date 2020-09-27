@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { Card } from '~/app/types/card';
 import { Game, JoinGameRes, Prize } from '~/app/types/game';
+import apiClient from '~/services/apiClient';
 import { GameToSet } from '~/store/game';
 
 export class GameService {
@@ -12,7 +12,7 @@ export class GameService {
 
   public async gameConfirm(pin: number): Promise<string> {
     try {
-      const { data } = await axios.post(
+      const { data } = await apiClient.post(
         `${this.baseUrl}/game-confirm/`,
         { game_id: pin },
         this.headers
@@ -35,7 +35,7 @@ export class GameService {
     playersApproved: any[]
   ): Promise<{ gameCost: number; numOfPlayers: number }> {
     try {
-      const { data } = await axios.post(
+      const { data } = await apiClient.post(
         `${this.baseUrl}/game-request/`,
         { game_id: pin, players_approved: playersApproved },
         this.headers
@@ -58,7 +58,7 @@ export class GameService {
 
   public async fetchGame(pin: string): Promise<Game> {
     try {
-      const { data } = await axios.get<Promise<Game>>(
+      const { data } = await apiClient.get<Promise<Game>>(
         `${this.baseUrl}/game-info/?game_id=${pin}`,
         this.headers
       );
@@ -81,7 +81,7 @@ export class GameService {
     cardId: number;
     gameId: number;
   }): Promise<Card> {
-    const { data } = await axios.post<Promise<Card>>(
+    const { data } = await apiClient.post<Promise<Card>>(
       `${this.baseUrl}/card/`,
       { cardId, gameId },
       this.headers
@@ -92,7 +92,7 @@ export class GameService {
   public async createGame(gameToSet: GameToSet): Promise<Game> {
     const gameToSetServerObj = this.toServerObj(gameToSet);
     try {
-      const { data } = await axios.post<Promise<any>>(
+      const { data } = await apiClient.post<Promise<any>>(
         `${this.baseUrl}/game-create/`,
         gameToSetServerObj,
         this.headers
@@ -113,7 +113,7 @@ export class GameService {
     pin: number;
     name: string;
   }): Promise<JoinGameRes> {
-    const { data } = await axios.post<Promise<JoinGameRes>>(
+    const { data } = await apiClient.post<Promise<JoinGameRes>>(
       `${this.baseUrl}/join/`,
       pinAndName,
       this.headers
@@ -123,7 +123,7 @@ export class GameService {
 
   public async nextBall(gameId: number): Promise<any> {
     try {
-      const { data } = await axios.get(
+      const { data } = await apiClient.get(
         `${this.baseUrl}/game-play/?game_id=${gameId}`,
         this.headers
       );
@@ -158,7 +158,7 @@ export class GameService {
 
   public async gameWinnings(boardId: number, pin: number): Promise<string[]> {
     try {
-      const { data } = await axios.get<Promise<any>>(
+      const { data } = await apiClient.get<Promise<any>>(
         `${this.baseUrl}/game-winnings/?board_id=${boardId}&game_id=${pin}
       `,
         this.headers

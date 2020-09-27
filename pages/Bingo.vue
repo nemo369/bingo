@@ -55,8 +55,8 @@ export default {
       if (!this.game) {
         return false;
       }
-      if (!this.game.response || this.game.response === 'Game is ready') {
-        return true;
+      if (this.game) {
+        return !this.game.started;
       }
       return false;
     },

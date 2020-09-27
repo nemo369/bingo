@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <!-- $auth.loggedIn -->
+    <!-- {{ $auth.loggedIn }} -->
     <ul v-if="$auth.loggedIn" class="d-flex justify-end row-1-1 gray--color">
       <li
         v-for="menu in menus"

@@ -49,6 +49,7 @@ export default {
     '~/plugins/cloudinary.js',
     '~/plugins/matter.client.js',
     '~/plugins/ga.client.js',
+    '~/plugins/axios-port.js',
   ],
   env: {
     title: 'LivueJournal',
@@ -99,6 +100,7 @@ export default {
   auth: {
     strategies: {
       local: {
+        // redirect: { login: '/login', logout: '/', callback: false, home: '/' },
         endpoints: {
           login: {
             url: '/api/users/login/',
@@ -106,14 +108,18 @@ export default {
             propertyName: 'token',
           },
           logout: { url: '/api/users/logout/', method: 'post' },
-          user: { url: '/api/users/auth/', method: 'post' },
+          user: {
+            url: '/api/users/auth/',
+            method: 'post',
+            propertyName: false,
+          },
           // user: false,
         },
-        // autoFetchUser: false,
         tokenName: 'Authorization',
         tokenType: 'Token',
         // tokenRequired: true,
         // globalToken: true,
+        // autoFetchUser: false,
       },
     },
   },

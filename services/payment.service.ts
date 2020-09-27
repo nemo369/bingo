@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiClient from '~/services/apiClient';
 
 class PaymentService {
   // private proxy =
@@ -13,7 +13,7 @@ class PaymentService {
     currency: any;
   }): Promise<boolean> {
     try {
-      const { data } = await axios.post<Promise<any>>(
+      const { data } = await apiClient.post<Promise<any>>(
         `${this.baseUrl}/deposits/`,
         {
           ...deposit,

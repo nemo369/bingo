@@ -136,7 +136,7 @@ export default {
           await this.$auth.loginWith('local', {
             data: { username: this.email, password: this.password },
           });
-          this.$router.push('/');
+          // this.$router.push('/');
         })
         .catch((err) => {
           const obj = convertErr(err);

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { Album, NewAlbum } from '~/app/types/album';
+import apiClient from '~/services/apiClient';
 
 export class AlbumService {
   // private proxy =
@@ -10,7 +10,7 @@ export class AlbumService {
   private headers = { headers: { 'Content-Type': 'application/json' } };
 
   public async getPublic(): Promise<Album[]> {
-    const { data } = await axios.get(`/api/game/public-albums/`);
+    const { data } = await apiClient.get(`/api/game/public-albums/`);
     const res = await data.albums.map((album: any) =>
       this.serverToAlbum(album)
     );
@@ -18,7 +18,7 @@ export class AlbumService {
   }
 
   public async getBingos(): Promise<Album[]> {
-    const { data } = await axios.get(`${this.baseUrl}`);
+    const { data } = await apiClient.get(`${this.baseUrl}`);
     const res = await data.albums.map((album: any) =>
       this.serverToAlbum(album)
     );
@@ -27,7 +27,7 @@ export class AlbumService {
 
   public async updateAlbum(album: NewAlbum, albumId: string): Promise<Album> {
     const putAlbum = this.albumToServer(album);
-    const { data } = await axios.put<Promise<Album>>(
+    const { data } = await apiClient.put<Promise<Album>>(
       `${this.baseUrl}?album_id=${albumId}`,
       putAlbum
     );
@@ -36,7 +36,7 @@ export class AlbumService {
 
   public async getAlbum(albumId: number): Promise<Album> {
     try {
-      const { data } = await axios.get<Promise<any>>(
+      const { data } = await apiClient.get<Promise<any>>(
         `${this.baseUrl}?album_id=${albumId}`
       );
       const { album } = await data;
@@ -54,7 +54,7 @@ export class AlbumService {
   public async createAlbum(album: NewAlbum): Promise<Album> {
     try {
       const albumAsServer = this.albumToServer(album);
-      const { data } = await axios.post<Promise<Album>>(
+      const { data } = await apiClient.post<Promise<Album>>(
         `${this.baseUrl}`,
         albumAsServer
       );

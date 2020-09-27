@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { convertErr } from '~/app/utils/helpers';
+// import { convertErr } from '~/app/utils/helpers';
 export default {
   name: 'LoginForm',
   data() {
@@ -106,47 +106,25 @@ export default {
     };
   },
   methods: {
-    login() {
+    async userLogin() {
       if (!this.isValid()) {
         return;
       }
       this.isLoading = true;
       this.errMsg = '';
-      this.$store
-        .dispatch('user/logIn', {
-          email: this.email,
-          password: this.password,
-        })
-        .then(() => {
-          this.$router.push(this.localePath({ name: '/' }));
-        })
-        .catch((err) => {
-          const obj = convertErr(err);
-          if (obj.data.status === 400) {
-            this.errMsg = 'Unable to login with given credential';
-          } else {
-            this.errMsg = 'Server Error';
-          }
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    async userLogin() {
+
       try {
         await this.$auth.loginWith('local', {
           data: { username: this.email, password: this.password },
         });
-        // this.$auth.setUser(data);
-        // this.$store.dispatch('user/logIn', data);
-        this.$router.push('/');
+
+        // this.$axios.defaults.headers.common.Authorization = `Token ${data.token}`;
+
+        this.isLoading = false;
+        this.errMsg = 'Loged In :)';
       } catch (err) {
+        this.isLoading = false;
         this.errMsg = 'Unable to login with given credential';
-        // const obj = convertErr(err);
-        // if (obj.data.status === 400) {
-        // } else {
-        //   this.errMsg = 'Server Error';
-        // }
       }
     },
     navigateToRegisterPage() {

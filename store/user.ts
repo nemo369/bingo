@@ -18,7 +18,7 @@ export const getters = {
 export const mutations = {
   [LOGIN.CHECK_IN]: (state: UserState, user: User) => {
     state.user = user;
-    axios.defaults.headers.common.Authorization = `Token ${user.token}`;
+    // axios.defaults.headers.common.Authorization = `Token ${user.token}`;
     // $auth.setUser(data);
     Ls.set(userLocalStorage, user);
   },

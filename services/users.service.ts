@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { User, CredentialRequest, NewUser } from '~/app/types/user';
+import { CredentialRequest, NewUser, User } from '~/app/types/user';
+import apiClient from '~/services/apiClient';
 
 class UserService {
   // private proxy =
@@ -11,7 +11,7 @@ class UserService {
 
   public async getUser(credentias: CredentialRequest): Promise<User> {
     try {
-      const { data } = await axios.post<Promise<User>>(
+      const { data } = await apiClient.post<Promise<User>>(
         `${this.baseUrl}/login/`,
         {
           username: credentias.email,
@@ -40,7 +40,7 @@ class UserService {
       ...newUser,
     };
     try {
-      const { data } = await axios.post<Promise<User>>(
+      const { data } = await apiClient.post<Promise<User>>(
         `${this.baseUrl}/register/`,
         serilizeObj
       );
@@ -64,8 +64,8 @@ class UserService {
     uid: string;
   }): Promise<User> {
     try {
-      axios.defaults.headers.common.Authorization = `Token ${newPasswords.token}`;
-      const { data } = await axios.post(
+      apiClient.defaults.headers.common.Authorization = `Token ${newPasswords.token}`;
+      const { data } = await apiClient.post(
         `${this.baseUrl}/password_reset/`,
         newPasswords
       );
@@ -82,8 +82,8 @@ class UserService {
 
   public async resetPassword(email: string): Promise<User> {
     try {
-      delete axios.defaults.headers.common.Authorization;
-      const { data } = await axios.post(`${this.baseUrl}/password_reset/`, {
+      delete apiClient.defaults.headers.common.Authorization;
+      const { data } = await apiClient.post(`${this.baseUrl}/password_reset/`, {
         email,
       });
       return data;
@@ -98,7 +98,7 @@ class UserService {
   }
 
   public async logOut() {
-    const { data } = await axios.post(`${this.baseUrl}/logout/`, {});
+    const { data } = await apiClient.post(`${this.baseUrl}/logout/`, {});
     return data;
   }
 }

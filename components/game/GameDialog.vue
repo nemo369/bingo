@@ -32,9 +32,10 @@
               >
               <v-btn
                 :loading="isLoading"
-                color="primary"
                 fab
                 x-small
+                color="secondary"
+                class="ml-auto"
                 @click="approve(player)"
               >
                 <v-icon>mdi-check</v-icon>
@@ -104,18 +105,16 @@ export default {
       if (!this.game) {
         return false;
       }
-      if (!this.game.response || this.game.response === 'Game is ready') {
-        return true;
+      if (this.game) {
+        return !this.game.started;
       }
+
       return false;
     },
   },
   watch: {
     socketMsgs() {
       const newPlayer = this.socketMsgs[this.socketMsgs.length - 1];
-      console.log(newPlayer);
-      console.log(newPlayer.data);
-      console.log(newPlayer.data.player_id);
       if (newPlayer && newPlayer.data && newPlayer.data.player_id) {
         this.playersAskToJoin = [...this.playersAskToJoin, newPlayer.data];
         if (this.game.is_public) {
@@ -124,7 +123,10 @@ export default {
       }
     },
     game() {
-      this.players = [...this.game.players_list];
+      console.log(this.game);
+      if (this.game && this.game.players_list) {
+        this.players = [...this.game.players_list];
+      }
       if (this.game.game_requested) {
         this.needAprrove = true;
         this.gameData = {
@@ -175,7 +177,7 @@ export default {
               href: `${process.env.baseUrl}/payments/deposits?amount=${this.gameData.gameCost}`,
             }).click();
           }
-          if (response && response.response === 'good to go') {
+          if (response && response.response === 'Game Started') {
             console.log('GAME STARTED-- YAY!!');
             this.isDialog = false;
           }
