@@ -51,6 +51,11 @@ export default {
     publicAlbums: [],
     error: null
   }),
+    head() {
+    return {
+      title: 'My Bingos',
+    };
+  },
 };
 </script>
 

@@ -53,7 +53,7 @@ export default {
 
   head() {
     return {
-      title: 'Log in',
+      title: 'Log in to Matrix Bingo',
     };
   },
 };

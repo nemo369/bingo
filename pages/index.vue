@@ -54,6 +54,13 @@ export default {
       bodyAttrs: {
         class: 'home-page',
       },
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Join a matrix bingo game',
+        },
+      ],
     };
   },
 };

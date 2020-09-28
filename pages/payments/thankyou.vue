@@ -7,6 +7,11 @@
 <script>
 export default {
   name: 'ThankYou',
+  head() {
+    return {
+      title: 'Thank You for adding funds',
+    };
+  },
 };
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <div v-if="album">
-    <h1 class="col-1-1 mt-4">{{ $t('create bingo') }}</h1>
+    <h1 class="col-1-1 mt-4">
+      {{ !album.albumId ? $t('create bingo') : $t('edit your bingo album') }}
+    </h1>
     <v-text-field
       :value="album.name"
       class="half mx-auto mb-8 v-text-field"
@@ -216,6 +218,11 @@ export default {
         this.errMsg = 'Server Error';
       }
     },
+  },
+  head() {
+    return {
+      title: 'Create Your Own Bigno Album',
+    };
   },
 };
 </script>

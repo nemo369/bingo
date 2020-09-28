@@ -62,7 +62,7 @@ import Conditions from '~/components/condititons/conditions.vue';
 
 export default {
   name: 'GameCondititons',
-  middleware: 'hasAlbum',
+  middleware: ['hasAlbum', 'auth'],
   components: {
     Prizes,
     Conditions,
@@ -136,6 +136,11 @@ export default {
 
       return { url: prizes[0] };
     },
+  },
+  head() {
+    return {
+      title: 'Choose Game Conditions and Select Prizes',
+    };
   },
 };
 </script>

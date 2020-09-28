@@ -180,6 +180,11 @@ export default {
       return isFormValid;
     },
   },
+  head() {
+    return {
+      title: 'Regsiter To Bingo Matrix',
+    };
+  },
 };
 </script>
 

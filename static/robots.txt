@@ -1,0 +1,8 @@
+# Group 1
+User-agent: Googlebot
+Disallow: /api/
+
+# Group 2
+User-agent: *
+Allow: /
+Sitemap: https:/bingomatrix.com//sitemap.xml

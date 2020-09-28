@@ -17,6 +17,7 @@
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/cloudinary": "0.0.11",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "@nuxtjs/sitemap": "^2.4.0",
     "cloudinary-core": "^2.11.2",
     "cloudinary-vue": "^1.1.1",
     "matter-js": "^0.14.2",

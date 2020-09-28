@@ -25,12 +25,12 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'Invite your friends and host your own multiplayer Bingo online. Build beautiful matrix bingo albums as your bingo cards or use a public one',
+          'Invite your friends and host your own multiplayer Bingo online. Build beautiful matrix bingo albums as your bingo cards or use a public ones',
       },
       {
         hid: 'og:image',
         property: 'og:image',
-        content: process.env.BASE_URL + 'matrix_bingo.jpg',
+        content: process.env.BASE_URL + '/matrix_bingo.jpg',
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
@@ -81,6 +81,7 @@ export default {
     // Doc: https://cloudinary.nuxtjs.org/setup
     '@nuxtjs/cloudinary',
     '@nuxtjs/auth',
+    '@nuxtjs/sitemap',
   ],
   /*
    ** Axios module configuration
@@ -100,7 +101,7 @@ export default {
   auth: {
     strategies: {
       local: {
-        // redirect: { login: '/login', logout: '/', callback: false, home: '/' },
+        redirect: { login: '/login', logout: '/', callback: false, home: '/' },
         endpoints: {
           login: {
             url: '/api/users/login/',
@@ -192,6 +193,9 @@ export default {
         component: resolve(__dirname, 'pages/404.vue'),
       });
     },
+  },
+  sitemap: {
+    hostname: process.env.BASE_URL || 'matrixbingo.com',
   },
   //  buildDir: 'nuxt-dist',
   /*
