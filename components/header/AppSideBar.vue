@@ -7,13 +7,13 @@
     right
     absolute
   >
-    <v-list-item v-if="user">
-      <v-list-item-avatar>
-        <v-img :src="user.avatar"></v-img>
+    <v-list-item v-if="$auth.user">
+      <v-list-item-avatar v-if="$auth.user.avatar">
+        <v-img :src="$auth.user.avatar"></v-img>
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title>{{ user.username }}</v-list-item-title>
+        <v-list-item-title>{{ $auth.user.username }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 

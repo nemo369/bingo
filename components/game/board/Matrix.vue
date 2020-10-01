@@ -33,9 +33,14 @@
       </transition-group>
     </div>
 
-    <v-btn color="primary" class="next-btn" @click="nextBall">{{
-      $t('Next Picture')
-    }}</v-btn>
+    <v-btn
+      color="primary"
+      class="next-btn"
+      :disabled="disabled"
+      :loading="loading"
+      @click="nextBall"
+      >{{ $t('Next Picture') }}</v-btn
+    >
   </aside>
 </template>
 
@@ -48,12 +53,15 @@ export default {
     return {
       selector: '.grid',
       lastPics: [],
+      loading: false,
+      disabled: false,
     };
   },
   computed: {
     ...mapGetters({
       pictures: 'game/getBallsPicked',
       ball: 'game/getDrawnBall',
+      isDrawing: 'game/getIsDrawing',
     }),
   },
   watch: {
@@ -62,14 +70,20 @@ export default {
         .filter((pic) => pic.asset_id !== this.ball.asset_id)
         .slice(0, 7);
     },
+    isDrawing() {
+      this.disabled = this.isDrawing;
+    },
   },
   mounted() {},
 
   methods: {
     nextBall() {
+      this.loading = true;
+      this.disabled = true;
       this.$store.dispatch('game/setPicNum', { women: 2, ppl: 2 });
       setTimeout(() => {
         this.$store.dispatch('game/setPicNum', { women: 1, ppl: 1 });
+        this.loading = false;
       }, 3000);
       this.$store.dispatch('game/drawBall');
     },

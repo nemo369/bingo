@@ -62,11 +62,9 @@ export default {
     },
   },
   mounted() {
-    if (!this.game) {
-      this.pin
-        ? this.fetchGame()
-        : (this.error = 'Please Enter a Valid Game Pin');
-    }
+    this.pin
+      ? this.fetchGame()
+      : (this.error = 'Please Enter a Valid Game Pin');
 
     if (this.game) {
       this.$store.dispatch('album/setAlbum', this.game.album);

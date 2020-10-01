@@ -167,7 +167,7 @@ export default {
           this.isLoading = false;
           this.needAprrove = true;
           // this.gameData = response;
-          this.$store.dispatch('game/updateGame', response);
+          // this.$store.dispatch('game/updateGame', response);
           if (response && response.toLowerCase() === 'not enough balance') {
             this.err = `${response} -  Please add more funds in the opened tab and then press confirm again. Don't close this window`;
             Object.assign(document.createElement('a'), {
@@ -175,8 +175,12 @@ export default {
               href: `${process.env.baseUrl}/payments/deposits?amount=${this.gameData.gameCost}`,
             }).click();
           }
-          if (response && response.response === 'Game Started') {
-            this.isDialog = false;
+          if (
+            response === 'Game Started' ||
+            response.response === 'Game Started'
+          ) {
+            this.$store.dispatch('game/updateGame', { started: true });
+            this.$store.dispatch('game/fetchGame', this.pin);
           }
         })
         .catch(() => {

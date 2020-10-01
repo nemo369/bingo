@@ -87,7 +87,8 @@ export default {
     },
   },
   methods: {
-    join() {
+    join(e) {
+      e.preventDefault();
       if (this.isLoading) {
         return;
       }
