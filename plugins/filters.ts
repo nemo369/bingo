@@ -9,3 +9,10 @@ Vue.filter('startCase', (value: string) => {
     .map((w) => w[0].toUpperCase() + w.substr(1).toLowerCase())
     .join(' ');
 });
+Vue.filter('onlyDigs', (value: string) => {
+  if (!value) {
+    return '';
+  }
+  const num = value.replace(/[^0-9]/g, '');
+  return num;
+});

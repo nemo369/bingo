@@ -1,3 +1,4 @@
+import { Picture } from '~/app/types/album';
 import { Card } from '~/app/types/card';
 import { Game, JoinGameRes, Prize } from '~/app/types/game';
 import { imageExists, objToArray } from '~/app/utils/helpers';
@@ -143,12 +144,19 @@ export class GameService {
         });
       });
     }
-
+    const shownPictures: Picture[] = objToArray(game.shown_pictures, true);
+    const drawnIdxs = shownPictures.map((pic) => pic.asset_id);
     const pool = objToArray(game.pictures_pool);
-    const picturesPool = pool.map((pic) => ({
-      ...pic,
-      imageExists: imageExists(pic.url),
-    }));
+    const picturesPool: Picture[] = [];
+    pool.forEach((pic) => {
+      if (!drawnIdxs.includes(pic.asset_id)) {
+        picturesPool.push({
+          ...pic,
+          imageExists: imageExists(pic.url),
+        });
+      }
+    });
+
     return {
       ...game,
       pin: +game.game_id,
@@ -157,8 +165,9 @@ export class GameService {
       // album: game.album_id,
       prizes,
       picturesPool,
-      picturesList: objToArray(game.players_list),
-      shownPictures: objToArray(game.shown_pictures),
+      playersList: objToArray(game.players_list),
+      shownPictures,
+      drawnIdxs,
       // bingo: any,
     };
   }

@@ -208,12 +208,16 @@ export default {
       // }, 3000);
     },
     setBlowerAniamtion() {
-      const Events = this.$matter.Events;
-      Events.on(this.runner, 'tick', this.onRenderTick);
+      const Events = this.$matter?.Events;
+      if (Events) {
+        Events.on(this.runner, 'tick', this.onRenderTick);
+      }
     },
     removeBlowerAniamtion() {
-      const Events = this.$matter.Events;
-      Events.on(this.runner, 'tick', () => {});
+      const Events = this.$matter?.Events;
+      if (Events) {
+        Events.on(this.runner, 'tick', () => {});
+      }
     },
     getImgUrl(file) {
       return require(`~/assets/pngs/${file}.png`);

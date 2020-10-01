@@ -22,7 +22,12 @@ export const state = (): GameState => ({
 export const getters = {
   getGame: (state: GameState) => state.game,
   getBallsInMachine: (state: GameState) => state.gameStatus.ballsInMachine,
-  getBallsPicked: (state: GameState) => state.gameStatus.ballsPicked,
+  getBallsPicked: (state: GameState) => {
+    const assetId = state.gameStatus.drawnBall?.asset_id;
+    return state.gameStatus.ballsPicked.filter(
+      (pic) => pic.asset_id !== assetId
+    );
+  },
   getDrawnBall: (state: GameState) => state.gameStatus.drawnBall,
   getGameStatus: (state: GameState) => state.gameStatus,
   getPicNum: (state: GameState) => state.picNum,
@@ -37,7 +42,8 @@ export const mutations = {
   [GAME.SET_IS_DRAWING]: (state: GameState, isDraiwng: boolean) =>
     (state.isDraiwng = isDraiwng),
   [GAME.SET_GAME]: (state: GameState, game: Game) => {
-    state.gameStatus.ballsInMachine = game.picturesPool;
+    state.gameStatus.ballsInMachine = [...game.picturesPool];
+    state.gameStatus.ballsPicked = [...game.shownPictures];
     state.game = { ...game };
   },
   [GAME.RESET_GAME]: (state: GameState, album: Album) => {
@@ -80,6 +86,12 @@ export const actions: ActionTree<GameState, GameState> = {
   fetchGame: ({ commit }: any, pin: string) => {
     return gameService.fetchGame(pin).then((game: Game) => {
       commit(GAME.SET_GAME, game);
+      if (game.shownPictures.length) {
+        commit(
+          GAME.DRAW_A_BALL,
+          game.shownPictures[game.shownPictures.length - 1]
+        );
+      }
     });
   },
   setPicNum: ({ commit }: any, num: PicNum) => {

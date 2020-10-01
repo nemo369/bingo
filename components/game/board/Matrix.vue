@@ -7,20 +7,27 @@
         class="full px-2 py-0 d-grid grid"
       >
         <li
-          v-for="(pic, index) in [...pictures].slice(0, 7)"
-          :key="pic.ballNumber"
+          v-for="(pic, index) in lastPics"
+          :key="pic.asset_id"
           class="grid-item relative pa-2"
           :class="`grid-item--${index + 1}`"
         >
           <v-badge
             color="green"
-            :content="pic.ballNumber"
+            :content="pic.ballNumber | onlyDigs"
             overlap
             left
             top
             class=""
           >
-            <img :src="pic.url" class="" />
+            <cld-image
+              :public-id="pic.public_id"
+              width="100"
+              crop="fill"
+              fetch-format="auto"
+              quality="auto"
+              loading="lazy"
+            />
           </v-badge>
         </li>
       </transition-group>
@@ -40,26 +47,20 @@ export default {
   data() {
     return {
       selector: '.grid',
-      items: ['a', 'b', 'c'],
-      options: {
-        itemSelector: '.grid-item',
-        columnWidth: 180,
-        percentPosition: false,
-        fitWidth: true,
-        transitionDuration: '1.8s',
-        stagger: 30,
-      },
+      lastPics: [],
     };
   },
   computed: {
     ...mapGetters({
       pictures: 'game/getBallsPicked',
+      ball: 'game/getDrawnBall',
     }),
   },
   watch: {
     pictures() {
-      // msnry.layout();
-      this.items.unshift('aaa');
+      this.lastPics = this.pictures
+        .filter((pic) => pic.asset_id !== this.ball.asset_id)
+        .slice(0, 7);
     },
   },
   mounted() {},

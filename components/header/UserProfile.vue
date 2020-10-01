@@ -26,12 +26,14 @@ export default {
       snackbar: false,
     };
   },
-  userInitial() {
-    if (this.$auth.user && this.$auth.user.username) {
-      const [firstName, lastName] = this.$auth.user.username.split(' ');
-      return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
-    }
-    return '';
+  computed: {
+    userInitial() {
+      if (this.$auth.user && this.$auth.user.username) {
+        const [firstName, lastName] = this.$auth.user.username.split(' ');
+        return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
+      }
+      return '';
+    },
   },
   methods: {
     logOut() {

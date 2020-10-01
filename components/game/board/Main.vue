@@ -1,17 +1,18 @@
 <template>
-  <main class="game-main ovh">
-    <div v-if="ball" class="pa-4">
-      <v-badge
-        color="green"
-        class="full"
-        ball-ball-number-
-        overlap
-        left
-        top
-        :content="ball.ballNumber"
-      >
-        <v-img :src="ball.url" :cover="true" max-height="385"> </v-img>
-      </v-badge>
+  <main ref="infoBox" class="game-main ovh">
+    <div v-if="ball" class="pa-4 relative">
+      <div v-if="ball.title" class="badge absolute pa-1" :content="ball.title">
+        {{ ball.title }}
+      </div>
+      <cld-image
+        :public-id="ball.public_id"
+        :height="height"
+        crop="scale"
+        fetch-format="auto"
+        quality="auto"
+        loading="lazy"
+        class="d-flex justify-center"
+      />
     </div>
   </main>
 </template>
@@ -24,10 +25,18 @@ export default {
   props: {
     picture: { type: Object, default: null },
   },
+  data() {
+    return {
+      height: 200,
+    };
+  },
   computed: {
     ...mapGetters({
       ball: 'game/getDrawnBall',
     }),
+  },
+  mounted() {
+    this.height = this.$refs.infoBox.clientHeight - 20;
   },
 };
 </script>
@@ -35,5 +44,12 @@ export default {
 <style lang="scss" scoped>
 .game-main {
   height: 100%;
+}
+.badge {
+  top: 4px;
+  left: 4px;
+  background-color: $prim-color;
+  color: $white;
+  font-size: 18px;
 }
 </style>

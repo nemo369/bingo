@@ -36,20 +36,33 @@ export const convertErr = (err: any) => {
   return obj;
 };
 
-export const objToArray = (obj: any): any[] => {
+export const objToArray = (obj: any, isShownPictue = false): any[] => {
   let objOfObjs: MetadataObj;
   if (!obj || !obj.length) {
     return [];
   }
-  if (Array.isArray(obj)) {
+  if (Array.isArray(obj) && obj.length === 1) {
     objOfObjs = obj[0];
   } else {
     objOfObjs = obj;
   }
 
-  return Object.entries(objOfObjs).map(([_, value]: [string, MetadataObj]) => {
-    return value;
-  });
+  return Object.entries(objOfObjs).map(
+    ([key, value]: [string, MetadataObj]) => {
+      if (isShownPictue) {
+        let res = {};
+        Object.entries(value).forEach(([subKey, subValue]) => {
+          res = {
+            ...res,
+            ...subValue,
+            ballNumber: subKey,
+          };
+        });
+        return res;
+      }
+      return { ...value, ballNumber: key };
+    }
+  );
 };
 
 export const imageExists = (imageUrl: string): boolean => {
@@ -59,6 +72,12 @@ export const imageExists = (imageUrl: string): boolean => {
   http.send();
 
   return http.status !== 404;
+};
+
+export const uniqById = (arr: any, id: string | number): any[] => {
+  return Object.values(
+    arr.reduce((acc: any[], cur: any) => Object.assign(acc, { [id]: cur }), {})
+  );
 };
 interface MetadataObj {
   [key: string]: any;
