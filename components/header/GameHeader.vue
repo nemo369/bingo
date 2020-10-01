@@ -1,12 +1,12 @@
 <template>
   <v-navigation-drawer :value="drawer" app temporary right>
-    <v-list-item v-if="user">
+    <v-list-item v-if="$auth.loggedIn">
       <v-list-item-avatar>
-        <v-img :src="user.avatar"></v-img>
+        <v-img :src="$auth.user.avatar"></v-img>
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title>{{ user.username }}</v-list-item-title>
+        <v-list-item-title>{{ $auth.user.username }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
@@ -29,11 +29,6 @@ export default {
   props: ['drawer'],
   data() {
     return { menus: [{ title: 'Exit Game' }] };
-  },
-  computed: {
-    ...mapGetters({
-      user: 'user/getUser',
-    }),
   },
 };
 </script>

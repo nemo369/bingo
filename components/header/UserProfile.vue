@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'UserProfile',
   data() {
@@ -28,18 +26,12 @@ export default {
       snackbar: false,
     };
   },
-  computed: {
-    ...mapGetters({
-      isLogedIn: 'user/isLogedIn',
-      user: 'user/getUser',
-    }),
-    userInitial() {
-      if (this.$auth.user && this.$auth.user.username) {
-        const [firstName, lastName] = this.$auth.user.username.split(' ');
-        return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
-      }
-      return '';
-    },
+  userInitial() {
+    if (this.$auth.user && this.$auth.user.username) {
+      const [firstName, lastName] = this.$auth.user.username.split(' ');
+      return firstName[0] + `${lastName ? `.${lastName[0]}` : ``}`;
+    }
+    return '';
   },
   methods: {
     logOut() {

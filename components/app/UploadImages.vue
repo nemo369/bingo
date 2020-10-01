@@ -1,13 +1,15 @@
 <template>
   <div class="upload my-4 mx-auto" tabindex="0">
-    <v-card class="pt-4 pt-4 pb-16 upload-box" :class="{ active: dragover }">
-      <div class="drop mx-auto my-4 d-flex flex-column align-center tac">
+    <div class="pt-1 px-6 pb-2 upload-box" :class="{ active: dragover }">
+      <v-card
+        class="drop mx-auto my-1 px-6 d-flex flex-column align-center tac"
+      >
         <div class="svg block mt-auto" v-html="noImg"></div>
         <h2 class="mb-2 h2">{{ $t('drop your pictures here, or browse') }}</h2>
         <span>Maximum {{ maxPictures }} pictures</span>
         <span>Supports {{ supports.join(',') }} </span>
         <span class="mb-auto">{{ maxFileSize / 1000 }}MB </span>
-      </div>
+      </v-card>
       <input type="file" accept="image/*" class="d-none" multiple />
       <v-alert
         v-for="(file, i) in errorFiles"
@@ -23,7 +25,7 @@
           {{ err.msg }}
         </span>
       </v-alert>
-    </v-card>
+    </div>
     <v-dialog v-model="isDialog">
       <v-card class="pt-4 pt-4 pb-16 tac">
         <h2>Your Photos are being uploaded</h2>
@@ -53,7 +55,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { getSvg } from '~/app/utils/svgs';
 import Loader from '~/components/app/Loader.vue';
 export default {
@@ -75,11 +76,6 @@ export default {
       total: 0,
     },
   }),
-  computed: {
-    ...mapGetters({
-      user: 'user/getUser',
-    }),
-  },
   mounted() {
     const dropzone = this.$el;
     const fileupload = this.$el.querySelector('input');
@@ -162,11 +158,12 @@ export default {
 
       const uploaders = await Array.from(files).map((file) => {
         if (this.fileValid(file)) {
+          const userName = this.$auth.user?.username;
           const formData = new FormData();
           formData.append('file', file);
-          formData.append('folder', `users_uploads/${this.user.username}`);
+          formData.append('folder', `users_uploads/${userName}`);
           formData.append('upload_preset', this.presetName);
-          formData.append('tags', ['album', 'user_album', this.user.username]); // Optional - add tag for image admin in Cloudinary
+          formData.append('tags', ['album', 'user_album', userName]); // Optional - add tag for image admin in Cloudinary
           return this.$uploadApi.$post('upload', formData);
         }
       });
@@ -230,6 +227,7 @@ export default {
 <style lang="scss" scoped>
 .upload {
   width: 75%;
+  max-width: 650px;
 }
 .upload.active {
   border: 5px solid;

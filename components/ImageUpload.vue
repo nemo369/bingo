@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'LvImageUpload',
   props: ['conditionId'],
@@ -26,11 +24,7 @@ export default {
       presetName: process.env.cloudinaryPreset,
     };
   },
-  computed: {
-    ...mapGetters({
-      user: 'user/getUser',
-    }),
-  },
+
   methods: {
     async imageUpload(file) {
       if (!file) {
@@ -40,10 +34,12 @@ export default {
         throw new Error('Invalid file format');
       }
       const formData = new FormData();
+      const userName = this.$auth.user?.username;
+
       formData.append('upload_preset', this.presetName);
       formData.append('file', file);
       formData.append('folder', 'users_prizes');
-      formData.append('tags', ['prize', 'user_prizes', this.user.username]);
+      formData.append('tags', ['prize', 'user_prizes', userName]);
 
       const response = await this.$uploadApi.$post('upload', formData);
       return response;

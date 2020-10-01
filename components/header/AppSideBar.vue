@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { newAlbum } from '~/store/album';
 export default {
   name: 'AppSideBar',
@@ -55,11 +54,6 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    ...mapGetters({
-      user: 'user/getUser',
-    }),
   },
   methods: {
     reDirect(menu) {
