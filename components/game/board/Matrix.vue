@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="pictures" class="game-matrix ovh relative">
+  <aside class="game-matrix ovh relative">
     <div class="full">
       <transition-group
         name="flip-list"
@@ -22,11 +22,12 @@
           >
             <cld-image
               :public-id="pic.public_id"
-              width="100"
+              class="full ovh"
+              width="200"
               crop="fill"
               fetch-format="auto"
               quality="auto"
-              loading="lazy"
+              loading="eager"
             />
           </v-badge>
         </li>
@@ -46,6 +47,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { uniqById } from '~/app/utils/helpers';
 
 export default {
   name: 'GameMatrix',
@@ -66,9 +68,11 @@ export default {
   },
   watch: {
     pictures() {
-      this.lastPics = this.pictures
-        .filter((pic) => pic.asset_id !== this.ball.asset_id)
-        .slice(0, 7);
+      const { asset_id: id } = this.ball;
+      console.log(id);
+      const lastPics = uniqById(this.pictures, 'asset_id');
+
+      this.lastPics = lastPics.slice(-7);
     },
     isDrawing() {
       this.disabled = this.isDrawing;

@@ -3,20 +3,15 @@
     <div v-if="currentPrize && currentPrize.picture" class="prize">
       <transition name="fade">
         <div>
-          <v-img
-            :src="currentPrize.picture.url"
-            class="row-1-1"
-            aspect-ratio="1"
-            max-height="220px"
-          ></v-img>
-          <h2 class="h2 tac text--white">
+          <cld-image :public-id="currentPrize.picture.public_id" width="350" />
+          <h2 class="h2 tac white--text">
             {{ currentPrize.name | startCase }}
           </h2>
         </div>
       </transition>
     </div>
     <v-btn
-      class="mt-auto mx-auto mb-1 whtie--text"
+      class="mt-auto mx-auto mb-1 white--text"
       color="red"
       @click="checkCard"
       >BINGO/LINE</v-btn

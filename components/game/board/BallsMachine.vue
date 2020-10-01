@@ -31,6 +31,7 @@ export default {
       needToInit: true,
       runner: null,
       render: null,
+      engine: null,
     };
   },
   computed: {
@@ -48,7 +49,7 @@ export default {
         }, 0);
       } else {
         console.log('NEDD TO UPDATE BALLS');
-        //  this.cBalls = this.cBalls.splice
+        this.setBalls();
       }
     },
     isDrawing() {
@@ -119,45 +120,31 @@ export default {
       this.cBalls.push(ball);
       return ball;
     },
-    initBlower() {
-      const Engine = this.$matter.Engine;
-      const Render = this.$matter.Render;
-      const World = this.$matter.World;
+    setBalls() {
+      if (!this.engine || !this.render) {
+        return;
+      }
+
       const Bodies = this.$matter.Bodies;
-      const Runner = this.$matter.Runner;
-
-      const engine = Engine.create();
-      this.runner = Runner.run(engine);
-
-      const render = Render.create({
-        canvas: this.canvas,
-        engine,
-        options: {
-          wireframes: false,
-          width: this.canvasWidth,
-          height: this.canvasHeight,
-          background: 'transparent',
-        },
-      });
-      this.render = render;
-
+      const World = this.$matter.World;
+      const Engine = this.$matter.Engine;
+      World.clear(this.engine.world);
+      // Engine.clear(this.engine);
+      // this.engine = Engine.create();
       // Add the balls to the scene
+      this.cBalls = [];
       for (let i = 0; i < this.ballsCount; i++) {
         const ball = this.createBall(i);
         if (ball) {
-          World.add(engine.world, ball);
+          World.add(this.engine.world, ball);
         }
       }
-
-      // Run the engine
-      Engine.run(engine);
-      Render.run(render);
 
       /**
        * Build the circle bounds - BEGIN
        * */
       const addBody = (...bodies) => {
-        World.add(engine.world, ...bodies);
+        World.add(this.engine.world, ...bodies);
       };
 
       const addRect = ({ x = 0, y = 0, w = 10, h = 10, options = {} } = {}) => {
@@ -197,19 +184,35 @@ export default {
           },
         });
       }
-      // Build the circle bounds - END
+    },
+    initBlower() {
+      const Engine = this.$matter.Engine;
+      const Render = this.$matter.Render;
+      const Runner = this.$matter.Runner;
 
-      // Start the blowing with X seconds delay
-      // setTimeout(() => {
-      //   this.setBlowerAniamtion();
-      //   setTimeout(() => {
-      //     this.removeBlowerAniamtion();
-      //   }, 10000);
-      // }, 3000);
+      this.engine = Engine.create();
+      this.runner = Runner.run(this.engine);
+
+      const render = Render.create({
+        canvas: this.canvas,
+        engine: this.engine,
+        options: {
+          wireframes: false,
+          width: this.canvasWidth,
+          height: this.canvasHeight,
+          background: 'transparent',
+        },
+      });
+      this.render = render;
+      // Run the engine
+      Engine.run(this.engine);
+      Render.run(this.render);
+      this.setBalls();
     },
     setBlowerAniamtion() {
       const Events = this.$matter?.Events;
-      if (Events) {
+      console.log(Events);
+      if (Events && this.runner) {
         Events.on(this.runner, 'tick', this.onRenderTick);
       }
     },

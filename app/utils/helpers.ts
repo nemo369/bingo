@@ -68,16 +68,26 @@ export const objToArray = (obj: any, isShownPictue = false): any[] => {
 export const imageExists = (imageUrl: string): boolean => {
   const http = new XMLHttpRequest();
 
-  http.open('HEAD', imageUrl, false);
-  http.send();
+  try {
+    http.open('HEAD', imageUrl, false);
+    http.send();
 
-  return http.status !== 404;
+    return http.status !== 404;
+  } catch {
+    return false;
+  }
 };
 
 export const uniqById = (arr: any, id: string | number): any[] => {
-  return Object.values(
-    arr.reduce((acc: any[], cur: any) => Object.assign(acc, { [id]: cur }), {})
-  );
+  const filteredArr = arr.reduce((acc: any[], current: any) => {
+    const x = acc.find((item) => item[id] === current[id]);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+  return filteredArr;
 };
 interface MetadataObj {
   [key: string]: any;
