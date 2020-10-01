@@ -100,6 +100,9 @@ export default {
       });
     },
     createBall(i) {
+      if (!this.balls[i] || !this.balls[i].imageExists) {
+        return;
+      }
       const ball = this.$matter.Bodies.circle(
         this.render.canvas.width / 2 - this.ballRadius,
         this.render.canvas.height / 2 - 2 * this.ballRadius,
@@ -140,7 +143,10 @@ export default {
 
       // Add the balls to the scene
       for (let i = 0; i < this.ballsCount; i++) {
-        World.add(engine.world, this.createBall(i));
+        const ball = this.createBall(i);
+        if (ball) {
+          World.add(engine.world, ball);
+        }
       }
 
       // Run the engine

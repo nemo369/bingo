@@ -52,6 +52,14 @@ export const objToArray = (obj: any): any[] => {
   });
 };
 
+export const imageExists = (imageUrl: string): boolean => {
+  const http = new XMLHttpRequest();
+
+  http.open('HEAD', imageUrl, false);
+  http.send();
+
+  return http.status !== 404;
+};
 interface MetadataObj {
   [key: string]: any;
 }

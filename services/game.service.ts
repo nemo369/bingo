@@ -1,6 +1,6 @@
 import { Card } from '~/app/types/card';
 import { Game, JoinGameRes, Prize } from '~/app/types/game';
-import { objToArray } from '~/app/utils/helpers';
+import { imageExists, objToArray } from '~/app/utils/helpers';
 import apiClient from '~/services/apiClient';
 import { GameToSet } from '~/store/game';
 
@@ -144,6 +144,11 @@ export class GameService {
       });
     }
 
+    const pool = objToArray(game.pictures_pool);
+    const picturesPool = pool.map((pic) => ({
+      ...pic,
+      imageExists: imageExists(pic.url),
+    }));
     return {
       ...game,
       pin: +game.game_id,
@@ -151,7 +156,7 @@ export class GameService {
       hostId: game.user_id,
       // album: game.album_id,
       prizes,
-      picturesPool: objToArray(game.pictures_pool),
+      picturesPool,
       picturesList: objToArray(game.players_list),
       shownPictures: objToArray(game.shown_pictures),
       // bingo: any,
