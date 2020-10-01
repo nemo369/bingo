@@ -153,7 +153,7 @@ export default {
           this.needAprrove = true;
           this.gameData = response;
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
           this.err = 'Hmm...Our server having some issue';
         });
