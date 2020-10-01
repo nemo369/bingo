@@ -127,7 +127,6 @@ export default {
 
       const Bodies = this.$matter.Bodies;
       const World = this.$matter.World;
-      const Engine = this.$matter.Engine;
       World.clear(this.engine.world);
       // Engine.clear(this.engine);
       // this.engine = Engine.create();

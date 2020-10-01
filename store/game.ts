@@ -103,7 +103,7 @@ export const actions: ActionTree<GameState, GameState> = {
   updateGame: ({ commit }: any, data: { [key: string]: any }) => {
     commit(GAME.UPDATE_GAME, data);
   },
-  drawBall: ({ commit, getters }: any) => {
+  drawBall: ({ commit, getters, dispatch }: any) => {
     const { pin } = getters.getGame;
     commit(GAME.SET_IS_DRAWING, true);
     return gameService.nextBall(pin).then((newStatus: NewStatus) => {
@@ -111,6 +111,9 @@ export const actions: ActionTree<GameState, GameState> = {
         commit(GAME.SET_IS_DRAWING, false);
       }, 1000);
       commit(GAME.DRAW_A_BALL, newStatus.picture);
+      if (!newStatus.remaining_pictures) {
+        dispatch('fetchGame', pin);
+      }
     });
   },
 };
