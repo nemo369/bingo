@@ -162,12 +162,12 @@ export default {
         iso: 'en-US',
         file: 'en-US.json',
       },
-      {
-        name: 'עברית',
-        code: 'he',
-        iso: 'he-IL',
-        file: 'he-IL.json',
-      },
+      // {
+      //   name: 'עברית',
+      //   code: 'he',
+      //   iso: 'he-IL',
+      //   file: 'he-IL.json',
+      // },
     ],
     langDir: 'lang/',
     defaultLocale: 'en',

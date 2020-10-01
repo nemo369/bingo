@@ -35,3 +35,23 @@ export const convertErr = (err: any) => {
   }
   return obj;
 };
+
+export const objToArray = (obj: any): any[] => {
+  let objOfObjs: MetadataObj;
+  if (!obj || !obj.length) {
+    return [];
+  }
+  if (Array.isArray(obj)) {
+    objOfObjs = obj[0];
+  } else {
+    objOfObjs = obj;
+  }
+
+  return Object.entries(objOfObjs).map(([_, value]: [string, MetadataObj]) => {
+    return value;
+  });
+};
+
+interface MetadataObj {
+  [key: string]: any;
+}

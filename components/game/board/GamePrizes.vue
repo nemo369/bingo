@@ -9,8 +9,8 @@
             aspect-ratio="1"
             max-height="220px"
           ></v-img>
-          <h2 v-if="condition" class="h2">
-            {{ condition.title | startCase }}
+          <h2 class="h2 tac text--white">
+            {{ currentPrize.name | startCase }}
           </h2>
         </div>
       </transition>
@@ -35,36 +35,40 @@ export default {
       intervalId: null,
       currentPrize: null,
       currentIndex: 0,
-      condition: null,
     };
   },
   computed: {
     ...mapGetters({
-      game: 'game/getGame',
+      prizes: 'game/getGamePrizes',
     }),
   },
   watch: {
-    game(newCount, oldValue) {
-      if (newCount && !oldValue) {
+    prizes() {
+      if (this.prizes.length) {
         this.setGallery();
       }
     },
+  },
+  mounted() {
+    if (this.prizes.length) {
+      this.setGallery();
+    }
   },
   beforeDestroy() {
     clearInterval(this.intervalId);
   },
   methods: {
     setGallery() {
-      this.currentPrize = this.game.prizes[this.currentIndex];
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+      }
+      this.currentPrize = this.prizes[this.currentIndex];
       this.intervalId = setInterval(() => {
-        if (this.currentIndex >= this.game.prizes.length - 1) {
+        if (this.currentIndex >= this.prizes.length - 1) {
           this.currentIndex = -1;
         }
         this.currentIndex++;
-        this.currentPrize = this.game.prizes[this.currentIndex];
-        this.condition = this.game.conditions.find(
-          (condition) => condition.id === this.currentPrize?.conditionId
-        );
+        this.currentPrize = this.prizes[this.currentIndex];
       }, 7000);
     },
     checkCard() {

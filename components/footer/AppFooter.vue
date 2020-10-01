@@ -98,16 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main-footer {
-  background-color: #e5e5e5;
-}
 footer {
   background: $white;
-}
-.footer-inner {
-  height: 75px;
-  max-width: 1280px;
-  padding: 0 10px;
-  margin: auto;
 }
 </style>

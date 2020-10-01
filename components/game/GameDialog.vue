@@ -123,7 +123,6 @@ export default {
       }
     },
     game() {
-      console.log(this.game);
       if (this.game && this.game.players_list) {
         this.players = [...this.game.players_list];
       }
@@ -157,7 +156,6 @@ export default {
         .catch((err) => {
           this.isLoading = false;
           this.err = 'Hmm...Our server having some issue';
-          console.log(err);
         });
     },
     confirmGame() {
@@ -178,7 +176,6 @@ export default {
             }).click();
           }
           if (response && response.response === 'Game Started') {
-            console.log('GAME STARTED-- YAY!!');
             this.isDialog = false;
           }
         })

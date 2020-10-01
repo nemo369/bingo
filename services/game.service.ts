@@ -1,5 +1,6 @@
 import { Card } from '~/app/types/card';
 import { Game, JoinGameRes, Prize } from '~/app/types/game';
+import { objToArray } from '~/app/utils/helpers';
 import apiClient from '~/services/apiClient';
 import { GameToSet } from '~/store/game';
 
@@ -133,10 +134,11 @@ export class GameService {
 
   private serverToGame(game: any): Game {
     const prizes: Prize[] = [];
-    if (game.prizes[0]) {
-      Object.keys(game.prizes[0]).forEach((key) => {
+
+    if (game.prizes) {
+      Object.keys(game.prizes).forEach((key) => {
         prizes.push({
-          ...game.prizes[0][key],
+          ...game.prizes[key],
           conditionId: key,
         });
       });
@@ -147,11 +149,11 @@ export class GameService {
       pin: +game.game_id,
       conditions: game.winning_conditions,
       hostId: game.user_id,
-      album: game.album_id,
+      // album: game.album_id,
       prizes,
-      picturesPool: game.pictures_pool || [],
-      picturesList: game.players_list || [],
-      shownPictures: game.shown_pictures || [],
+      picturesPool: objToArray(game.pictures_pool),
+      picturesList: objToArray(game.players_list),
+      shownPictures: objToArray(game.shown_pictures),
       // bingo: any,
     };
   }

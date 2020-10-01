@@ -27,6 +27,8 @@ export const getters = {
   getGameStatus: (state: GameState) => state.gameStatus,
   getPicNum: (state: GameState) => state.picNum,
   getIsDrawing: (state: GameState) => state.isDraiwng,
+  getGamePrizes: (state: GameState) =>
+    state.game && state.game.prizes ? state.game.prizes : [],
 };
 
 export const mutations = {
@@ -34,7 +36,10 @@ export const mutations = {
     (state.picNum = { ...state.picNum, ...num }),
   [GAME.SET_IS_DRAWING]: (state: GameState, isDraiwng: boolean) =>
     (state.isDraiwng = isDraiwng),
-  [GAME.SET_GAME]: (state: GameState, game: Game) => (state.game = { ...game }),
+  [GAME.SET_GAME]: (state: GameState, game: Game) => {
+    state.gameStatus.ballsInMachine = game.picturesPool;
+    state.game = { ...game };
+  },
   [GAME.RESET_GAME]: (state: GameState, album: Album) => {
     state.gameStatus.drawnBall = null;
     state.gameStatus.ballsPicked = [];

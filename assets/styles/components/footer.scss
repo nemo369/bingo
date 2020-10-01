@@ -1,0 +1,17 @@
+.footer-inner {
+    height: 75px;
+    max-width: 1280px;
+    padding: 0 10px;
+    margin: auto;
+  }
+  .main-footer {
+    background-color: #e5e5e5;
+  }
+
+  @media #{$mobile} {
+    .footer-inner *,
+    .footer-inner  {
+     font-size:3.1vw
+    }
+  }
+  

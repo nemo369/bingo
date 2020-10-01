@@ -6,7 +6,7 @@
     <!-- <v-spacer></v-spacer> -->
     <!-- :style="{ backgroundImage: `url(${getImgUrl(`blower`)})` }" -->
     <div id="canvas-wrapper">
-      <canvas id="canvas"></canvas>
+      <canvas id="canvas" class="full"></canvas>
     </div>
   </aside>
 </template>
@@ -194,12 +194,12 @@ export default {
       // Build the circle bounds - END
 
       // Start the blowing with X seconds delay
-      setTimeout(() => {
-        this.setBlowerAniamtion();
-        setTimeout(() => {
-          this.removeBlowerAniamtion();
-        }, 10000);
-      }, 3000);
+      // setTimeout(() => {
+      //   this.setBlowerAniamtion();
+      //   setTimeout(() => {
+      //     this.removeBlowerAniamtion();
+      //   }, 10000);
+      // }, 3000);
     },
     setBlowerAniamtion() {
       const Events = this.$matter.Events;

@@ -15,12 +15,12 @@
     </ul>
     <ul v-if="!$auth.loggedIn" class="d-flex justify-end row-1-1 gray--color">
       <li class="px-4 tac inherit row-1-1 d-flex justify-center flex-column">
-        <nuxt-link :to="localePath('login')" class="text-uppercase fs18">
+        <nuxt-link :to="localePath('/login')" class="text-uppercase fs18">
           {{ $t('login') }}
         </nuxt-link>
       </li>
       <li class="px-4 tac inherit row-1-1 d-flex justify-center flex-column">
-        <nuxt-link :to="localePath('register')" class="text-uppercase fs18">
+        <nuxt-link :to="localePath('/register')" class="text-uppercase fs18">
           {{ $t('register') }}
         </nuxt-link>
       </li>
