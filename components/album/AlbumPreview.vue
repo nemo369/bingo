@@ -113,7 +113,7 @@ export default {
     setGame() {
       this.loading = true;
       this.$store.dispatch('album/setAlbum', this.album).then(() => {
-        this.$router.push(this.localePath({ name: 'GameConditions' }));
+        this.$router.push(this.localePath({ name: 'game_conditions' }));
       });
     },
     editAlbum() {
