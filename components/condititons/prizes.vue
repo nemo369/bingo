@@ -16,7 +16,7 @@
           :add-text="$t('Choose the prize for')"
         />
         <v-img
-          :src="prizes[i].picture.url"
+          :src="prizes[i].picture.secure_url"
           height="200"
           max-width="200"
           aspect-ratio="1"

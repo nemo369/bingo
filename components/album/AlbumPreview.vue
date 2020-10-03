@@ -22,7 +22,6 @@
           :key="i"
           class="white--text justify-center full d-flex flex-column ovh"
         >
-          <!-- <img v-if="album.pictures[i]" :src="album.pictures[i].url" /> -->
           <cld-image
             v-if="album.pictures[i]"
             :public-id="album.pictures[i].public_id"

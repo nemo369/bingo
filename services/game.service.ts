@@ -152,7 +152,7 @@ export class GameService {
       if (!drawnIdxs.includes(pic.asset_id)) {
         picturesPool.push({
           ...pic,
-          imageExists: imageExists(pic.url),
+          imageExists: imageExists(pic.secure_url),
         });
       }
     });

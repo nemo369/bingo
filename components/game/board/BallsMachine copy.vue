@@ -13,7 +13,7 @@
             animationDuration: `1.${getRandNum(0, 50)}s`,
           }"
         >
-          <img :src="ball.url" />
+          <img :src="ball.secure_url" />
         </div>
       </div>
     </div>
