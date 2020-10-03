@@ -62,7 +62,7 @@ import Conditions from '~/components/condititons/conditions.vue';
 
 export default {
   name: 'GameCondititons',
-  middleware: ['hasAlbum', 'auth'],
+  // middleware: ['hasAlbum', 'auth'],
   components: {
     Prizes,
     Conditions,
