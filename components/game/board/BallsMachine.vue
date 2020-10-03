@@ -48,7 +48,6 @@ export default {
           this.initBlower();
         }, 0);
       } else {
-        console.log('NEDD TO UPDATE BALLS');
         this.setBalls();
       }
     },
@@ -210,7 +209,6 @@ export default {
     },
     setBlowerAniamtion() {
       const Events = this.$matter?.Events;
-      console.log(Events);
       if (Events && this.runner) {
         Events.on(this.runner, 'tick', this.onRenderTick);
       }

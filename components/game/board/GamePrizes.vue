@@ -2,11 +2,12 @@
   <div class="prizes game-prizes d-flex flex-column">
     <div v-if="currentPrize && currentPrize.picture" class="prize">
       <transition name="fade">
-        <div>
+        <div :key="currentPrize.picture.public_id">
           <cld-image :public-id="currentPrize.picture.public_id" width="350" />
-          <h2 class="h2 tac white--text">
+          <h3 class="h2 tac white--text">
             {{ currentPrize.name | startCase }}
-          </h2>
+          </h3>
+          <div class="tac white--text mt-1">{{ currentPrize.conditon }}</div>
         </div>
       </transition>
     </div>
@@ -35,6 +36,7 @@ export default {
   computed: {
     ...mapGetters({
       prizes: 'game/getGamePrizes',
+      game: 'game/getGame',
     }),
   },
   watch: {
@@ -57,13 +59,19 @@ export default {
       if (this.intervalId) {
         clearInterval(this.intervalId);
       }
-      this.currentPrize = this.prizes[this.currentIndex];
+
       this.intervalId = setInterval(() => {
         if (this.currentIndex >= this.prizes.length - 1) {
           this.currentIndex = -1;
         }
         this.currentIndex++;
-        this.currentPrize = this.prizes[this.currentIndex];
+        const { conditions } = this.game;
+        const conditionId = +this.prizes[
+          this.currentIndex
+        ]?.conditionId.replace(/[^0-9]/g, '');
+        const conditon = conditions[conditionId];
+        this.currentPrize = { ...this.prizes[this.currentIndex], conditon };
+        // this.currentPrize = this.prizes[this.currentIndex];
       }, 7000);
     },
     checkCard() {

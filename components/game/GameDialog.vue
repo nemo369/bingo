@@ -34,7 +34,7 @@
                 :loading="isLoading"
                 fab
                 x-small
-                color="secondary"
+                color="primary"
                 class="ml-auto"
                 @click="approve(player)"
               >
@@ -67,7 +67,13 @@
         }}</v-card-subtitle
       >
       <v-card-actions class="d-flex">
-        <v-btn :loading="isLoading" @click="confirmGame">Confirm</v-btn>
+        <v-btn
+          :loading="isLoading"
+          color="secondary"
+          class="ml-auto"
+          @click="confirmGame"
+          >Confirm</v-btn
+        >
       </v-card-actions>
       <v-alert v-if="err" dense outlined type="error" class="error">
         {{ err }}
@@ -141,7 +147,7 @@ export default {
       this.playersAskToJoin = this.playersAskToJoin.filter(
         (p) => p.id !== player.id
       );
-      this.players.unshift(player);
+      this.players = [...this.players, player];
     },
     gameRequest() {
       this.err = '';

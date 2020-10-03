@@ -1,19 +1,28 @@
 <template>
   <div class="bg-white pa-6 d-flex flex-column">
     <v-form v-if="!card" class="full" @submit.prevent="validteCard">
-      <legend>Enter Card Numer</legend>
+      <div class="d-flex">
+        <legend>Enter Card Numer</legend>
+        <v-spacer />
+        <v-btn text type="button" @click="continueGame">
+          <v-icon dark>mdi-close</v-icon>
+        </v-btn>
+      </div>
+
       <v-text-field
         v-model="cardId"
         type="number"
         :placeholder="$t('Eg 46463')"
       ></v-text-field>
-      <v-btn
-        type="submit"
-        color="primary"
-        class="mx-auto"
-        :disabled="!cardId"
-        >{{ $t('validate') }}</v-btn
-      >
+      <div class="d-flex">
+        <v-btn
+          type="submit"
+          color="primary"
+          class="mx-auto"
+          :disabled="!cardId"
+          >{{ $t('validate') }}</v-btn
+        >
+      </div>
     </v-form>
     <div v-if="card" class="full d-flex justify-space-between">
       <card-cmp :card="card" class="half" />
@@ -23,6 +32,9 @@
         <v-btn rounded @click="endGame"> End Game</v-btn>
       </div>
     </div>
+    <v-alert v-if="msg" dense outlined :type="type" class="mt-2">
+      {{ msg }}
+    </v-alert>
   </div>
 </template>
 
@@ -41,6 +53,8 @@ export default {
     return {
       cardId: null,
       card: null,
+      type: 'error',
+      msg: '',
     };
   },
   computed: {
@@ -66,7 +80,7 @@ export default {
         return;
       }
       gameService
-        .getCard({ cardId: this.cardId, gameId: this.game.id })
+        .gameWinnings(this.cardId, this.game.pin)
         .then((card) => {
           const conditions = this.game.conditions;
           const isValid = isCardValidate(card, conditions);
@@ -79,7 +93,8 @@ export default {
           }
         })
         .catch(() => {
-          this.$emit('check-bingo', { num: 1, bol: false });
+          this.msg = 'Invalid Card Number';
+          // this.$emit('check-bingo', { num: 1, bol: false });
         });
     },
   },

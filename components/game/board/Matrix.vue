@@ -20,15 +20,17 @@
             top
             class=""
           >
-            <cld-image
-              :public-id="pic.public_id"
-              class="full ovh"
-              width="200"
-              crop="fill"
-              fetch-format="auto"
-              quality="auto"
-              loading="eager"
-            />
+            <transition name="fade">
+              <cld-image
+                :public-id="pic.public_id"
+                class="full ovh"
+                width="200"
+                crop="fill"
+                fetch-format="auto"
+                quality="auto"
+                loading="eager"
+              />
+            </transition>
           </v-badge>
         </li>
       </transition-group>
@@ -37,7 +39,7 @@
     <v-btn
       color="primary"
       class="next-btn"
-      :disabled="disabled"
+      :disabled="isDrawing"
       :loading="loading"
       @click="nextBall"
       >{{ $t('Next Picture') }}</v-btn
@@ -56,7 +58,6 @@ export default {
       selector: '.grid',
       lastPics: [],
       loading: false,
-      disabled: false,
     };
   },
   computed: {
@@ -68,18 +69,12 @@ export default {
   },
   watch: {
     pictures() {
-      const { asset_id: id } = this.ball;
-      console.log(id);
-      const lastPics = uniqById(this.pictures, 'asset_id');
-
-      this.lastPics = lastPics.slice(-7);
-    },
-    isDrawing() {
-      this.disabled = this.isDrawing;
+      this.setLastPic();
     },
   },
-  mounted() {},
-
+  mounted() {
+    this.setLastPic();
+  },
   methods: {
     nextBall() {
       this.loading = true;
@@ -90,6 +85,11 @@ export default {
         this.loading = false;
       }, 3000);
       this.$store.dispatch('game/drawBall');
+    },
+    setLastPic() {
+      const { asset_id: id } = this.ball;
+      const lastPics = uniqById(this.pictures, 'asset_id');
+      this.lastPics = lastPics.slice(-7).filter((p) => p.asset_id !== id);
     },
   },
 };
