@@ -103,8 +103,7 @@ import { convertErr } from '~/app/utils/helpers';
 
 export default {
   name: 'CreateAlbum',
-  // middleware: 'auth',
-
+  middleware: 'auth',
   components: {
     UploadImages,
     ImagesGrid,

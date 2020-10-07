@@ -83,7 +83,7 @@ export default {
 }
 .slide-fade-enter
 /* .slide-fade-leave-active for <2.1.8 */ {
-  transform: translate(-75%, -35%) skewY(5deg) scale(0.3);
+  transform: translate(-75%, -35%) scale(0.3);
   border-radius: 50%;
   overflow: hidden;
   max-width: 50%;

@@ -89,7 +89,8 @@ export default {
     setLastPic() {
       const { asset_id: id } = this.ball;
       const lastPics = uniqById(this.pictures, 'asset_id');
-      this.lastPics = lastPics.slice(-7).filter((p) => p.asset_id !== id);
+      // this.lastPics = lastPics.slice(-7).filter((p) => p.asset_id !== id);
+      this.lastPics = lastPics.filter((p) => p.asset_id !== id).reverse();
     },
   },
 };

@@ -29,6 +29,7 @@ import Panel from '~/components/game/Panel.vue';
 import GameDialog from '~/components/game/GameDialog.vue';
 export default {
   name: 'Bingo',
+  middleware: 'auth',
   layout() {
     return 'game';
   },

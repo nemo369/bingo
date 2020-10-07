@@ -1,35 +1,63 @@
 <template>
-  <v-form class="join-form d-flex flex-column relative" @submit.prevent="join">
-    <v-text-field
-      v-model="pin"
-      type="number"
-      class="input mb-6 d-flex align-center rounded-lg"
-      required
-      :placeholder="placeholderPin"
-      :loading="loading"
-      @input="validatePin"
-    />
-    <v-text-field
-      v-model="nickname"
-      type="text"
-      class="input mb-6 d-flex align-center rounded-lg"
-      :placeholder="placeholderUser"
-      :loading="loading"
-      :counter="16"
-    />
-    <v-alert v-if="err" type="error">
-      {{ err }}
-    </v-alert>
-    <loader v-if="isLoading" :is-loading="isLoading" class="loader" />
-
-    <button
-      type="submit"
-      class="join-bingo-btn learn-more"
-      :disabled="isLoading"
+  <v-card class="pa-16 d-flex align-center justify-center">
+    <v-form
+      class="join-form d-flex flex-column relative"
+      @submit.prevent="join"
     >
-      BINGO
-    </button>
-  </v-form>
+      <!-- <v-text-field
+        v-model="pin"
+        type="number"
+        class="input mb-6 d-flex align-center rounded-lg"
+        required
+        :placeholder="placeholderPin"
+        :loading="loading"
+        @input="validatePin"
+      /> -->
+      <div class="d-flex align-center justify-space-between">
+        <div
+          v-for="i in 4"
+          :key="i"
+          class="pin d-flex align-center justify-center"
+        >
+          <span v-if="i - 1" class="mr-6 dash">-</span>
+          <input
+            ref="pin"
+            v-model="pin[i - 1]"
+            :data-key="i - 1"
+            class="input mb-6 d-flex align-center rounded-lg full tac"
+            type="number"
+            maxLength="1"
+            size="1"
+            min="0"
+            max="9"
+            pattern="[0-9]{1}"
+            @input="validatePin(i - 1)"
+          />
+        </div>
+      </div>
+
+      <v-text-field
+        v-model="nickname"
+        type="text"
+        class="input mb-6 d-flex align-center rounded-lg"
+        :placeholder="placeholderUser"
+        :loading="loading"
+        :counter="16"
+      />
+      <v-alert v-if="err" type="error">
+        {{ err }}
+      </v-alert>
+      <loader v-if="isLoading" :is-loading="isLoading" class="loader" />
+
+      <button
+        type="submit"
+        class="join-bingo-btn learn-more"
+        :disabled="isLoading"
+      >
+        BINGO
+      </button>
+    </v-form>
+  </v-card>
 </template>
 
 <script>
@@ -44,7 +72,7 @@ export default {
   },
   data() {
     return {
-      pin: '',
+      pin: [],
       isNameNeeded: true,
       err: '',
       nickname: Ls.get(playerLocalStorge)?.name || '',
@@ -96,12 +124,13 @@ export default {
         if (this.nickname.length > 16) {
           this.nickname = this.nickname.slice(0, 16);
         }
+        const pin = +this.pin.join('');
         const data = {
           message_type: 'add.player',
           firstMsg: 'User joined Game',
-          game_id: this.pin,
+          game_id: pin,
           data: {
-            game_id: this.pin,
+            game_id: pin,
             nickname: this.nickname,
           },
         };
@@ -117,13 +146,23 @@ export default {
     wsInit(data) {
       this.$store.dispatch('socket/initSocket', data);
     },
-    validatePin() {
+    validatePin(index) {
       this.err = '';
-      if (this.pin.length > this.maxLength) {
-        setTimeout(() => {
-          this.pin = this.pin.slice(0, this.maxLength);
-        }, 0);
+      if (!this.pin[index]) {
+        return;
       }
+      const ref = this.$refs.pin[index + 1];
+      if (index < 4 && ref) {
+        ref.focus();
+      }
+      this.pin = this.pin.map((pin) => (pin ? pin[0] : ''));
+
+      // if(index === 3){
+
+      // }
+    },
+    toglleDialog(bol) {
+      this.isDialog = bol;
     },
   },
 };
@@ -153,6 +192,14 @@ export default {
   color: $op-color;
   font-family: $heading-font-family;
   font-size: 3rem;
+}
+.pin {
+  height: 75px;
+}
+.dash {
+  font-size: 0px;
+  width: 10px;
+  border-top: 2px solid $black;
 }
 @media #{$mobile} {
   .form {
